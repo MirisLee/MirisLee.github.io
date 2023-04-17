@@ -39,3 +39,11 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 ### Test
 
 [test](article1/article1.html)
+
+### Articles
+
++ [Variational Method in Functional Analysis](variational_method.html)
++ The Curl and Divergence of Vector Field
+	1. [Curl, Divergence and Nabla Operator](curl_and_divergence_1.html)
+	2. [Common Identities and their Proofs](curl_and_divergence_2.html)
+	3. [Gradient, Curl and Divergence in Different Coordinate Systems](curl_and_divergence_3.html)
