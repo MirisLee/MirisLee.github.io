@@ -1,0 +1,1247 @@
+\documentclass[11pt]{article}
+\usepackage[subsection]{mymath}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{tikz-cd}
+\usepackage{yhmath}
+
+\counterwithin{table}{section}
+
+\title{Differential Geometry}
+\author{Miris Li}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+This document is the study note of the book \cite{Chern}.
+
+\section{Differentiable Manifolds}
+
+\subsection{Tangent Spaces}
+
+Suppose $M$ is an $m$-dimensional smooth manifold. Fix a point $p \in M$. Denote the set of all $C^\infty$ functions defined in a neighborhood of $p$ by $C^\infty_p$. Define a relation $\sim$ in $C^\infty_p$ as follows. Suppose $f, g \in C^\infty_p$. Then $f \sim g$ if and only if there exists an open neighborhood $H$ of the point $p$ such that $f|_H = g|_H$. Obviously $\sim$ is an equivalence relation in $C^\infty_p$. The equivalence class of $f$ is denoted by $[f]$, called a \textbf{$C^\infty$-germ} at $p$ on $M$. Let $$\mathcal{F}_p = C^\infty_p / \sim \;= \{[f] \mid f \in C^\infty_p\}.$$ Then $\mathcal{F}_p$ is a linear space over $\R$ with regular addition and scalar multiplication. 
+
+For a parametrized curve $\g$ in $M$ through a point $p$, there exists a positive number $\delta$ such that $\g : (-\delta, \delta) \rightarrow M$ is $C^\infty$ with $\g(0) = p$. Denote the set of all these parametrized curves by $\Gamma_p$. 
+
+We introduce a pairing between $\Gamma_p$ and $\mathcal{F}_p$ by letting $$\<\g, [f]\> = \left.\frac{\d(f \circ \g)}{\d t}\right|_{t=0}$$ for each $\g \in \Gamma_p$ and $[f] \in \mathcal{F}_p$. This pairing is well-defined and linear in the second variable. Let $$\mathcal{H}_p = \{[f] \in \mathcal{F}_p \mid \<\g, [f]\> = 0, \forall \g \in \Gamma_p\}$$ be a linear subspace of $\mathcal{F}_p$. 
+
+\begin{theorem}
+    Suppose $[f] \in \mathcal{F}_p$. For a chart $(U, \vphi)$, let $F = f \circ \vphi^{-1}$ be a function from an open subset of $\R^m$ to $\R$. Then $[f] \in \mathcal{H}_p$ if and only if $$\left.\frac{\p F}{\p x^i}\right|_{\vphi(p)} = 0, \quad 1 \le i \le m.$$
+\end{theorem}
+
+\begin{definition}
+    The quotient space $\mathcal{F}_p / \mathcal{H}_p$ is called the \textbf{cotangent space} of $M$ at $p$, denoted by $T^*_p$ or $T^*_p(M)$. The $\mathcal{H}_p$-equivalence class of the $C^\infty$-germ $[f]$ is denoted by $(\d f)_p$, called a \textbf{cotangent vector} on $M$ at $p$. 
+\end{definition}
+
+The cotangent space $T^*_p$ is a linear space with the linear structure induced from $\mathcal{F}_p$. 
+
+\begin{theorem}\label{thm:compound}
+    Suppose $f^1, f^2, \cdots, f^s \in C^\infty_p$ and $F(y^1, y^2, \cdots, y^s)$ is a smooth function in a neighborhood of $(f^1(p), f^2(p), \cdots, f^s(p)) \in \R^s$. Then $f = F(f^1, f^2, \cdots, f^s) \in C^\infty_p$ and $$(\d f)_p = \sum_{k=1}^s \left[\frac{\p F}{\p y^k}(f^1(p), f^2(p), \cdots, f^s(p)) \cdot (\d f^k)_p\right].$$ 
+\end{theorem}
+
+\begin{corollary}
+    For any $f, g \in C^\infty_p, a \in \R$, we have
+    \begin{enumerate}
+        \item $(\d(f + g))_p = (\d f)_p + (\d g)_p$,
+        \item $(\d(af))_p = a \cdot (\d f)_p$, and 
+        \item $(\d(fg))_p = f(p) \cdot (\d g)_p + g(p) \cdot (\d f)_p$. 
+    \end{enumerate}
+\end{corollary}
+
+Choose a chart $(U, \vphi)$ and define local coordinates $u^i$ by $u^i(p) = (\vphi(p))^i = x^i \circ \vphi(p), p \in U$, where $x^i$ is the standard coordinate system of $\R^m$. Then $u^i \in C^\infty_p$ and $(\d u^i)_p \in T^*_p$, $1 \le i \le m$. Choose $\l_k \in \Gamma_p, 1 \le k \le m$ such that $$u^i \circ \l_k(t) = u^i(p) + \delta^i_k t.$$ Then we have $$\<\l_k, [u^i]\> = \left.\frac{\d}{\d t}(u^i \circ \l_k(t))\right|_{t=0} = \delta^i_k.$$
+
+\begin{theorem}
+    $\{(\d u^i)_p, 1 \le i \le m\}$ is a basis of $T^*_p$, called the \textbf{natural basis} of $T^*_p$ with respect to the local coordinate system $u^i$. It then follows that $\dim T^*_p = m$. 
+\end{theorem}
+\begin{proof}
+    By Theorem \ref{thm:compound}, for each $f \in C^\infty_p$, $(\d f)_p$ is a linear combination of the $(\d u^i)_p, 1 \le i \le m$. 
+
+    If there exist real numbers $a_i, 1 \le i \le m$ such that $$\sum_{i=1}^m a_i(\d u^i)_p = 0,$$ then for any $\g \in \Gamma_p$, we have $$\left\<\g, \sum_{i=1}^m a_i[u^i]\right\> = \sum_{i=1}^m a_i\left.\frac{\d(u^i \circ \g(t))}{\d t}\right|_{t=0} = 0.$$ Let $\g = \l_k$ and we will obtain $a_k = 0, 1\le k \le m$, i.e. $\{(\d u^i)_p, 1 \le i \le m\}$ is linearly independent. Therefore it forms a basis for $T^*_p$. 
+\end{proof}
+
+We can simply define the pairing between $\Gamma_p$ and $T^*_p$ by $$\<\g, (\d f)_p\> = \<\g, [f]\>$$ for each $\g \in \Gamma_p$ and $(\d f)_p \in T^*_p$ after the definition of $\mathcal{H}_p$ and $T^*_p$. Define a relation $\sim$ on $\Gamma_p$ as follows. Suppose $\g, \g' \in \Gamma_p$. Then $\g \sim \g'$ if and only if for any $(\d f)_p \in T^*_p$, $$\<\g, (\d f)_p\> = \<\g', (\d f)_p\>.$$ This is again an equivalence relation. Denote the equivalence class of $\g$ by $[\g]$. We can then define $$\<[\g], (\d f)_p\> = \<\g, (\d f)_p\>$$ without chance of confusion. 
+
+\begin{theorem}
+    The $\<[\g], \cdot\>, \g \in \Gamma_p$ represent the totality of linear functionals on $T^*_p$ and form its dual space, $T_p$, called the \textbf{tangent space} of $M$ at $p$. Elements of the tangent space are called \textbf{tangent vectors} of $M$ at $p$.
+\end{theorem}
+\begin{proof}
+    Suppose $\a$ is a linear functional on $T^*_p$. Let $\xi^i = \a(\d u^i)_p, 1 \le i \le m$. Choose $\g \in \Gamma_p$ such that $$u^i(t) = u^i(p) + \xi^i t.$$ Then $$\<[\g], (\d f)_p\> = \sum_{i=1}^m \xi^i\left.\frac{\p (f \circ \vphi^{-1})}{\p u^i}\right|_{\vphi(p)} = \a(\d f)_p.$$ Therefore each linear functional on $T^*_p$ can be expressed as $\<[\g], \cdot\>$ for some $\g \in \Gamma_p$. Moreover, if $\<[\g], \cdot\>$ and $\<[\g'], \cdot\>$ are the same linear functionals on $T^*_p$, then $[\g] = [\g']$. Therefore, we can identify the space of $[\g], \g \in \Gamma_p$ with the dual space of $T^*_p$. 
+\end{proof}
+
+The pairing $\<X, (\d f)_p\>, X = [\g] \in T_p, (\d f)_p \in T^*_p$ is a bilinear map from $T_p \times T^*_p$ to $\R$. Noting that $$\<[\l_k], (\d u^i)_p\> = \delta_k^i, \quad 1 \le i, k \le m,$$ $\{[\l_k], 1 \le k \le m\}$ is the basis of $T_p$ dual to the basis $\{(\d u^i), 1 \le i \le m\}$ of $T^*_p$. The tangent vectors can also be seen as functions from $C^\infty_p$ to $\R$. For a general $f \in C^\infty_p$, we have $$\<[\l_k], (\d f)_p\> = \left\<[\l_k], \sum_{i=1}^m \left[\left(\frac{\p f}{\p u^i}\right)_p \cdot (\d u^i)_p\right]\right\> = \left(\frac{\p f}{\p u^k}\right)_p,$$ where $(\p f / \p u^i)_p$ means $(\p (f \circ \vphi^{-1}) / \p x^i)_{\vphi(p)}$. Thus the $[\l_k]$ can be identified with the partial differential operators $(\p / \p u^k)_p$ on the space $C^\infty_p$. The basis $\{(\p / \p u^k)_p, 1 \le k \le m\}$ is called the \textbf{natural basis} of $T_p$ with respect to the local coordinate system $u^i$. 
+
+The lower index $p$ of tangent and cotangent vectors can be suppressed for simplicity if there is no chance of confusion. 
+
+\begin{definition}
+    Suppose $X \in T_p, f \in C^\infty_p$. Then $(\d f)_p \in T^*_p$ is called the \textbf{differential} of $f$ at the point $p$. Denote $Xf = \<X, \d f\>$, then $Xf$ is called the \textbf{directional derivative} of the function $f$ along the vector $X$. 
+\end{definition}
+
+\begin{theorem}
+    Suppose $X \in T_p, f, g \in C^\infty_p, \a, \b \in \R$. Then 
+    \begin{enumerate}
+        \item $X(\a f + \b g) = \a Xf + \b Xg$;
+        \item $X(fg) = f(p)X(g) + g(p)X(g)$. 
+    \end{enumerate}
+\end{theorem}
+
+The above properties of tangent vectors also give an alternative definition of tangent vectors. 
+
+Smooth maps between smooth manifolds induce linear maps between tangent spaces and between cotangent spaces. Suppose $F : M \rightarrow N$ is a smooth map, $p \in M, q = F(p) \in N$. Define the map $F^* : T^*_q(N) \rightarrow T^*_p(M)$ by $F^*(\d f) = \d(f \circ F), \d f \in T^*_q(N)$. This is a well-defined linear map, called the \textbf{differential} of the map $F$. The adjoint of $F^*$, namely the map $F_* : T_p(M) \rightarrow T_q(N)$ given by $$\<F_*X, a\> = \<X, F^*a\>, \quad X \in T_p(M), a \in T^*_q(N),$$ is called the \textbf{tangent map} induced by $F$. 
+
+Suppose $u^i$ and $v^\a$ are local coordinates near $p$ and $q$, respectively. Then the map $F$ can be expressed near $p$ by the functions $$F^\a(u^1, \cdots, u^m) = v^\a \circ F(u^1, \cdots, u^m), \quad 1 \le \a \le n.$$ Then the action of $F^*$ on the natural basis $\{(\d v^\a), 1 \le \a \le n\}$ is given by $$F^*(\d v^\a) = \d F^\a = \sum_{i=1}^m \left(\frac{\p F^\a}{\p u^i}\right)_p \cdot \d u^i.$$ Hence the matrix representation of $F^*$ in the natural bases $\{\d v^\a\}$ and $\{\d u^i\}$ is exactly the Jacobian matrix $\left((\p F^\a / \p u^i)_p\right)$. Similarly, the action of $F_*$ on the natural basis $\{\p / \p u^i, 1 \le i \le m\}$ is given by
+\begin{align*}
+    \left\<F_*\left(\frac{\p}{\p u^i}\right), \d v^\a\right\> &= \left\<\frac{\p}{\p u^i}, F^*(\d v^\a)\right\> \\
+    &= \sum_{j=1}^m \left(\frac{\p F^\a}{\p u^j}\right)_p \left\<\frac{\p}{\p u^i}, \d u^j\right\> \\
+    &= \left(\frac{\p F^\a}{\p u^i}\right)_p \\
+    &= \sum_{\b=1}^n \left(\frac{\p F^\b}{\p u^i}\right)_p \left\<\frac{\p}{\p v^\b}, \d v^\a\right\> \\
+    &= \left\<\sum_{\b=1}^n \left(\frac{\p F^\b}{\p u^i}\right)_p\left(\frac{\p}{\p v^\b}\right), \d v^\a\right\>, 
+\end{align*}
+i.e. $$F_*\left(\frac{\p}{\p u^i}\right) = \sum_{\b=1}^n \left(\frac{\p F^\b}{\p u^i}\right)_p\left(\frac{\p}{\p v^\b}\right).$$ Therefore the matrix representation of $F_*$ in the natural bases $\{\p / \p u^i\}$ and $\{\p / \p v^\a\}$ is still the Jacobian matrix $\left((\p F^\a / \p u^i)_p\right)$.
+
+\subsection{Submanifolds}
+
+Using the Inverse Function Theorem for $\R^n$ and the local coordinate systems of manifolds, we can obtain the following generalization for manifolds.
+
+\begin{theorem}\label{thm:inverse}
+    Suppose $M$ and $N$ are both $n$-dimensional smooth manifolds, and $f : M \rightarrow N$ is a smooth map. If at a point $p \in M$, the tangent map $f_* : T_p(M) \rightarrow T_{f(p)}(N)$ is an isomorphism, then there exists a neighborhood $U$ of $p$ in $M$ such that $V = f(U)$ is a neighborhood of $f(p)$ in $N$ and $f|_U : U \rightarrow V$ is a diffeomorphism. 
+\end{theorem}
+
+If $M$ is an $m$-dimensional manifold and $N$ an $n$-dimensional manifold, $f : M \rightarrow N$ is smooth, and the tangent map $f_*$ is injective at a point $p$, then $f_*$ is said to be \textbf{nondegenerate} at $p$. In this case, we have $m \le n$, and the rank of the Jacobian matrix of $f$ at $p$ is $m$. 
+
+\begin{theorem}\label{thm:nondegenerate}
+    Suppose $M$ is an $m$-dimensional manifold and $N$ an $n$-dimensional manifold, $m < n$. If $f : M \rightarrow N$ is a smooth map and the tangent map $f_*$ is nondegenerate at a point $p$ in $M$, then there exist local coordinate systems $(U;u^i)$ near $p$ and $(V;v^\a)$ near $q = f(p)$ such that $f(U) = V$, and the map $f|_U$ can be expressed by local coordinates as 
+    $$\begin{cases}
+        v^i(f(x)) = u^i(x), \quad 1 \le i \le m; \\
+        v^\g(f(x)) = 0, \quad m + 1 \le \g \le n.
+    \end{cases}$$
+    for each $x \in U$. 
+\end{theorem}
+\begin{proof}
+    Take local coordinate systems $(U;u^i)$ and $(V;v^\a)$ at $p$ and $q$, respectively, such that $u^i(p) = 0$ and $v^\a(q) = 0$. Since $f_*$ is nondegenerate at $p$, we may assume that $$\left.\frac{\p(f^1, f^2, \cdots, f^m)}{\p(u^1, u^2, \cdots, u^m)}\right|_{u^i = 0} \neq 0.$$ Let $I_{n-m} = \{(w^{m+1}, \cdots, w^n) \mid |w^\g| \le \delta, m+1 \le \g \le n\}$, where $\delta$ is a sufficiently small positive number. By suitably shrinking the neighborhood $U$, we can define a smooth map $\tilde{f} : U \times I_{n-m} \rightarrow V$ such that 
+    $$\begin{cases}
+        \tilde{f}^i(u^1, \cdots, u^m, w^{m+1}, \cdots, w^n) = f^i(u^1, \cdots, u^m), \quad 1 \le i \le m; \\
+        \tilde{f}^\g(u^1, \cdots, u^m, w^{m+1}, \cdots, w^n) = w^\g + f^\g(u^1, \cdots, u^m), \quad m +1 \le \g \le n.
+    \end{cases}$$
+    The Jacobian matrix of $\tilde{f}$ at $(u^i, w^\g) = (0, 0)$ is nondegenerate. It follows by Theorem \ref{thm:inverse} that $\tilde{f}$ is a diffeomorphism ina neighborhood of $(0, 0)$. We may assume that $\tilde{f} : U \times I_{n-m} \rightarrow V$ is a diffeomorphism. Then there exists a coordinate system $\bar{v}^\a$ in the neighborhood $V$ of $q$ such that $\tilde{f}$ is expressed as 
+    $$\begin{cases}
+        \bar{v}^i(\tilde{f}(u^1, \cdots, u^m, w^{m+1}, \cdots, w^n)) = u^i, \quad 1 \le i \le m; \\
+        \bar{v}^\g(\tilde{f}(u^1, \cdots, u^m, w^{m+1}, \cdots, w^n)) = w^\g, \quad m +1 \le \g \le n.
+    \end{cases}$$
+    Thus the local coordinate systems $(U;u^i)$ and $(V;\bar{v}^\a)$ are the desired. 
+\end{proof}
+
+\begin{definition}
+    Suppose $M$ and $N$ are smooth manifolds. If there is a smooth map $\vphi: M \rightarrow N$ such that the tangent map $\vphi_* : T_p(M) \rightarrow T_{\vphi(p)}(N)$ is nondegenerate at any point $p \in M$, then $\vphi$ is called an \textbf{immersion}, and $(\vphi, M)$ an \textbf{immersed submanifold} of $N$. Furthermore, if $\vphi$ is also injective, then $(\vphi, M)$ is called a \textbf{smooth submanifold}, or \textbf{imbedded submanifold}, of $N$. 
+\end{definition}
+
+By Theorem \ref{thm:nondegenerate}, an immersion is locally injective, but not necessarily so globally. 
+
+\begin{example}
+    Suppose $U$ is an open subset of $N$. By restricting the smooth structure of $N$ to $U$, we obtain a smooth structure on $U$, which makes $U$ a smooth manifold with the same dimension as $N$. Let $\vphi : U \rightarrow N$ be the inclusion map, then $(\vphi, U)$ becomes an imbedded submanifold of $N$, called an \textbf{open submanifold} of $N$. 
+\end{example}
+
+\begin{example}
+    Suppose $(\vphi, M)$ is a smooth submanifold of $N$. If
+    \begin{enumerate}
+        \item $\vphi(M)$ is a closed subset of $N$;
+        \item for any point $q \in \vphi(M)$, there exists a local coordinate system $(U;u^i)$ such that $\vphi(M) \cap U$ is defined by $$u^{m+1} = u^{m+2} = \cdots = u^n = 0,$$ where $m = \dim M$,
+    \end{enumerate}
+    then we call $(\vphi, M)$ a \textbf{closed submanifold} of $N$. 
+\end{example}
+
+For an imbedded submanifold $(\vphi, M)$, since $\vphi$ is injective, the differentiable structure of $M$ can be transported to $\vphi(M)$, making $\vphi : M \rightarrow \vphi(M)$ a diffeomorphism. On the other hand, being a subset of $N$, $\vphi(M)$ has an induced topology from $N$. The topology on $\vphi(M)$ obtained from $M$ through $\vphi$ is not necessarily the same as the one induced from $N$.
+
+\begin{definition}
+    Suppose $(\vphi, M)$ is a smooth submanifold of $N$. If $\vphi : M \rightarrow \vphi(M) \subset N$ is a homeomorphism, then $(\vphi, M)$ is called a \textbf{regular submanifold} of $N$, and $\vphi$ is called a \textbf{regular imbedding} of $M$ into $N$. 
+\end{definition}
+
+\begin{theorem}
+    Suppose $(\vphi, M)$ is an $m$-dimensional submanifold of an $n$-dimensional smooth manifold of $N$. Then $(\vphi, M)$ is a regular submanifold of $N$ if and only if it is a closed submanifold of an open submanifold of $N$. 
+\end{theorem}
+\begin{proof}
+    First we show that a closed submanifold $(\vphi, M)$ of $N$ is a regular submanifold. Choose an arbitrary point $p \in M$. There exists a local coordinate system $(V; v^\a)$ at the point $q = \vphi(p)$ in $N$ such that $\vphi(M) \cap V$ is defined by $$v^{m+1} = v^{m+2} = \cdots = v^n = 0.$$ Since $\vphi$ is continuous, there exists a local coordinate system $(U; u^i)$ such that $\vphi(U) \subset V$. We may assume that $u^i(p) = 0, v^\a(q) = 0$, and $V = \{(v^1, \cdots, v^n) \mid |v^\a| < \delta\}$, where $\delta$ is a positive number. Thus $\vphi(U) \subset \vphi(M) \cap V$. 
+
+    The goal is to prove that $\vphi^{-1} : \vphi(M) \subset N \rightarrow M$ is also continuous. The map $\vphi|_U$ can be expressed locally by 
+    $$\begin{cases}
+        v^i = \vphi(u^1, \cdots, u^m), \quad 1 \le i \le m; \\
+        v^\g = 0, \quad m + 1 \le \g \le n.
+    \end{cases}$$
+    Since $\vphi_*$ is nondegenerate at $p$, the Jacobian $$\left.\frac{\p(\vphi^1, \vphi^2, \cdots, \vphi^m)}{\p(u^1, u^2, \cdots, u^m)}\right|_{u^i = 0} \neq 0.$$ By the Inverse Function Theorem, there exists $\delta_1$ with $0 < \delta_1 < \delta$ such that there is an inverse function set $$u^i = \psi^i(v^1, \cdots, v^m), \quad |v^i| < \delta_1$$ of the function set $(\vphi^1, \cdots, \vphi^m)$. Let $V_1 = \{(v^1, \cdots, v^n) \mid |v^\a| < \delta_1\}$, then the entire preimage of $\vphi(M) \cap V$ under $\vphi$ is contained in $U$. Hence $\vphi : M \rightarrow \vphi(M) \subset N$ is a homeomorphism, which implies that $(\vphi, M)$ is a regular submanifold of $N$. 
+
+    Conversely, suppose $(\vphi, M)$ is a regular submanifold of $N$. Let $p \in M$. Then for any neighborhood $U \subset M$ of $p$, there exists a neighborhood $V$ of $q = \vphi(p)$ in $N$ such that $\vphi(U) = \vphi(M) \cap V$. By Theorem \ref{thm:nondegenerate}, there exist local coordinate systems $(U_1; u^i)$ for $p$ and $(V_1; v^\a)$ for $q$ such that $\vphi(U_1) \subset V_1$, and $\vphi|_{U_1}$ can be expressed in local coordinates as $$\vphi(u^1, \cdots, u^m) = (u^1, \cdots, u^m, 0, \cdots, 0).$$ We may assume that $U_1 \subset U$. Hence we can choose $V_1 \subset V$ with $\vphi(U_1) = \vphi(M) \cap V_1$. Here we can see that $\vphi(M) \cap V$ is actually defined by $$v^{m+1} = \cdots = v^n = 0.$$
+
+    For each $q \in \vphi(M)$, use $V_q$ to represent the corresponding neighborhood $V_1$ of $q$ in $N$ defined above. Let $W = \bigcup_{q \in \vphi(M)}V_q$. It is obvious that $W$ is an open submanifold of $N$ containing $\vphi(M)$. We only need to show that $\vphi(M)$ is relatively closed in $W$, or equivalently, $\overline{\vphi(M)} \cap W = \vphi(M)$. Choose any point $s \in \overline{\vphi(M)} \cap W$. Then there exists $q \in \vphi(M)$ such that $s \in V_q$. By the choice of $V_q$, $\vphi(M) \cap V_q$ is a relatively closed subset of $V_q$. Since $s \in \overline{\vphi(M)} \cap V_q$, we have $s \in \vphi(M) \cap V_q$. Therefore $\overline{\vphi(M)} \cap W \subset \vphi(M)$. This proves that $(\vphi, M)$ is a closed submanifold of the open submanifold $W$ of $N$. 
+\end{proof}
+
+\begin{theorem}
+    Suppose $(\vphi, M)$ is a submanifold of a smooth manifold $N$. If $M$ is compact, then $\vphi : M \rightarrow N$ is a regular imbedding. 
+\end{theorem}
+\begin{proof}
+    Because $\vphi : M \rightarrow \vphi(M) \subset N$ is a continuous bijection from a compact space to a Hausdorff space, it must be a closed map and then a homeomorphism. Therefore, $(\vphi, M)$ is a regular submanifold of $N$ by definition. 
+\end{proof}
+
+\section{Exterior Differential Calculus}
+
+\def\GL{\text{GL}}
+\def\SL{\text{SL}}
+\def\O{\text{O}}
+\def\gl{\text{gl}}
+\def\sl{\text{sl}}
+
+\subsection{Tensor Bundles and Vector Bundles}
+
+Suppose $M$ is an $m$-dimensional smooth manifold, $T_p$ and $T^*_p$ are the tangent and cotangent space of $M$ at $p$. Then there is an $(r, s)$-type tensor space $$T^r_s(p) = \underbrace{T_p \otimes \cdots \otimes T_p}_{r \;\text{terms}} \otimes \underbrace{T^*_p \otimes \cdots \otimes T^*_p}_{s \;\text{terms}}$$ of $M$ at $p$, which is an $m^{r+s}$-dimensional vector space. Let $$T^r_s = \bigcup_{p \in M} T^r_s(p).$$ We will introduce a topology on $T^r_s$ so that it becomes a Hausdorff space with a countable basis, and then define a smooth structure to make it a smooth manifold. 
+
+Suppose $V$ is an $m$-dimensional vector space over $\R$. Choose a basis $\{e_1, e_2, \cdots, e_m\}$ in $V$, and then each element $y \in V$ can be expressed as a row coordinate vector $$y = (y^1, y^2, \cdots, y^m).$$ The space $V^r_s$ of all $(r, s)$-type tensors on $V$ has a basis $$e_{i_1} \otimes e_{i_2} \otimes \cdots e_{i_r} \otimes e^{*j_1} \otimes e^{*j_2} \otimes \cdots e^{*j_s}, \quad 1 \le i_\a, j_\b \le m.$$ Thus the elements of $V^r_s$ can also be expressed by components.
+
+Consider a coordinate neighborhood $U$ on $M$ with local coordinates $u^1, \cdots, u^m$. Then for any $p \in U$, $$\left(\frac{\p}{\p u^{i_1}}\right)_p \otimes \cdots \otimes \left(\frac{\p}{\p u^{i_r}}\right)_p \otimes (\d u^{j_1})_p \otimes \cdots \otimes (\d u^{j_s})_p, \quad 1 \le i_\a, j_\b \le m$$ forms a basis of $T^r_s(p)$. We can define a map $$\vphi_U : U \times V^r_s \rightarrow \bigcup_{p \in U} T^r_s(p)$$ such that for any $p \in U, 1 \le i_\a, j_\b \le m$, we have 
+\begin{align*}
+    &\vphi_U(p, e_{i_1} \otimes \cdots e_{i_r} \otimes e^{*j_1} \otimes \cdots e^{*j_s}) \\
+    = &\left(\frac{\p}{\p u^{i_1}}\right)_p \otimes \cdots \otimes \left(\frac{\p}{\p u^{i_r}}\right)_p \otimes (\d u^{j_1})_p \otimes \cdots \otimes (\d u^{j_s})_p \in T^r_s(p).
+\end{align*}
+Such a $\vphi_U$ is a one-to-one correspondence. 
+
+Choose a coordinate covering $\{U_1, U_2, \cdots\}$ of $M$, with corresponding maps $\{\vphi_1, \vphi_2, \cdots\}$. Let the set of images of all open subsets of $U_i \times V^r_s$ under the map $\vphi_i$ be a topological basis for $T^r_s$. Such a topology makes $T^r_s$ into a Hausdorff space with a countable basis, and each map $\vphi_i$ is then a homeomorphism. 
+
+Fix a point $p \in U$. The map $\vphi_{U, p} : V^r_s \rightarrow T^r_s(p)$ defined by $$\vphi_{U, p}(y) = \vphi_U(p, y), \quad y \in V^r_s$$ is a linear isomorphism. If $W$ is another coordinate neighborhood of $M$ containing $p$, let $$g_{UW}(p) = \vphi_{W, p}^{-1} \circ \vphi_{U, p} : V^r_s \rightarrow V^r_s.$$ Then obviously $g_{UW}(p) \in \GL(V^r_s)$. Therefore, for any two coordinate neighborhoods $U, W$ of $M$ with $U \cap W \neq \varnothing$, the map $$g_{UW} : U \cap W \rightarrow \GL(V^r_s)$$ is well-defined. Moreover, it can be shown that $g_{UW}$ is actually some tensor products of the Jacobian matrix of the change of local coordinates, thus $g_{UW}$ is smooth on $U \cap W$. 
+
+Now we construct the smooth structure of $T^r_s$. First, $$\{\vphi_1(U_1 \times V^r_s), \vphi_2(U_2 \times V^r_s), \cdots\}$$ forms an open covering of $T^r_s$. The coordinates of a point $\vphi_i(p, y)$ in the coordinate neighborhood $\vphi_i(U_i \times V^r_s)$ are $$(u^\a_i(p), y^{i_1 \cdots i_r}_{j_1 \cdots j_s}),$$ where $u^\a_i$ is a local coordinate in the coordinate neighborhood $U_i$ of the manifold $M$, and $y^{i_1 \cdots i_r}_{j_1 \cdots j_s}$ is the component of $y \in V^r_s$ with respect to the basis $e_{i_1} \otimes \cdots e_{i_r} \otimes e^{*j_1} \otimes \cdots e^{*j_s}$ of $V^r_s$. Noting that for $U_i \cap U_j \neq \varnothing$, $g_{ij} : U_i \cap U_j \rightarrow \GL(V^r_s)$ is smooth, we see that the coordinate covering of $T^r_s$ given above is $C^\infty$-compatible. Thus $T^r_s$ becomes a smooth manifold. Obviously, the natural projection $$\pi : T^r_s \rightarrow M,$$ which maps each element in $T^r_s(p)$ to the point $p \in M$, is a smooth surjection. The smooth manifold $T^r_s$ is called a \textbf{type $(r, s)$-tensor bundle} on $M$, $\pi$ is called the \textbf{bundle projection}, and $T^r_s(p)$ is called the \textbf{fiber} of the bundle $T^r_s$ at $p$. 
+
+Letting $r = 1, s = 0$, we get the \textbf{tangent bundle} of $M$, denoted by $T(M)$. Letting $r = 0, s = 1$, we get the \textbf{cotangent bundle} of $M$, denoted by $T^*(M)$. Replacing $T^r(p)$ by $\Lambda^r(T_p)$ and $V^r$ by $\Lambda^r(V)$, and following the above procedure, we can construct \textbf{exterior vector bundles} $$\Lambda^r(M) = \bigcup_{p \in M} \Lambda^r(T_p)$$ on $M$. Similarly, we can also construct \textbf{exterior form bundles} $$\Lambda^r(M^*) = \bigcup_{p \in M} \Lambda^r(T^*_p)$$ on $M$. 
+
+Suppose $f : M \rightarrow T^r_s$ is a smooth map such that $\pi \circ f = \text{id}_M$, i.e., $f(p) \in T^r_s(p)$ for any $p \in M$, then $f$ is called a \textbf{smooth section} of the tensor bundle $T^r_s$, or a \textbf{type $(r, s)$-smooth tensor field} on $M$. A section of a tangent bundle is a \textbf{tangent vector field} on $M$, and a section of a cotangent bundle is a \textbf{differential 1-form}. A smooth section of the exterior form bundle $\Lambda^r(M*)$ is called an \textbf{exterior differential form} of degree $r$ on $M$.
+
+\begin{definition}
+    Suppose $E, M$ are two smooth manifolds, and $\pi : E \rightarrow M$ is a smooth surjection. Let $V$ be a $q$-dimensional vector space. If an open covering $\{U_1, U_2, \cdots\}$ of $M$ and a set of maps $\{\vphi_1, \vphi_2, \cdots\}$ satisfy the following conditions:
+    \begin{enumerate}
+        \item Every map $\vphi_i$ is a diffeomorphism from $U_i \times V$ to $\pi^{-1}(U_i)$, and for any $p \in U_i, y \in V$, $$\pi \circ \vphi_i(p, y) = p.$$
+        \item For any fixed $p \in U_i$, let $$\vphi_{i, p}(y) = \vphi_i(p, y), \quad y \in V.$$ Then $\vphi_{i, p} : V \rightarrow \pi^{-1}(p)$ is a homeomorphism. When $U_i \cap U_j \neq \varnothing$, for any $p \in U_i \cap U_j$, $$g_{ij}(p) = \vphi^{-1}_{j, p} \circ \vphi_{i, p} : V \rightarrow V$$ is a linear automorphism of $V$, i.e. $g_{ij}(p) \in \GL(V)$.
+        \item When $U_i \cap U_j \neq \varnothing$, the map $g_{ij} : U_i \cap U_j \rightarrow \GL(V)$ is smooth. 
+    \end{enumerate}
+    then $(E, M, \pi)$ is called a (real) $q$-dimensional \textbf{vector bundle} on $M$, where $E$ is called the \textbf{bundle space}, $M$ is called the \textbf{base space}, $\pi$ is called the \textbf{bundle projection}, and $V$ is called the \textbf{typical fiber}. 
+\end{definition}
+
+For any $p \in M$, define $E_p = \pi^{-1}(p)$ and call it the \textbf{fiber} of the vector bundle $E$ at the point $p$. For a coordinate neighborhood $U_i$ of $M$ containing $p$, the linear structure of the typical fiber $V$ can be transported to $E_p$ through the map $\vphi_{i, p}$. Condition 2 ensures that the linear structure of $E_p$ is independent of the choice of $U_i$ and $\vphi_i$. 
+
+The product manifold $M \times V$ is the most simple example of a vector bundle, called the \textbf{trivial bundle} over $M$, or the \textbf{product bundle}. 
+
+The map $g_{ij} : U_i \cap U_j \rightarrow \GL(V)$ satisfies the following compatibility conditions: 
+\begin{enumerate}
+    \item for $p \in U_i$, $g_{ii}(p) = \text{id}_V$;
+    \item if $p \in U_i \cap U_j \cap U_k \neq \varnothing$, then $g_{ki}(p) \circ g_{jk}(p) \circ g_{ij}(p) = \text{id}_V$.
+\end{enumerate}
+The set $\{g_{ij}\}$ is called the family of \textbf{transition functions} of the vector bundle $(E, M, \pi)$.
+
+\begin{theorem}
+    Suppose $M$ is an $m$-dimensional smooth manifold, $\{U_\a\}_{\a \in \mathcal{A}}$ is an open covering of $M$, and $V$ is a $q$-dimensional vector space. If for any pair of indices $\a, \b \in \mathcal{A}$ where $U_\a \cap U_\b \neq \varnothing$, there exists a smooth map $g_{\a\b} : U_\a \cap U_\b \rightarrow \GL(V)$ that satisfies compatibility conditions, then there exists a $q$-dimensional vector bundle $(E, M, \pi)$ which has $\{g_{\a\b}\}$ as its transition functions. 
+\end{theorem}
+
+For a vector bundle $(E, M, \pi)$ with $V$ as its typical fiber, we can construct another vector bundle $(E^*, M, \tilde\pi)$ with $V^*$ as its typical fiber, whose transition functions are the dual maps of the transition functions of $(E, M, \pi)$. The vector bundle $E^*$ is called the \textbf{dual bundle} of $E$. In fact, the cotangent bundle is exactly the dual bundle of the tangent bundle. Similarly, we can construct the \textbf{direct sum} and the \textbf{tensor product} of vector bundles. 
+
+\begin{definition}
+    Suppose $s : M \rightarrow E$ is a smooth map. If $\pi \circ s = \text{id}_M$, then $s$ is called a \textbf{smooth section} of the vector bundle $(E, M , \pi)$. The set of all smooth sections of the vector bundle $(E, M, \pi)$ is denoted by $\Gamma(E)$.
+\end{definition}
+
+Suppose $s, s_1, s_2 \in \Gamma(E)$ and $\a \in C^\infty(M)$. For any $p \in M$, let \begin{align*}
+    (s_1 + s_2)(p) &= s_1(p) + s_2(p), \\
+    (\a s)(p) &= \a(p)s(p).
+\end{align*}
+Then $s_1 + s_2$ and $\a s$ are also smooth sections of the vector bundle $E$. This makes $\Gamma(E)$ into a $C^\infty(M)$-module. 
+
+\subsection{Exterior Differentiation}
+
+Suppose $M$ is an $m$-dimensional smooth manifold. Let $$A^r(M) = \Gamma(\Lambda^r(M^*))$$ be the space of the smooth sections of the exterior form bundle $\Lambda^r(M^*)$. The elements of $A^r(M)$ are called \textbf{exterior differential $r$-forms} on $M$. Similarly, let $$A(M) = \Gamma(\Lambda(M^*))$$ be the space of all the smooth sections of the vector bundle $\Lambda(M^*)$. The elements of $A(M)$ are called \textbf{exterior differential forms} on $M$. $A(M)$ has the expression as the direct sum $$A(M) = \sum_{r=0}^m A^r(M).$$ The wedge product $\wedge$ defines a map $$\wedge : A^r(M) \times A^s(M) \rightarrow A^{r+s}(M)$$ for each $r, s$ which makes $A(M)$ into a \textbf{graded algebra}. 
+
+\begin{lemma}\label{lem:local}
+    Suppose $(U, \vphi)$ is a coordinate chart in a smooth manifold $M$, $V \neq \varnothing$ is an open set in $M$ with $\overline{V}$ compact, and $\overline{V} \subset U$. Then there exists a smooth function $h : M \rightarrow \R$ such that 
+    \begin{enumerate}
+        \item $0 \le h \le 1$;
+        \item $h(p) = \begin{cases}1,\quad p \in V; \\ 0, \quad p\not\in U.\end{cases}$
+    \end{enumerate}
+\end{lemma}
+
+\begin{theorem}
+    Suppose $M$ is an $m$-dimensional smooth manifold. Then there exists a unique map $$\d : A(M) \rightarrow A(M)$$ such that $\d(A^r(M)) \subset A^{r+1}(M)$ and such that it satisfies the following properties:
+    \begin{enumerate}
+        \item For any $\omega_1, \omega_2 \in A(M)$, $\d(\omega_1 + \omega_2) = \d\omega_1 + \d\omega_2$.
+        \item Suppose $\omega_1 \in A^r(M)$, then for any $\omega_2 \in A(M)$, $$\d(\omega_1 \wedge \omega_2) = \d\omega_1 \wedge \omega_2 + (-1)^r\omega_1 \wedge \d\omega_2.$$
+        \item If $f$ is a smooth function on $M$, i.e. $f \in A^0(M)$, then $\d f$ is precisely the differential of $f$. 
+        \item If $f \in A^0(M)$, then $\d(\d f) = 0.$
+    \end{enumerate}
+    The map $\d$ defined above is called the \textbf{exterior derivative}. 
+\end{theorem}
+\begin{proof}
+    First we show that id the exterior operator $\d$ exists, then it is a local operator. It suffices to show that $\omega|_U = 0$ implies $(\d\omega)|_U = 0$. Choose any point $p \in U$. Then there is an open neighborhood $W$ containing $p$ such that $p \in W \subset \overline{W} \subset U$. By Lemma \ref{lem:local}, there exists a smooth function $h$ on $M$ such that $$h(p') = \begin{cases} 1, \quad p \in W; \\ 0, \quad p \not\in U.\end{cases}$$ Thus $h\omega \in A(M)$ and $h\omega = 0$. Therefore $$\d h \wedge \omega + h\d\omega = 0,$$ and hence $(\d\omega)|_W = 0.$ The arbitrarity of $p$ then implies that the restriction of $\d\omega$ in $U$ must be zero. 
+
+    Suppose $\omega$ is an exterior differential form defined on the open set $U$. Using Lemma \ref{lem:local}, for any point $p \in U$, there is a coordinate neighborhood $U_1 \subset U$ of $p$ and an exterior differential form $\tilde\omega$ defined on $M$ such that $\tilde\omega|_{U_1} = \omega|_{U_1}$. Thus we can define $\d\tilde\omega|_{U_1} = \d\omega|_{U_1}$. Since $\d$ is a local operator, the above definition is independent of the choice of $\tilde\omega$. $\d\omega$ is therefore well-defined. 
+
+    Now we show the uniqueness of the exterior derivative $\d$ within a local coordinate neighborhood. We only need to show this for a monomial. Suppose in a coordinate neighborhood $U$, $\omega$ is expressed by $$\omega = a \d u^1 \wedge \cdots \wedge \d u^r,$$ where $a$ is a smooth function on $U$. By the properties of $\d$, we see that $$\d\omega = \d a \wedge \d u^1 \wedge \cdots \wedge \d u^r,$$ where $\d a$ is the differential of the function $a$. Thus $\d\omega$ restricted to the coordinate neighborhood $U$ has a completely determined form. 
+
+    Suppose $$\omega|_U = a_{i_1 \cdots i_r}\d u^{i_1} \wedge \cdots \wedge \d u^{i_r}.$$ Then we can define $$\d(\omega|_U) = \d a_{i_1 \cdots i_r} \wedge \d u^{i_1} \wedge \cdots \wedge \d u^{i_r}.$$ Obviously, $\d(\omega|_U)$ is an exterior differential $(r + 1)$-form on $U$ satisfying conditions 1 and 3. To show that 2 holds, we need only consider any two monomials 
+    \begin{align*}
+        \a_1 &= a \d u^{i_1} \wedge \cdots \wedge \d u^{i_r} \\
+        \a_2 &= b \d u^{j_1} \wedge \cdots \wedge \d u^{j_r}.
+    \end{align*}
+    By the definition, we have
+    \begin{align*}
+        \d(\a_1 \wedge \a_2) &= \d(ab) \wedge \d u^{i_1} \wedge \cdots \wedge \d u^{i_r} \wedge \d u^{j_1} \wedge \cdots \wedge \d u^{j_r} \\
+        &= (a \d b + b \d a) \wedge \d u^{i_1} \wedge \cdots \wedge \d u^{i_r} \wedge \d u^{j_1} \wedge \cdots \wedge \d u^{j_r} \\
+        &= (\d a \wedge \d u^{i_1} \wedge \cdots \wedge \d u^{i_r}) \wedge (b \d u^{j_1} \wedge \cdots \wedge \d u^{j_r}) \\ 
+        &\quad + (-1)^r(a \d u^{i_1} \wedge \cdots \wedge \d u^{i_r}) \wedge (\d b \wedge \d u^{j_1} \wedge \cdots \wedge \d u^{j_r}) \\
+        &= \d\a_1 \wedge \a_2 + (-1)^r\a_1 \wedge \d\a_2. 
+    \end{align*}
+    Property 2 is therefore established. 
+
+    We now prove condition 4. Suppose $f$ is a smooth function on $M$. Then on $U$ it satisfies $$\d f = \frac{\p f}{\p u^i}\d u^i.$$ Since $f$ is $C^\infty$, its higher then first order partial derivatives are independent of the order taken, i.e., $$\frac{\p^2 f}{\p u^i \p u^j} = \frac{\p^2 f}{\p u^j \p u^i}.$$ Therefore
+    \begin{align*}
+        \d(\d f) &= \d\left(\frac{\p f}{\p u^i}\right) \wedge \d u^i \\
+        &= \frac{\p^2 f}{\p u^i \p u^j} \d u^j \wedge \d u^i \\
+        &= \frac{1}{2}\left(\frac{\p^2 f}{\p u^i \p u^j} - \frac{\p^2 f}{\p u^j \p u^i}\right) \d u^j \wedge \d u^i \\
+        &= 0.
+    \end{align*}
+
+    If $W$ is another coordinate neighborhood, we obtain by the local property of the exterior derivative operator and its uniqueness in a local coordinate neighborhood that $$(\d(\omega|_U))|_{U \cap W} = \d(\omega|_{U \cap W}) = (\d(\omega|_W))|_{U \cap W}.$$ Hence the exterior derivative operator $\d$ is uniformly defined above on $U \cap W$, i.e. $\d$ is an operator defined on $M$ globally. This proves the existence of the operator $\d$ satisfying the conditions of the theorem. 
+\end{proof}
+
+\begin{theorem}[Poincare's Lemma]
+    For any exterior differential form $\omega$, $\d(\d\omega) = 0$.
+\end{theorem}
+\begin{proof}
+    Since $\d$ is a linear operator, we need only prove the lemma when $\omega$ is a monomial. By the local properties of $\d$, it suffices to assume that $$\omega = a \d u^1 \wedge \cdots \wedge \d u^r.$$ Hence $$\d\omega = \d a \wedge \d u^1 \wedge \cdots \d u^r.$$ Differentiating one more time and applying conditions 2 and 4, we have \begin{align*}
+        \d(\d\omega) &= \d(\d a) \wedge \d u^1 \wedge \cdots \wedge \d u^r \\
+        & \quad - \d a \wedge \d(\d u^1) \wedge \cdots \wedge \d u^r + \cdots \\
+        &= 0.
+    \end{align*}
+\end{proof}
+
+Suppose $f : M \rightarrow N$ is a smooth map from a smooth manifold $M$ to a smooth manifold $N$. Then $f$ induces a tangent mapping $f_* : T_p(M) \rightarrow T_{f(p)}(N)$ at every point $p \in M$. For $\omega \in A^0(N)$, define $$f^*\omega = \omega \circ f \in A^0(M).$$ For $\omega \in A^r(N), r \ge 1$, let $f^*\omega$ be an element of $A^r(M)$ such that for any $r$ smooth tangent vector fields $X_1, X_2, \cdots, X_r$ on $M$, $$\<X_1 \wedge X_2 \wedge \cdots \wedge X_r, f^*\omega\>_p = \<f_*X_1 \wedge f_*X_2 \wedge \cdots \wedge f_*X_r, \omega\>_{f(p)}, \quad p \in M,$$ where $\<\cdot, \cdot\>$ can be computed by $$\left\<\frac{\p}{\p u^{i_1}} \wedge \cdots \wedge \frac{\p}{\p u^{i_r}}, \d u^{j_1} \wedge \cdots \wedge \d u^{j_r}\right\>_p = \delta^{j_1 \cdots j_r}_{i_1 \cdots i_r}.$$ Under this definition, the map $f^*$ distributes over the wedge product, i.e. $$f^*(\omega \wedge \eta) = f^*\omega \wedge f^*\eta, \quad \omega, \eta \in A(N).$$
+
+\begin{theorem}
+    Suppose $M, N$ are smooth manifold and $f : M \rightarrow N$ is a smooth map. Then the following diagram commutes:
+    \begin{figure}[htbp]
+        \centering
+        \begin{tikzcd}
+            A(N) \arrow[r, swap, "\text{d}"] \arrow[d, "f^*"] & A(N) \arrow[d, swap, "f^*"] \\
+            A(M) \arrow[r, "\text{d}"] & A(M)
+        \end{tikzcd}
+    \end{figure}
+\end{theorem}
+\begin{proof}
+    We can prove the equation $f^*(\d\omega) = \d(f^*\omega)$ for monomials $\omega$ by induction on its degree. 
+\end{proof}
+
+\subsection{Integrals of Differential Forms}
+
+\begin{definition}
+    An $m$-dimensional smooth manifold $M$ is called \textbf{orientable} if there exists a continuous and nonvanishing exterior differential $m$-form $\omega$ on $M$. If $M$ is given such an $\omega$, then $M$ is said to be \textbf{oriented}. If two such forms are given on $M$ such that they differ by a function factor which is always positive, then we say that they assign the same \textbf{orientation} to $M$. 
+\end{definition}
+
+If $\omega, \eta$ are two exterior differential $m$-forms giving orientations to $M$, then there exists a nonvanishing continuous function $f$ such that $\eta = f\omega$. When $M$ is connected, $f$ retains the same sign on the whole $M$. Therefore the orientation given by $\eta$ is either identical to the one given by $\omega$ or the one given by $-\omega$. This implies that there exist exactly two orientations on a connected orientable manifold. 
+
+Suppose $M$ is oriented by the exterior differential form $\omega$, and $(U;u^i)$ is any local coordinate system on $M$. Then $\d u^1 \wedge \cdots \wedge \d u^m$ and $\omega|_U$ are the same up to a nonzero factor. If the factor is positive, then $(U;u^i)$ is said to be a coordinate system \textbf{consistent} with the orientation of $M$. 
+
+\begin{definition}
+    Suppose $f : M \rightarrow \R$ is a real function on $M$. The \textbf{support} of $f$ is the closure of the set of points at which $f$ is nonzero, i.e. $$\supp f = \overline{\{p \in M \mid f(p) \neq 0\}}.$$ If $\phi$ is an exterior differential form, the the support of $\phi$ is $$\supp\phi = \overline{\{p \in M \mid \phi(p) \neq 0\}}.$$
+\end{definition}
+
+\begin{definition}
+    Suppose $\Sigma_0$ is an open covering of $M$. If every compact subset of $M$ intersects only finitely many elements of $\Sigma_0$, then $\Sigma_0$ is called a \textbf{locally finite} open covering of $M$. 
+\end{definition}
+
+\begin{theorem}\label{thm:covering}
+    Suppose $\Sigma$ is a topological basis of the manifold $M$. Then there is a subset $\Sigma_0$ of $\Sigma$ such that $\Sigma_0$ is a locally finite open covering of $M$. 
+\end{theorem}
+\begin{proof}
+    The second countability of $M$ suggests that there exists a countable open covering $\{U_i\}$ of $M$ such that the closure $\overline{U}_i$ of every $U_i$ is compact. Let $$P_i = \bigcup_{r=1}^i \overline{U}_r, \quad i = 1, 2, \cdots,$$ then $P_i$ is compact, $P_i \subset P_{i+1}$ and $$\bigcup_{i=1}^\infty P_i = M.$$ Now we inductively construct another sequence of compact sets $Q_i$ satisfying $P_i \subset Q_i \subset \mathring{Q}_{i+1}$ for each $i$. Let $Q_0 = \varnothing$. Assuming that $Q_0, \cdots, Q_{i-1}$ have been constructed, we are going to construct $Q_i$. Since $Q_{i-1} \cup P_i$ is compact, there exist finitely many elements $U_\a, 1 \le \a \le s$ of $\{U_i\}$ such that $$Q_{i-1} \cup P_i \subset \bigcup_{\a = 1}^s U_\a.$$ Let $$Q_i = \bigcup_{\a = 1}^s \overline{U}_\a,$$ then $Q_i$ satisfies $P_{i-1} \subset Q_{i-1} \subset \mathring{Q}_i$ and $P_i \subset Q_i$. Obviously we also have $$\bigcup_{i=1}^\infty Q_i = M.$$
+
+    Denote $Q_{-1} = \varnothing$ and let $$L_i = Q_i - \mathring{Q}_{i-1}, \quad K_i = \mathring{Q}_{i+1} - Q_{i-2}$$ for each positive integer $i$. Then $L_i$ is compact, $K_i$ is open, and $L_i \subset K_i$. Since $\Sigma$ is a topological basis of $M$, $K_i$ can be expressed as a union of elements of $\Sigma$. These elements form an open covering of $L_i$, and hence there exist finitely many elements $V_{i, \a}, 1 \le \a \le r_i$ in $\Sigma$ such that $$L_i \subset \bigcup_{\a=1}^{r_i} V_{i, \a} \subset K_i$$ for each $i$. Because $$\bigcup_{i=1}^\infty L_i = \bigcup_{i=1}^\infty Q_i = M,$$ we see that $$\Sigma_0 = \{V_{i, \a}, 1 \le \a \le r_i, i \ge 1\}$$ is a subcovering of $\Sigma$.
+
+    To show the local finiteness, we consider an arbitrary compact set $A$. There exists a sufficiently large integer $i$ such that $A \subset P_i \subset Q_i$. For $j \ge i + 2$, $$K_j = \mathring{Q}_{j+1} - Q_{j-2} \subset \mathring{Q}_{j+1} - Q_i,$$ thus $$A \cap V_{j, \a} \subset Q_i \cap K_j = \varnothing, \quad 1 \le \a \le r_j.$$ Therefore only finitely many elements of $\Sigma_0$ intersect $A$. 
+\end{proof}
+
+\begin{theorem}[Partition of Unity Theorem]
+    Suppose $\Sigma$ is an open covering of a smooth manifold $M$. Then there exists a family of smooth functions $\{g_\a\}$ on $M$ satisfying the following conditions:
+    \begin{enumerate}
+        \item $0 \le g_\a \le 1$, and $\supp g_\a$ is compact for each $\a$. Moreover, there exists an open set $W_i \subset \Sigma$ such that $\supp g_\a \subset W_i$;
+        \item For each point $p \in M$, there is a neighborhood $U$ of $p$ that intersects $\supp g_\a$ for only finitely many $\a$;
+        \item $\sum_\a g_\a = 1$.
+    \end{enumerate}
+    The family $\{g_\a\}$ is called a \textbf{partition of unity} subordinate to the open covering $\Sigma$. 
+\end{theorem}
+\begin{proof}
+    Because $M$ is a manifold, there is a topological basis $\Sigma_0 = \{U_\a\}$ such that each $U_\a$ is a coordinate neighborhood, $\overline{U}_\a$ is compact, and there exists $W_i \in \Sigma$ such that $\overline{U}_\a \subset W_i$. By Theorem \ref{thm:covering}, we may assume that $\Sigma_0$ itself is a locally finite open covering of $M$ with countably many elements. 
+
+    For each $U_\a$, we construct $V_\a$ by a contraction of $U_\a$ such that $\overline{V}_\a \subset U_\a$ and $\{V_\a\}$ is also an open covering for $M$. Let $$W_\a = \bigcup_{i \neq \a} U_i.$$ Then $M - W_\a$ is a closed set contained in $U_\a$ and hence $\overline{U}_\a$. The compactness of $\overline{U}_\a$ implies that $M - W_\a$ is also compact. Thus there are finitely many coordinate neighborhoods $W_{\a, s}, 1 \le s \le r_\a$ such that $\overline{W}_{\a, s} \subset U_\a$ and $$M - W_\a \subset \bigcup_{s=1}^{r_\a} W_{\a, s}.$$ Now let $$V_\a = \bigcup_{s=1}^{r_\a} W_{\a, s},$$ then the $V_\a$ are as desired. 
+
+    By Lemma \ref{lem:local}, there exist smooth functions $h_\a$ with $0 \le h_\a \le 1$ on $M$ such that $$h_\a(p) = \begin{cases} 1,\quad p \in V_\a; \\ 0, \quad p\not\in U_\a.\end{cases}$$ Then $\supp h_\a \subset \overline{U}_\a$. For any point $p \in M$, there exists a neighborhood $U$ such that $\overline{U}$ is compact. The local finiteness of $\Sigma_0$ implies that $\overline{U}$ intersects only finitely many elements of $\Sigma_0$, and there are only finitely many nonzero terms in the summation $\sum_\a h_\a(p).$ Thus $h = \sum_\a h_\a$ defines a smooth function on $M$. Since $\{V_\a\}$ covers $M$, any point $p \in M$ must lie in some $V_\a$, and thus $h(p) \ge h_\a(p) = 1$. Let $g_\a = h_\a / h$, then the family $\{g_\a\}$ satisfies all the conditions of the theorem. 
+\end{proof}
+
+Suppose $M$ is an $m$-dimensional smooth manifold, and $\vphi$ is an exterior differential $m$-form on $M$ with a compact support. Choose any coordinate covering $\Sigma = \{W_i\}$ which is consistent with the orientation of $M$, and suppose that $\{g_\a\}$ is a partition of unity subordinate to $\Sigma$. Then $\vphi = \sum_\a(g_\a \cdot \vphi)$ and $\supp(g_\a \cdot \vphi)$ is contained in some coordinate neighborhood $W_i \in \Sigma$. Suppose $u^1, \cdots, u^m$ is a coordinate system of $W_i$, with respect to which $g_\a \cdot \vphi$ has the expression as $$f(u^1, \cdots, u^m) \d u^1 \wedge \cdots \wedge \d u^m.$$ The integral of $g_\a \cdot \vphi$ is then defined to be $$\int_M g_\a \cdot \vphi = \int_{W_i} g_\a \cdot \vphi = \int_{W_i}f(u^1, \cdots, u^m) \d u^1 \cdots \d u^m,$$ where the right hand side is the usual Riemann integral. 
+
+We need to show that the right hand side is independent of the choice of the coordinate system $(W_i;u^1, \cdots, u^m)$. Suppose $\supp(g_\a \cdot \vphi) \subset W_i \cap W_j$, where $W_i, W_j$ have the local coordinates $u^k, v^k$ consistent with the orientation of $M$, respectively. The the Jacobian satisfies $$J = \frac{\p(v^1, \cdots, v^m)}{\p(u^1, \cdots, u^m)} > 0.$$ Suppose $g_\a \cdot \vphi$ is expressed in $W_i$ and $W_j$, respectively, by
+\begin{align*}
+    g_\a \cdot \vphi &= f \d u^1 \wedge \cdots \wedge \d u^m \\
+    &= \tilde{f} \d v^1 \wedge \cdots \wedge \d v^m.
+\end{align*}
+Then we have $$f = \tilde{f} \cdot J = \tilde{f} \cdot |J|,$$ and $\supp f = \supp \tilde{f} = \supp(g_\a \cdot \vphi) \subset W_i \cap W_j$. Therefore 
+\begin{align*}
+    \int_{W_j}\tilde{f}\d v^1 \cdots \d v^m &= \int_{W_i \cap W_j}\tilde{f}\d v^1 \cdots \d v^m \\
+    &= \int_{W_i \cap W_j}\tilde{f} \cdot |J|\d u^1 \cdots \d u^m \\
+    &= \int_{W_i \cap W_j}f\d u^1 \cdots \d u^m \\
+    &= \int_{W_i}f\d u^1 \cdots \d u^m, 
+\end{align*}
+i.e. the integral of $g_\a \cdot \vphi$ on $M$ is well-defined. 
+
+Since $\supp\vphi$ is compact, it only intersects finitely many $\supp g_\a$. Let $$\int_M \vphi = \sum_\a \int_M g_\a \cdot \vphi.$$ Now we show that the right hand side is independent of the choice of the partition of unity $\{g_\a\}$. Suppose $\{\tilde{g}_\b\}$ is another partition of unity subordinate to $\Sigma$. Then
+\begin{align*}
+    \sum_\b \int_M \tilde{g}_\b \cdot \vphi &= \sum_{\a, \b} \int_M g_\a \cdot \tilde{g}_\b \cdot \vphi \\
+    &= \sum_\a \int_M \sum_\b \tilde{g}_\b \cdot g_\a \cdot \vphi \\
+    &= \sum_\a \int_M g_\a \cdot \vphi. 
+\end{align*}
+In conclusion, the value of $$\int_M \vphi$$ is well-defined, and is called the \textbf{integral} of the exterior differential form $\vphi$ on $M$. 
+
+If $\vphi$ is an exterior differential $r$-form, $r < m$, with compact support, then we can define the integral of $\vphi$ on any $r$-dimensional submanifold $N$ of $M$. Suppose $h : N \rightarrow M$ is an $r$-dimensional imbedding of $N$ into $M$. Then $h^*\vphi$ is an exterior differential $r$-form on the $r$-dimensional smooth manifold $N$ with compact support. The integral of $\vphi$ on the submanifold $h(N)$ of $M$ is then defined as $$\int_{h(N)} \vphi = \int_N h^*\vphi.$$
+
+\subsection{Stokes' Formula}
+
+\begin{definition}
+    Suppose $M$ is an $m$-dimensional smooth manifold. A \textbf{region $D$ with boundary} is a subset of $M$ with two kinds of points:
+    \begin{enumerate}
+        \item Interior points, each of which has a neighborhood in $M$ contained in $D$.
+        \item Boundary points, for each of which there is a coordinate system $(U; u^i)$ such that $u^i(p) = 0$ and $$U \cap D = \{q \in U \mid u^m(q) \ge 0\}.$$
+    \end{enumerate}
+    A coordinate system $u^i$ with the above property is called an \textbf{adapted coordinate system} for the boundary point $p$. The set $B$ of all the boundary points of $D$ is called the \textbf{boundary} of $D$. 
+\end{definition}
+
+\begin{theorem}
+    The boundary $B$ of a region $D$ is a regular imbedded closed submanifold. Furthermore, if $M$ is orientable, then $B$ is also orientable. 
+\end{theorem}
+\begin{proof}
+    The boundary $B$ of the region $D$ is a closed subset of $M$. Suppose $(U;u^i)$ is an adapted coordinate neighborhood, then $$U \cap B = \{q \in U \mid u^m(q) = 0\}.$$ Thus $B$ is a regular imbedded closed submanifold of $M$. 
+
+    Now suppose $M$ is an orientable manifold. Choose an adapted coordinate neighborhood $(U;u^i)$ which is consistent with the orientation of $M$ at an arbitrary point $p \in B$. Then $(u^1, \cdots, u^{m-1})$ is a local coordinate system of $B$ at the point $p$. Let $$(-1)^m \d u^1 \wedge \cdots \wedge \d u^{m-1}$$ specify the orientation of the boundary $B$ in the coordinate neighborhood $U \cap B$ of the point $p$. 
+
+    Suppose $(V;v^i)$ is another adapted coordinate neighborhood of the boundary point $p$ consistent with the orietation of $M$. Then $$\frac{\p(v^1, \cdots, v^m)}{\p(u^1, \cdots, u^m)} > 0.$$ Moreover, the sign of $v^m$ is the same as that of $u^m$, and $v^m = 0$ holds whenever $u^m = 0$. This means that $$\left.\frac{\p v^m}{\p u^i}\right|_q = 0, \quad 1 \le i \le m - 1,$$ and that $$\left.\frac{\p v^m}{\p u^m}\right|_q > 0$$ for any $q \in U \cap V \cap B$. Therefore $$\frac{\p(v^1, \cdots, v^{m-1})}{\p(u^1, \cdots, u^{m-1})} > 0$$ holds within $U \cap V \cap B$. This shows that $(-1)^m \d u^1 \wedge \cdots \wedge \d u^{m-1}$ and $(-1)^m \d v^1 \wedge \cdots \wedge \d v^{m-1}$ give consistent orientations in $U \cap V \cap B$. Therefore, the orientation given by $(-1)^m \d u^1 \wedge \cdots \wedge \d u^{m-1}$ in $U \cap B$ can be extended to the whole boundary $B$. Hence $B$ is orientable. 
+\end{proof}
+
+The orientation of $B$ given in the proof is called the \textbf{induced orientation} on the boundary $B$ by an oriented manifold $M$. If $D$ has the same orientation as $M$, we denote the boundary $B$ with the induced orientation by $\p D$.  
+
+\begin{theorem}[Stokes' Formula]
+    Suppose $D$ is a region with boundary in an $m$-dimensional oriented manifold $M$, and $\omega$ is an exterior differential $(m - 1)$-form on $M$ with compact support. Then $$\int_{D} \d\omega = \int_{\p D}\omega.$$ If $\p D = \varnothing$, then the integral on the right hand side is zero. 
+\end{theorem}
+\begin{proof}
+    Suppose $\{U_i\}$ is a coordinate covering consistent with the orientation of $M$, and $\{g_\a\}$ is a subordinate partition of unity. Then $$\omega = \sum_\a g_\a \cdot \omega.$$ The right hand side is a sum of finitely many terms since $\supp\omega$ is compact. Therefore $$\int_D \d\omega = \sum_\a \int_D\d(g_\a \cdot \omega),$$ and $$\int_{\p D}\omega = \sum_\a \int_{\p D} g_\a \cdot \omega.$$ Thus we may assume that $\supp\omega$ is contained in a coordinate neighborhood $(U; u^i)$ consistent with the orientation of $M$. 
+
+    Suppose $\omega$ can be expressed as $$\omega = \sum_{j=1}^m (-1)^{j-1}a_j \d u^1 \wedge \cdots \wedge \widehat{\d u^i} \wedge \cdots \wedge \d u^m,$$ where the $a_j$ are smooth functions on $U$. Then $$\d\omega = \left(\sum_{j=1}^m \frac{\p a_j}{\p u^j}\right)\d u^1 \wedge \cdots \wedge \d u^m.$$
+
+    Case 1: If $U \cap \p D = \varnothing$, then $$\int_{\p D}\omega = 0.$$ Then either $U \subset M - D$ or $U$ is contained in the interior of $D$. We only need to consider the latter one. Consider a cube $$C = \{u \in \R^m \mid |u^i| \le K, 1 \le i \le m\}$$ such that the image of $U$ under coordinate maps is contained in the interior of $C$. The functions $a_j$ can be smoothly extended to $C$ by letting them be zero outside $U$. Noting that
+    \begin{align*}
+        \int_{-K}^K \frac{\p a_j}{\p u^j}\d u^j &= a_j(u^1, \cdots, u^{j-1}, K, u^{j+1}, \cdots, u^m) \\
+        & \quad - a_j(u^1, \cdots, u^{j-1}, -K, u^{j+1}, \cdots, u^m) \\
+        &= 0,
+    \end{align*}
+    we have
+    \begin{align*}
+        \int_U \frac{\p a_j}{\p u^j}\d u^1 \cdots \d u^m &= \int_C \frac{\p a_j}{\p u^j}\d u^1 \cdots \d u^m \\
+        &= \int_{|u^i| \le K, i \neq j}\left(\int_{-K}^K\frac{\p a_j}{\p u^j}\d u^j\right)\d u^1 \cdots \widehat{\d u^j} \cdots \d u^m \\
+        &= 0
+    \end{align*} for each $j$, and hence $$\int_D \d\omega = \int_U \left(\sum_{j=1}^m \frac{\p a_j}{\p u^j}\right)\d u^1 \cdots \d u^m = 0.$$
+
+    Case 2: If $U \cap \p D \neq \varnothing$, we may assume that $U$ is an adapted coordinate neighborhood consistent with the orientation of $M$. Then $$U \cap D = \{q \in U \mid u^m(q) \ge 0\}$$ and $$U \cap \p D = \{q \in U \mid u^m(q) = 0\}.$$ Consider the cube $$C = \{u \in \R^m \mid u^m \ge 0, |u^i| \le K, 1 \le i \le m\}$$ such that the image of $U \cap D$ under coordinate maps is contained in the union of the interior of $C$ and the boundary $u^m = 0$. Noting that $\d u^m = 0$ on $U \cap \p D$, we have 
+    \begin{align*}
+        \int_{\p D}\omega &= \int_{U \cap \p D}\omega \\
+        &= \sum_{j=1}^m (-1)^{j-1}\int_{U \cap \p D} a_j \d u^1 \wedge \cdots \wedge \widehat{\d u^i} \wedge \cdots \wedge \d u^m \\
+        &= (-1)^{m-1} \int_{U \cap \p D}a_m \d u^1 \wedge \cdots \wedge \d u^{m-1} \\ 
+        &= -\int_{|u^i| \ge K, 1 \le i < m} a_m(u^1, \cdots, u^{m-1}, 0)\d u^1 \cdots \d u^{m-1}.
+    \end{align*}
+    On the other hand, since
+    \begin{align*}
+        \int_{U \cap D} \frac{\p a_j}{\p u^j} \d u^1 \wedge \cdots \wedge \d u^m &= \int_{\substack{|u^i| \le K, i < m, i \neq j \\ 0 \le u^m \le K}}\left(\int_{-K}^K \frac{\p a_j}{\p u^j} \d u^j\right)\d u^1 \cdots \widehat{\d u^j} \cdots \d u^m \\
+        &= 0
+    \end{align*} for $1 \le j \le m - 1$, we have
+    \begin{align*}
+        \int_{D} \d\omega &= \int_{U \cap D}\d\omega \\
+        &= \sum_{j=1}^m\int_{U \cap D} \frac{\p a_j}{\p u^j}\d u^1 \wedge \cdots \wedge \d u^m \\
+        &= \int_{U \cap D} \frac{\p a_m}{\p u^m}\d u^1 \wedge \cdots \wedge \d u^m \\
+        &= \int_{|u^i| \ge K, 1 \le i < m}\left(\int_0^K \frac{\p a_m}{\p u^m}\d u^m\right)\d u^1 \cdots \d u^{m-1} \\
+        &= \int_{|u^i| \ge K, 1 \le i < m}[a_m(u^1, \cdots, u^{m-1}, K) - a_m(u^1, \cdots, u^{m-1}, 0)]\d u^1 \cdots \d u^{m-1} \\
+        &= -\int_{|u^i| \ge K, 1 \le i < m} a_m(u^1, \cdots, u^{m-1}, 0)\d u^1 \cdots \d u^{m-1}.
+    \end{align*}
+
+    In conclusion, we have $$\int_{D} \d\omega = \int_{\p D}\omega,$$ and the theorem is proved. 
+\end{proof}
+
+We can view $A^r(M)$ as a cochain group with $\d : A^r(M) \rightarrow A^{r+1}(M)$ being the coboundary operator. Denote $$Z^r(M, \R) = \{\omega \in A^r(M) \mid \d\omega = 0\}$$ and $$B^r(M, \R) = \{\omega \in A^r(M) \mid \omega = \d\eta \;\text{for some}\; \eta \in A^{r-1}(M)\}.$$ The elements of $Z^r(M, \R)$ are called \textbf{closed} differential forms and the elements of $B^r(M, \R)$ are called \textbf{exact} differential forms. Poincare's Lemma thus implies that $B^r(M, \R) \subset Z^r(M, \R)$. 
+
+\begin{definition}
+    The quotient space $$H^r(M, \R) = Z^r(M, \R) / B^r(M, \R)$$ is called the $r$-th \textbf{de Rham cohomology group} of $M$. 
+\end{definition}
+
+Any smooth map $f : M \rightarrow N$ induces a homomorphism $$f^* : A^r(N) \rightarrow A^r(M)$$ which commutes with the coboundary operator $\d$. Such a map $f^*$ is called a \textbf{chain map}. It can be easily proved that $f^*$ provides a homomorphism from $Z^r(N, \R)$ to $Z^r(M, \R)$ and that from $B^r(N, \R)$ to $B^r(M, \R)$. Hence $f^*$ induces a homomorphism between the de Rham groups $$f^* : H^r(N, \R) \rightarrow H^r(M, \R).$$
+
+\section{Connections}
+
+\def\D{\text{D}}
+
+\subsection{Connections on Vector Bundles}
+
+\begin{definition}
+    A \textbf{connection} on a vector bundle $E$ is a map $$\D : \Gamma(E) \rightarrow \Gamma(T^*(M) \otimes E)$$ which satisfies the following conditions:
+    \begin{enumerate}
+        \item For any $s_1, s_2 \in \Gamma(E)$, $\D(s_1 + s_2) = \D s_1 + \D s_2$.
+        \item For $s \in \Gamma(E)$ and any $\a \in C^\infty(M)$, $\D(\a s) = \d\a \otimes s + \a \D s.$
+    \end{enumerate}
+    Suppose $X$ is a smooth tangent vector field on $M$ and $s \in \Gamma(E)$. Let $$\D_Xs = \<X, \D s\>,$$ then $\D_Xs$ is a section on $E$, called the \textbf{absolute differential quotient} or the \textbf{covariant derivative} of the section $s$ along $X$.
+\end{definition}
+
+Condition 2 for connections implies that $\D(\l s) = \l \D s$ for any $\l \in \R$, hence $\D$ is a linear map from $\Gamma(E)$ to $\Gamma(T^*(M) \otimes E)$. The operator $\D$ also has the local property that if the restriction of a section $s$ to an open set $U \subset M$ is zero, then $\D s|_U = 0$. By the definition of absolute differential quotient, it can be shown that for any smooth tangent vector fields $X, Y$ on $M$, sections $s, s_1, s_2$ of $E$, and $\a \in C^\infty(M)$, we have 
+\begin{enumerate}
+    \item $\D_{X+Y}s = \D_Xs + \D_Ys$;
+    \item $\D_{\a X}s = \a \D_Xs$;
+    \item $\D_X(s_1 + s_2) = \D_Xs_1 + \D_Xs_2$;
+    \item $\D_X(\a s) = (X\a)s + \a \D_Xs$.
+\end{enumerate}
+
+Suppose $U$ is a coordinate neighborhood of $M$ with local coordinates $u^i, 1 \le i \le m$. Choose $q$ smooth sections $s_\a, 1 \le \a \le q$ of $E$ on $U$ such that they are linearly independent everywhere. Such a set of sections is called a \textbf{local frame field} of $E$ on $U$. At every point $p \in U$, $$\{\d u^i \otimes s_\a, 1 \le i \le m, 1 \le \a \le q\}$$ forms a basis for the tensor space $T^*_p \otimes E_p$. Since $\D s_\a$ is a local section on $U$ of the bundle $T^*(M) \otimes E$, we can write $$\D s_\a = \Gamma^\b_{\a i} \d u^i \otimes s_\b,$$ where $\Gamma^\b_{\a i}$ are smooth functions on $U$ and the Einstein summation convention is adopted for the indices $i$ and $\b$. Denote $$\omega^\b_\a = \Gamma^\b_{\a i}\d u^i,$$ then we have $$Ds_\a = \omega^\b_\a \otimes s_\b.$$ Let $S = (s_1, \cdots, s_q)^T$ and $\omega = (\omega^\b_\a)$, then the above equation can be written as $$\D S = \omega \otimes S.$$ The matrix $\omega$ is called the \textbf{connection matrix}, which depends on the choice of the local frame field $S$. 
+
+If $S' = (s'_1, \cdots, s'_q)^T$ is another local frame field on $U$, then we may assume that $$S' = A \cdot S,$$ or equivalently, $$s'_i = a^j_i s_j,$$ where $A = (a^j_i)$ is a nondegenerate matrix of smooth functions. Suppose the matrix of the connection $\D$ with respect to the local frame field $S'$ is $\omega'$. Then we have
+\begin{align*}
+    \D S' &= \D(A \cdot S) \\
+    &= \d A \otimes S + A \cdot \D S \\
+    &= (\d A + A \cdot \omega) \otimes S \\
+    &= (\d A \cdot A^{-1} + A \cdot \omega \cdot A^{-1}) \otimes S'.
+\end{align*}
+It follows that $$\omega' = \d A \cdot A^{-1} + A \cdot \omega \cdot A^{-1},$$ or equivalently, $$\omega' \cdot A = \d A + A \cdot \omega.$$
+
+Conversely, suppose a coordinate covering $\{U_i\}$ is chosen for $M$. On each $U_i$ fix a local frame field $S_i$ of $E$ and assign a $q \times q$ matrix $\omega_i$ of differential 1-forms which satisfies the transformation formula above when the corresponding coordinate neighborhoods intersect. Then there exists a connection $D$ on $E$ whose matrix representation on each member $U_i$ of the coordinate covering is exactly $\omega_i$. 
+
+\begin{theorem}
+    A connection always exists on a vector bundle. 
+\end{theorem}
+\begin{proof}
+    Choose a coordinate covering $\{U_\a\}_{\a \in \mathcal{A}}$ of $M$. We may assume that there is a local frame field $S_\a$ for any $U_\a$. We need only construct a $q \times q$ matrix $\omega_\a$ on each $U_\a$ such that the matrices constructed satisfy the transformation formula under a change of local frame field. 
+
+    By Theorem \ref{thm:covering} and the Partition of Unity Theorem, we may assume that $\{U_\a\}$ is locally finite and $\{g_\a\}$ is a corresponding subordinate partition of unity such that $\supp g_\a \subset U_\a$. When $U_\a \cap U_\b \neq \varnothing$, there naturally exists a nondegenerate matrix $A_{\a\b}$ of smooth functions on $U_\a \cap U_\b$ such that $$S_\a = A_{\a\b} \cdot S_\b.$$ For every $\a \in \mathcal{A}$ choose an arbitrary $q \times q$ matrix $\vphi_\a$ of differential 1-forms on $U_\a$. Let $$\omega_\a = \sum_{U_\a \cap U_\b \neq \varnothing} g_\b \cdot (\d A_{\a\b} \cdot A_{\a\b}^{-1} + A_{\a\b} \cdot \vphi_\b \cdot A_{\a\b}^{-1})$$ be another matrix of differential 1-forms on $U_\a$. When $U_\a \cap U_\b \cap U_\g \neq \varnothing$, we have $$A_{\a\b} \cdot A_{\b\g} = A_{\a\g}$$ in the intersection. Thus on $U_\a \cap U_\b \neq \varnothing$, we have 
+    \begin{align*}
+        A_{\a\b} \cdot \omega_\b \cdot A_{\a\b}^{-1} &= \sum_{U_\a \cap U_\b \cap U_\g \neq \varnothing} g_\g \cdot A_{\a\b} \cdot (\d A_{\b\g} \cdot A_{\b\g}^{-1} + A_{\b\g} \cdot \vphi_\g \cdot A_{\b\g}^{-1}) \cdot A_{\a\b}^{-1} \\ 
+        &= \sum_{U_\a \cap U_\b \cap U_\g \neq \varnothing} g_\g \cdot (\d A_{\a\g} - \d A_{\a\b} \cdot A_{\b\g} + A_{\a\g} \cdot \vphi_\g) \cdot A_{\b\g}^{-1} \cdot A_{\a\b}^{-1} \\
+        &= \omega_\a - \d A_{\a\b} \cdot A_{\a\b}^{-1}.
+    \end{align*}
+    This is precisely the transformation formula. 
+\end{proof}
+
+\begin{theorem}
+    Suppose $\D$ is a connection on a vector bundle $E$ and $p \in M$. Then there exists a local frame field $S$ in a coordinate neighborhood of $p$ such that the corresponding connection matrix $\omega$ is zero at $p$. 
+\end{theorem}
+\begin{proof}
+    Choose a coordinate neighborhood $(U; u^i)$ of $p$ such that $u^i(p) = 0, 1 \le i \le m$. Suppose $S'$ is a local frame field on $U$ with corresponding connection matrix $\omega' = (\omega'^\b_\a)$, where $\omega'^\b_\a = \Gamma'^\b_{\a i} \d u^i,$ and the $\Gamma^\b_{\a i}$ are smooth functions on $U$. Let $$a^\b_\a = \delta^\b_\a - \Gamma'^\b_{\a i}(p) \cdot u^i.$$ Then $A = (a^\b_\a)$ is the identity matrix at $p$. Hence there exists a neighborhood $V \subset U$ of $p$ such that $A$ is nondegenerate in $V$. Thus $$S = A \cdot S'$$ is a local frame field on $V$. Noting that $$\d a^\b_\a = -\Gamma'^\b_{\a i}(p) \cdot \d u^i,$$ we have $$\d A(p)= -\omega'(p),$$ and hence $$\omega(p) = \d A(p) \cdot A^{-1}(p) + A(p) \cdot \omega'(p) \cdot A^{-1}(p) = \d A(p) + \omega'(p) = 0.$$
+\end{proof}
+
+Exteriorly differentiating the formula $$\omega' \cdot A = \d A + A \cdot \omega$$ once, we obtain $$\d\omega' \cdot A - \omega' \wedge \d A = A \cdot \d\omega + \d A \wedge \omega.$$ Using the formula $$\d A = \omega' \cdot A - A \cdot \omega,$$ we then have $$(\d\omega' - \omega' \wedge \omega') \cdot A = A \cdot (\d\omega - \omega \wedge \omega).$$ If we let $$\Omega = \d\omega - \omega \wedge \omega,$$ then the above equation can be written as $$\Omega' = A \cdot \Omega \cdot A^{-1}.$$
+
+\begin{definition}
+    The matrix $\Omega = \d\omega - \omega \wedge \omega$ of differential 2-forms is called the \textbf{curvature matrix} of the connection $D$ on $U$. 
+\end{definition}
+
+Choose any two tangent vectors $X_p, Y_p \in T_p(M), p \in U$. Suppose $s_p \in E_p$. Using the local frame field $S_U = (s_1, \cdots, s_q)^T$ of the vector bundle $E$ on $U$, $s_p$ can be expressed as $$s_p = \l^\a s_\a|_p.$$ Then let $$R(X_p, Y_p)s_p = \l^\a \<X_p \wedge Y_p, \Omega^\b_\a|_p\>s_\b|_p.$$ Noting that $\<X_p \wedge Y_p, \Omega^\b_\a|_p\>$ is actually a (1, 1)-type tensor on the linear space $E_p$, $R(X_p, Y_p)$ is a linear transformation on $E_p$ that is independent of the choice of local coordinates. 
+
+If $X, Y$ are two smooth tangent vector fields on $M$, then $R(X, Y)$ is a linear operator on $\Gamma(E)$ given by $$(R(X, Y)s)_p = R(X_p, Y_p)s_p$$ for each $s \in \Gamma(E), p \in M$. $R(X, Y)$ has the following properties:
+\begin{enumerate}
+    \item $R(X, Y) = -R(Y, X)$;
+    \item $R(fX, Y) = f \cdot R(X, Y)$;
+    \item $R(X, Y)(fs) = f \cdot R(X, Y)s$,
+\end{enumerate}
+where $X, Y \in \Gamma(T(M)), f \in C^\infty(M), s \in \Gamma(E)$. $R(X, Y)$ is called the \textbf{curvature operator} of the connection $\D$. 
+
+\begin{lemma}\label{lem:wedge}
+    Suppose $\omega$ is a differential 1-form on a smooth manifold $M$ and $X, Y$ are smooth tangent vector fields on $M$. Then $$\<X \wedge Y, \d\omega\> = X\<Y, \omega\> - Y\<X, \omega\> - \<[X, Y], \omega\>.$$
+\end{lemma}
+\begin{proof}
+    Since both sides are linear with respect to $\omega$, we may assume that $\omega$ is a monomial $$\omega = g \d f,$$ where $f, g$ are smooth functions on $M$. Therefore $$\d\omega = \d g \wedge \d f.$$ The left hand side then becomes $$\<X \wedge Y, \d\omega\> = \<X \wedge Y, \d g \wedge \d f\> = \left|\begin{array}{c c} \<X, \d g\> & \<X, \d f\> \\ \<Y, \d g\> & \<Y, \d f\> \end{array}\right| = Xg \cdot Yf - Xf \cdot Yg.$$
+    Since $$\<X, \omega\> = \<X, g \d f\> = g \cdot Xf,$$ we have $$Y\<X, \omega\> = Yg \cdot Xf + g \cdot Y(Xf).$$ Similarly, $$X\<Y, \omega\> = Xg \cdot Yf + g \cdot X(Yf).$$ Therefore the right hand side is also
+    \begin{align*}
+        & \quad X\<Y, \omega\> - Y\<X, \omega\> - \<[X, Y], \omega\> \\
+        &= Xg \cdot Yf - Yg \cdot Xf + g \cdot (X(Yf) - Y(Xf)) - g \cdot \<[X, Y], \d f\> \\
+        &= Xg \cdot Yf - Xf \cdot Yg. 
+    \end{align*}
+\end{proof}
+
+\begin{theorem}
+    Suppose $X, Y$ are two arbitrary smooth tangent vector fields on the smooth manifold $M$. Then $$R(X, Y) = \D_X\D_Y - \D_Y\D_X - \D_{[X, Y]}.$$
+\end{theorem}
+\begin{proof}
+    We need only consider the operators of both sides on a local section. Suppose $s \in \Gamma(E)$ has the local expression $$s = \l^\a s_\a.$$ Then $$\D_Xs = (X\l^\a)s_\a + \l^\a \D_Xs_\a = \left(X\l^\a + \l^\b\left\<X, \omega^\a_\b\right\>\right)s_\a.$$ Hence 
+    \begin{align*}
+        \D_Y\D_Xs &= \left[Y(X\l^\a + \l^\b\left\<X, \omega^\a_\b\right\>) + (X\l^\b + \l^\g\left\<X, \omega^\b_\g\right\>)\cdot\left\<Y, \omega^\a_\b\right\>\right]s_\a \\
+        &= \left[Y(X\l^\a) + Y\l^\b \cdot \left\<X, \omega^\a_\b\right\> + \l^\b \cdot Y\left\<X, \omega^\a_\b\right\>\right. \\
+        & \qquad\left. + X\l^\b \cdot \left\<Y, \omega^\a_\b\right\> + \l^\b\left\<X, \omega^\g_\b\right\>\left\<Y, \omega^\a_\g\right\>\right]s_\a.
+    \end{align*}
+    It follows that 
+    \begin{align*}
+        (\D_X\D_Y - \D_Y\D_X)s &= \left[[X, Y]\l^\a + \l^\b\left(X\left\<Y, \omega^\a_\b\right\> - Y\left\<X, \omega^\a_\b\right\>\right.\right. \\
+        & \qquad \left.\left.+ \left\<Y, \omega^\g_\b\right\>\left\<X, \omega^\a_\g\right\> - \left\<X, \omega^\g_\b\right\>\left\<Y, \omega^\a_\g\right\>\right)\right] s_\a.
+    \end{align*}
+    By Lemma \ref{lem:wedge}, we have $$X\left\<Y, \omega^\a_\b\right\> - Y\left\<X, \omega^\a_\b\right\> = \left\<X \wedge Y, \d\omega^\a_\b\right\> + \left\<[X, Y], \omega^\a_\b\right\>.$$ Together with $$\left\<X \wedge Y, \omega^\g_\b \wedge \omega^\a_\g\right\> = \left\<Y, \omega^\g_\b\right\>\left\<X, \omega^\a_\g\right\> - \left\<X, \omega^\g_\b\right\>\left\<Y, \omega^\a_\g\right\>,$$ we further obtain 
+    \begin{align*}
+        (\D_X\D_Y - \D_Y\D_X)s &= \left[[X, Y]\l^\a + \l^\b\left(\left<[X, Y], \omega^\a_\b\right\>\right.\right. \\
+        & \qquad \left.\left.+ \left\<X \wedge Y, \d\omega^\a_\b - \omega^g_\b \wedge \omega^\a_\g\right\>\right)\right] s_\a \\
+        &= \D_{[X, Y]}s + \l^\b\left\<X \wedge Y, \Omega^\a_\b\right\>s_\a \\
+        &= \left(\D_{[X, Y]} + R(X, Y)\right)s. 
+    \end{align*}
+    That is $$R(X, Y) = \D_X\D_Y - \D_Y\D_X - \D_{[X, Y]}.$$
+\end{proof}
+
+\begin{theorem}\label{thm:bianchi}
+    The curvature matrix $\Omega$ satisfies the \textbf{Bianchi identity} $$\d\Omega = \omega \wedge \Omega - \Omega \wedge \omega.$$
+\end{theorem}
+\begin{proof}
+    Applying exterior differentiation to both sides of $$\Omega = \d\omega - \omega \wedge \omega,$$ we obtain 
+    \begin{align*}
+        \d\Omega &= -\d\omega \wedge \omega + \omega \wedge \d\omega \\
+        &= -(\Omega + \omega \wedge \omega) \wedge \omega + \omega \wedge (\Omega + \omega \wedge \omega) \\
+        &= \omega \wedge \Omega - \Omega \wedge \omega.
+    \end{align*}
+\end{proof}
+
+\begin{definition}
+    Suppose $C$ is a parametrized curve in $M$, and $X$ is a tangent vector field along $C$. If a section $s$ of the vector bundle $E$ on $C$ satisfies $\D_Xs = 0$, then we say $s$ is \textbf{parallel} along the curve $C$. 
+\end{definition}
+
+Suppose the curve $C$ is given in a local coordinate neighborhood $U$ of $M$ by $$u^i = u^i(t), \quad 1 \le i \le m.$$ Then the tangent vector field of $C$ is $$X = \frac{\d u^i}{\d t} \frac{\p}{\p u^i}.$$ Let $S$ be a local frame field on $U$. Then $$s = \l^\a s_\a$$ is a parallel section along $C$ if and only if it satisfies the system of equations $$D_Xs = \left(\frac{\d \l^\a}{\d t} + \Gamma^\a_{\b i}\frac{\d u^i}{\d t}\l^\b\right)s_\a = 0,$$ or equivalently, $$\frac{\d \l^\a}{\d t} + \Gamma^\a_{\b i}\frac{\d u^i}{\d t}\l^\b = 0, \quad 1 \le \a \le q.$$ By the Fundamental Theorem of Ordinary Differential Equations, there exists a unique solution for any given initial values. Thus if any vector $v \in E_p$ is given at a point $p$ on $C$, then it determines uniquely a vector field parallel along $C$, which is called the \textbf{parallel displacement} of $v$ along $C$. 
+
+A connection $\D$ of the vector bundle $E$ induces a connection on the dual bundle $E^*$ given by the equation $$\d\<s, s^*\> = \<\D s, s^*\> + \<s, \D s^*\>$$ for any $s \in \Gamma(E), s^* \in \Gamma(E^*)$. Suppose connections $\D$ are separately given on the vector bundles $E_1$ and $E_2$, then the equations 
+\begin{align*}
+    \D(s_1 \oplus s_2) &= \D s_1 \oplus \D s_2 \\
+    \D(s_1 \otimes s_2) &= \D s_1 \otimes \D s_2
+\end{align*}
+determine connections on $E_1 \oplus E_2$ and $E_1 \otimes E_2$, respectively. These are called the \textbf{induced connections} on $E^*$, $E_1 \oplus E_2$ and $E_1 \otimes E_2$, respectively. 
+
+\subsection{Affine Connections}
+
+A connection on the tangent bundle $T(M)$ is called an \textbf{affine connection} on the $m$-dimensional smooth manifold $M$. A manifold with a given affine connection is called an \textbf{affine connection space}. 
+
+Suppose $M$ is an $m$-dimensional affine connection space with a given affine connection $\D$. Choose any coordinate system $(U;u^i)$ of $M$. Then the natural basis $\{s_i = \p/\p u^i, 1 \le i \le m\}$ forms a local frame field of the tangent bundle $T(M)$ on $U$. Thus we may assume that $$\D s_i = \omega^j_i \otimes s_j = \Gamma^j_{ik} \d u^k \otimes s_j,$$ where $\Gamma^j_{ik}$ are smooth functions on $U$, called the \textbf{coefficients} of the connection $\D$ with respect to the local coordinates $u^i$. Suppose $(W;w^i)$ is another coordinate system of $M$. Let $s'_i = \p/\p w^i, 1 \le i \le m$. Then $$S' = J_{WU} \cdot S$$ holds on $U \cap W \neq \varnothing$, where $J_{WU} = (\p u^j / \p w^i), S' = (s'_i)^T, S = (s_j)^T$. Then we have $$\omega' = \d J_{WU} \cdot J_{WU}^{-1} + J_{WU} \cdot \omega \cdot J_{WU}^{-1},$$ or equivalently, $$\omega'^j_i = \d\left(\frac{\p u^p}{\p w^i}\right)\frac{\p w^j}{\p u^p} + \frac{\p u^p}{\p w^i}\frac{\p w^j}{\p u^q}\omega^q_p.$$ Using the relations $$\omega'^j_i = \Gamma'^j_{ik}\d w^k, \quad \omega^q_p = \Gamma^q_{pr} \d u^r,$$ we obtain $$\Gamma'^j_{ik} = \Gamma^q_{pr}\frac{\p w^j}{\p u^q}\frac{\p u^p}{\p w^i}\frac{\p u^r}{\p w^k} + \frac{\p^2 u^p}{\p w^i \p w^k}\frac{\p w^j}{\p u^p}.$$ This indicates that $\Gamma^j_{ik}$ is not a tensor field on $M$. 
+
+Suppose $X$ is a smooth vector field on $M$ expressed in local coordinates as $$X = x^i\frac{\p}{\p u^i}.$$ Then $$\D X = (\d x^i + x^j\omega^i_j) \otimes \frac{\p}{\p u^i} = x^i_{,j} \d u^j \otimes \frac{\p}{\p u^i},$$ where $$x^i_{,j} = \frac{\p x^i}{\p u^j} + x^k\Gamma^i_{kj}.$$ $\D X$ is a tensor field of type (1, 1) on $M$, called the \textbf{absolute differential} of $X$. 
+
+An affine connection on $M$ induces connections on the cotangent bundle $T^*(M)$ and the tensor bundle $T^r_s$, respectively. Under coordinates $u^i$, the local coframe field of the cotangent bundle $s^{*i} = \d u^i, 1 \le i \le m$. By the definition of the induced connection on the dual bundle, we have $$\<s_j, \D s^{*i}\> = \d\<s_j, s^{*i}\> - \<\D s_j, s^{*i}\> = \d\delta^i_j - \omega^i_j = -\omega^i_j$$ for each $i, j$, hence $$\D s^{*i} = -\omega^i_j \otimes s^{*j} = -\Gamma^i_{jk} \d u^k \otimes \d u^j.$$ If a cotangent vector field $\a$ on $M$ is expressed in local coordinates as $$\a = \a_i \d u^i,$$ then $$\D\a = (\d\a_i - \a_j\omega^j_i) \otimes \d u^i = \a_{i, j}\d u^j \otimes \d u^i,$$ where $$\a_{i, j} = \frac{\p \a_i}{\p u^j} - \a_k\Gamma^k_{ij}.$$ $\D\a$ is then a (0, 2)-type tensor field, called the \textbf{absolute differential} of the cotangent vector field $\a$. In general, if $t$ is an $(r, s)$-type tensor field, the the image of $t$ under the induced connection $\D$ is an $(r, s + 1)$-type tensor field $\D t$, called the absolute differential of $t$. 
+
+\begin{definition}
+    Suppose $C : u^i = u^i(t)$ is a parametrized curve on $M$, and $X(t)$ is a tangent vector field defined on $C$ given by $$X(t) = x^i(t)\left(\frac{\p}{\p u^i}\right)_{C(t)}.$$ We say that $X(t)$ is \textbf{parallel} along $C$ if its absolute differential along $C$ is zero, i.e. if $$\frac{\D X}{\d t} = 0.$$ If the tangent vectors of a curve $C$ are parallel along $C$, then we call $C$ a \textbf{self-parallel curve}, or a \textbf{geodesic}. 
+\end{definition}
+
+The equation $\D X/\d t = 0$ is equivalent to $$\frac{\d x^i}{\d t} + x^j\Gamma^i_{jk}\frac{\d u^k}{\d t} = 0.$$ This is a system of first-order ordinary differential equations. Thus a given tangent vector $X$ at any point on $C$ gives rise to a parallel tangent vector field, called the \textbf{parallel displacement} of $X$ along the curve $C$. 
+
+If $C$ is a geodesic, then its tangent vector $$X(t) = \frac{\d u^i(t)}{\d t}\left(\frac{\p}{\p u^i}\right)_{C(t)}$$ is parallel along $C$. Therefore a geodesic curve $C$ should satisfy $$\frac{\d^2 u^i}{\d t^2} + \Gamma^i_{jk}\frac{\d u^j}{\d t}\frac{\d u^k}{\d t} = 0.$$ This is a system of second-order ordinary differential equations. Thus there exists a unique geodesic through a given point of $M$ which is tangent to a given tangent vector at that point. 
+
+Now consider the curvature matrix $\Omega$ of an affine connection. Since $$\omega^j_i = \Gamma^j_{ik} \d u^k,$$ we have
+\begin{align*}
+    \d\omega^j_i - \omega^h_i \wedge \omega^j_h &= \frac{\p\Gamma^j_{ik}}{\p u^l} \d u^l \wedge \d u^k - \Gamma^h_{il}\Gamma^j_{hk} \d u^l \wedge \d u^k \\
+    &= \frac{1}{2}\left(\frac{\p\Gamma^j_{il}}{\p u^k} - \frac{\p\Gamma^j_{ik}}{\p u^l} + \Gamma^h_{il}\Gamma^j_{hk} - \Gamma^h_{ik}\Gamma^j_{hl}\right) \d u^k \wedge \d u^l.
+\end{align*}
+Therefore $$\Omega^j_i = \frac{1}{2}R^j_{ikl} \d u^k \wedge \d u^l,$$ where $$R^j_{ikl} = \frac{\p\Gamma^j_{il}}{\p u^k} - \frac{\p\Gamma^j_{ik}}{\p u^l} + \Gamma^h_{il}\Gamma^j_{hk} - \Gamma^h_{ik}\Gamma^j_{hl}.$$
+
+If $(W; w^i)$ is another coordinate system of $M$, then $$\Omega' = J_{WU} \cdot \Omega \cdot J_{WU}^{-1},$$ where $\Omega'$ is the curvature matrix of the connection $\D$ under the coordinate system $(W;w^i)$. Therefore $$\Omega'^j_i = \Omega^q_p \frac{\p u^p}{\p w^i}\frac{\p w^j}{\p u^q}.$$ Thus $$R'^j_{ikl} = R^q_{prs} \frac{\p u^p}{\p w^i}\frac{\p w^j}{\p u^q}\frac{\p u^r}{\p w^k}\frac{\p u^s}{\p w^l},$$ where $R'^j_{ikl}$ is determined by $$\Omega'^j_i = \frac{1}{2}R'^j_{ikl} \d w^k \wedge \d w^l.$$ If we let $$R = R^j_{ikl} \d u^i \otimes \frac{\p}{\p u^j} \otimes \d u^k \otimes \d u^l,$$ then $R$ is independent of the choice of local coordinates, and is called the \textbf{curvature tensor} of the affine connection. 
+
+Suppose $X, Y, Z$ are tangent vector field with local expressions $$X = X^i\frac{\p}{\p u^i}, \quad Y = Y^i\frac{\p}{\p u^i}, \quad Z = Z^i\frac{\p}{\p u^i}.$$ Then by the definition of the curvature operator, we have $$R(X, Y)Z = Z^i\left\<X \wedge Y, \Omega^j_i\right\>\frac{\p}{\p u^j} = R^j_{ikl}Z^iX^kY^l\frac{\p}{\p u^j}.$$ Thus $$R^j_{ikl} = \left\<R\left(\frac{\p}{\p u^k}, \frac{\p}{\p u^l}\right)\frac{\p}{\p u^i}, \d u^j\right\>.$$ This is the relation between the curvature operator and the curvature tensor. 
+
+The connection coefficients $\Gamma^j_{ik}$ does not satisfy the transformation rule for tensors. But if we define $T^j_{ik} = \Gamma^k_{ki} - \Gamma^j_{ik},$ then we have $$T'^j_{ik} = T^q_{pr}\frac{\p w^j}{\p u^q}\frac{\p u^p}{\p w^i}\frac{\p u^r}{\p w^k}$$ after the transformation formula for $\Gamma^j_{ik}$. Thus $$T = T^j_{ik}\frac{\p}{\p u^j} \otimes \d u^i \otimes \d u^k$$ is a (1, 2)-type tensor, called the \textbf{torsion tensor} of the affine connection $\D$. $T$ can also be viewed as a map from $\Gamma(T(M)) \times \Gamma(T(M))$ to $\Gamma(T(M))$. Suppose $X, Y$ are any two tangent vector field on $M$. Then $T(X, Y)$ is a tangent vector field on $M$ with local expression $$T(X, Y) = T^k_{ij}X^iY^j\frac{\p}{\p u^k}.$$ It can be verified that $$T(X, Y) = \D_XY - \D_YX - [X, Y].$$
+
+\begin{definition}
+    If the torsion tensor of an affine connection $\D$ is zero, then the connection is said to be \textbf{torsion-free}. 
+\end{definition}
+
+If the coefficients of a connection $\D$ are $\Gamma^j_{ik}$, then set $$\tilde\Gamma^j_{ik} = \frac{1}{2}(\Gamma^j_{ik} + \Gamma^j_{ki}).$$ The $\tilde\Gamma^j_{ik}$ can be the coefficients of some connection $\tilde{\D}$ since they satisfy the transformation formula for connection coefficients, and direct computation suggests that $\tilde{\D}$ is torsion-free. Therefore a torsion-free connection on a vector bundle always exists. Noting that $$\Gamma^j_{ik} = -\frac{1}{2}T^j_{ik} + \tilde\Gamma^j_{ik},$$ we have $$\D_XZ = \frac{1}{2}T(X, Z) + \tilde{\D}_XZ.$$ This implies that any connection can be decomposed into a sum of a multiple of its torsion tensor and a torsion-free connection. Moreover, since the geodesic equation of the connection $\D$ is equivalent to $$\frac{\d^2 u^i}{\d t^2} + \tilde\Gamma^i_{jk}\frac{\d u^j}{\d t}\frac{\d u^k}{\d t} = 0,$$ a connection $\D$ and the corresponding torsion-free connection $\tilde{\D}$ have the same geodesics. 
+
+\begin{theorem}
+    Suppose $\D$ is a torsion-free affine connection on $M$. Then for any point $p \in M$ there exists a local coordinate system $u^i$ such that the corresponding connection coefficients $\Gamma^j_{ik}$ vanish at $p$. 
+\end{theorem}
+\begin{proof}
+    Suppose $(W;w^i)$ is a local coordinate system at $p$ with connection coefficients $\Gamma'^j_{ik}$. Let $$u^i = w^i + \frac{1}{2}\Gamma'^i_{jk}(p)(w^j - w^j(p))(w^k - w^k(p)).$$ Then $$\left.\frac{\p u^i}{\p w^j}\right|_p = \delta^i_j, \quad \left.\frac{\p^2 u^i}{\p w^j \p w^k}\right|_p = \Gamma'^i_{jk}(p).$$ Thus the matrix $(\p u^i / \p w^j)$ is nondegenerate at $p$, and then the $u^i$ provide a local coordinates in a neighborhood of $p$. Then the connection coefficients $\Gamma^j_{ik}$ in the new coordinate system $u^i$ satisfy $$\Gamma^j_{ik}(p) = 0, \quad 1 \le i, j, k \le m.$$
+\end{proof}
+
+\begin{theorem}
+    Suppose $\D$ is a torsion-free affine connection on $M$. Then we have the Bianchi identity $$R^j_{ikl, h} + R^j_{ilh, k} + R^j_{ihk, l} = 0,$$ where $R^j_{ikl, h}$ is determined by the absolute differential of the curvature tensor $R$ as $$\D R = R^j_{ikl, h}\d u^h \otimes \d u^i \otimes \frac{\p}{\p u^j} \otimes \d u^k \otimes \d u^l.$$
+\end{theorem}
+\begin{proof}
+    From Theorem \ref{thm:bianchi} we have $$\d\Omega^j_i = \omega^k_i \wedge \Omega^j_k - \Omega^k_i \wedge \omega^j_k,$$ that is $$\frac{\p R^j_{ikl}}{\p u^h} \d u^h \wedge \d u^k \wedge \d u^l = (\Gamma^p_{ih}R^j_{pkl} - \Gamma^j_{ph}R^p_{ikl}) \d u^h \wedge \d u^k \wedge \d u^l.$$ From $$R = R^j_{ikl} \d u^i \otimes \frac{\p}{\p u^j} \otimes \d u^k \otimes \d u^l,$$ we obtain
+    \begin{align*}
+        & \quad \D R \\
+        &= \d R^j_{ikl} \otimes \d u^i \otimes \frac{\p}{\p u^j} \otimes \d u^k \otimes \d u^l + R^j_{ikl} \D(\d u^i) \otimes \frac{\p}{\p u^j} \otimes \d u^k \otimes \d u^l \\
+        & \quad + R^j_{ikl} \d u^i \otimes \D\left(\frac{\p}{\p u^j}\right) \otimes \d u^k \otimes \d u^l + R^j_{ikl} \d u^i \otimes \frac{\p}{\p u^j} \otimes \D(\d u^k) \otimes \d u^l \\
+        & \quad + R^j_{ikl} \d u^i \otimes \frac{\p}{\p u^j} \otimes \d u^k \otimes \D(\d u^l) \\
+        &= (\d R^j_{ikl} - R^j_{pkl}\omega^p_i + R^p_{ikl}\omega^j_p - R^j_{ipl}\omega^p_k - R^j_{ikp}\omega^p_l) \otimes \frac{\p}{\p u^j} \otimes \d u^i \otimes \d u^k \otimes \d u^l,
+    \end{align*} and hence $$R^j_{ikl, h} = \frac{\p R^j_{ikl}}{\p u^h} - \Gamma^p_{ih}R^j_{pkl} + \Gamma^j_{ph}R^p_{ikl} - \Gamma^p_{kh}R^j_{ipl} - \Gamma^p_{lh}R^j_{ikp}.$$ Therefore 
+    \begin{align*}
+        & \quad R^j_{ikl, h}\d u^h \wedge \d u^k \wedge \d u^l \\
+        &= \left(\frac{\p R^j_{ikl}}{\p u^h} + \Gamma^j_{ph}R^p_{ikl} - \Gamma^p_{ih}R^j_{pkl} - \Gamma^p_{kh}R^j_{ipl} - \Gamma^p_{lh}R^j_{ikp}\right) \d u^h \wedge \d u^k \wedge \d u^l \\
+        &= -(\Gamma^p_{kh}R^j_{ipl} + \Gamma^p_{lh}R^j_{ikp}) \d u^h \wedge \d u^k \wedge \d u^l.
+    \end{align*}
+    The torsion-free property of the connection implies that $$\Gamma^p_{lh}R^j_{ikp} \d u^h \wedge \d u^k \wedge \d u^l = \Gamma^p_{hk}R^j_{ilp}\d u^h \wedge \d u^k \wedge \d u^l = -\Gamma^p_{kh}R^j_{ipl} \d u^h \wedge \d u^k \wedge \d u^l,$$ thus $$R^j_{ikl, h}\d u^h \wedge \d u^k \wedge \d u^l = 0.$$ Hence $$(R^j_{ikl, h} + R^j_{ilh, k} + R^j_{ihk, l})\d u^h \wedge \d u^k \wedge \d u^l = 0.$$ Since the coefficients are skew-symmetric with respect to $h, k, l$, we have $$R^j_{ikl, h} + R^j_{ilh, k} + R^j_{ihk, l} = 0.$$
+\end{proof}
+
+\subsection{Connections on Frame Bundles}
+
+Suppose $M$ is an $m$-dimensional differentiable manifold. A \textbf{frame} refers to a combination of the form $(p;e_1, \cdots, e_m)$, where $p$ is a point in $M$ and $e_1, \cdots, e_m$ are $m$ linearly independent tangent vectors at $p$. The set of all frames on $M$ is denoted by $P$. We now introduce a differentiable structure on $P$ so that it becomes a smooth manifold, and the natural projection $$\pi(p; e_1, \cdots, e_m) = p$$ is a smooth map from $P$ to $M$. $(P, M, \pi)$ is then called the \textbf{frame bundle} of $M$. 
+
+Suppose $(U; u^i)$ is a coordinate neighborhood of $M$. Then there is a natural frame field $(\p/\p u^1, \cdots, \p/\p u^m)$ on $U$. Hence any frame $(p; e_1, \cdots, e_m)$ on $U$ can be written as $$e_i = X^k_i\left(\frac{\p}{\p u^k}\right)_p, \quad 1 \le i \le m,$$ where $(X^k_i)$ is a nondegenerate $m \times m$ matrix, and therefore an element of $\GL(m;\R)$. Thus we can define a map $\vphi_U : U \times \GL(m; \R) \rightarrow \pi^{-1}(U)$ by $$\vphi_U(p, X^k_i) = \left(p; X^k_1\left(\frac{\p}{\p u^k}\right)_p, \cdots, X^k_m\left(\frac{\p}{\p u^k}\right)_p\right)$$ for any $p \in U, (X^k_i) \in \GL(m; \R)$. We can see that $\vphi_U$ is a one-to-one correspondence. 
+
+Choose a coordinate covering $\{U_1, U_2, \cdots\}$ of $M$ with corresponding maps $\{\vphi_1, \vphi_2, \cdots\}$. The images of all the open subsets of $U_i \times \GL(m; \R)$ under the map $\vphi_i$ form a topological basis for $P$. With respect to this topological structure of $P$, the map $\vphi_i : U_i \times \GL(m; \R) \rightarrow \pi^{-1}(U)$ is a homeomorphism. 
+
+Through the map $\vphi_i$, $\pi^{-1}(U_i)$ becomes a coordinate neighborhood in $P$ with local coordinate system $(u^i, X^k_i)$. Suppose $U$ and $W$ are coordinate neighborhoods in $M$ such that $U \cap W \neq \varnothing$. Then $M$ has the local change of coordinates $$w^i = w^i(u^1, \cdots, u^m), \quad 1 \le i \le m$$ on the intersection $U \cap W$. The corresponding natural bases have the following relationship $$\frac{\p}{\p u^i} = \frac{\p w^j}{\p u^i}\frac{\p}{\p w^j}.$$ If $(p; e_1, \cdots, e_m)$ is a frame on $U \cap W$, then its coordinates $(u^i, X^k_i)$ and $(w^i, Y^k_i)$ under two coordinate systems satisfy $$ w^i = w^i(u^1, \cdots, u^m), \quad 1 \le i \le m,$$ and $$Y^k_i = X^j_i\frac{\p w^k}{\p u^j}, \quad 1 \le i, k \le m.$$ We can then see that the coordinate neighborhoods $\pi^{-1}(U)$ and $\pi^{-1}(W)$ are $C^\infty$-compatible. Therefore $P$ becomes an $(m^2 + m)$-dimensional smooth manifold, and the natural projection $\pi : P \rightarrow M$ is a smooth surjection. 
+
+For any $p \in U$, let $$\vphi_{U, p}(X) = \vphi_U(p, X), \quad X \in \GL(m; \R).$$ Then $\vphi_{U, p} : \GL(m; \R) \rightarrow \pi^{-1}(p)$ is a homeomorphism. If $U \cap W \neq \varnothing$, for $p \in U \cap W$, the map $\vphi_{W, p}^{-1} \circ \vphi_{U, p}$ is a homeomorphism from $\GL(m; \R)$ to itself. In fact, $\vphi_{W, p}^{-1} \circ \vphi_{U, p}$ is precisely the right translation of the Jacobian matrix $J_{UW} = (\p w^k / \p u^j)$ on $\GL(m; \R)$. Thus $\{J_{UW}\}$ forms a family of transition functions on the frame bundle. Therefore the frame bundle $P$ is a fiber bundle that is not a vector bundle with $\GL(m; \R)$ as its typical fiber. 
+
+Suppose $(U; u^i)$ and $(W; w^i)$ are two coordinate systems on $M$ with the corresponding coordinate systems $(u^i, X^k_i)$ and $(w^i, Y^k_i)$ on $P$. Use $(X^{*k}_i)$ and $(Y^{*k}_i)$ to denote the inverse matrices of $(X^k_i)$ and $(Y^k_i)$, respectively, that is $$X^k_iX^{*j}_k = X^{*k}_iX^j_k = \delta^j_i, \quad Y^k_iY^{*j}_k = Y^{*k}_iY^j_k = \delta^j_i.$$ If $U \cap W \neq \varnothing$, then on $U \cap W$ we have $$\d w^i = \frac{\p w^i}{\p u^j}\d u^j.$$ On the other hand, since $$Y^k_i = X^j_i\frac{\p w^k}{\p u^j},$$ we have $$X^{*j}_i = \frac{\p w^k}{\p u^i}Y^{*j}_k.$$ Hence $$X^{*j}_i\d u^i = Y^{*j}_k\frac{\p w^k}{\p u^i}\d u^i = Y^{*j}_k\d w^k.$$ This implies that the differential 1-form $$\theta^i = X^{*i}_j\d u^j$$ is independent of the choice of local coordinates of $P$. Therefore $\theta^i$ can be defined to be a differential 1-form on $P$. 
+
+Now suppose $M$ is an $m$-dimensional affine connection space with connection $\D$. Suppose the connection matrix of $\D$ under the local coordinate system $(U; u^i)$ is $\omega = (\omega^j_i).$ Then the absolute differential of the vector field $e_i = X^i_k (\p / \p u^k)$ is $$\D e_i = (\d X^k_i + X^j_i\omega^k_i) \otimes \frac{\p}{\p u^k}.$$ If we view $X^k_i$ as independent variables and let $$\D X^k_i = \d X^k_i + X^j_i\omega^k_j,$$ then $\D X^k_i$ is a differential 1-form on the coordinate neighborhood $\pi^{-1}(U)$ on $P$. Suppose $(W; w^i)$ is another local coordinate system of $M$. If $U \cap W \neq \varnothing$, then we have $$Y^k_i = X^j_i \frac{\p w^k}{\p u^j}$$ on $U \cap W$. Thus
+\begin{align*}
+    \D Y^k_i &= \d Y^k_i + Y^j_i\omega'^k_j \\
+    &= \d X^j_i \cdot \frac{\p w^k}{\p u^j} + X^j_i\d\left(\frac{\p w^k}{\p u^j}\right) + \\
+    & \quad X^l_i \frac{\p w^j}{\p u^l}\left[\d\left(\frac{\p u^p}{\p w^j}\right)\frac{\p w^k}{\p u^p} + \frac{\p u^p}{\p w^j}\frac{\p w^k}{\p u^q}\omega^q_p\right] \\
+    &= \left(\d X^j_i + X^l_i\omega^j_l\right)\frac{\p w^k}{\p u^j} \\
+    &= \D X^j_i \cdot \frac{\p w^k}{\p u^j}.
+\end{align*}
+Hence $$Y^{*j}_k\D Y^k_i = Y^{*j}_k \frac{\p w^k}{\p u^l} \D X^l_i = X^{*j}_l \D X^l_i.$$ It follows that the differential 1-form $$\theta^j_i = X^{*j}_k\D X^k_i = X^{*j}_k\left(\d X^k_i + X^l_i \omega^k_l\right)$$ is independent of the choice of the local coordinate system, and is therefore a differential 1-form on $P$. 
+
+Because $(u^i, X^k_i)$ is a local coordinate system on $P$, $(\d u^i, \d X^k_i)$ are coordinates of the cotangent space at a point in $P$. Now $\theta^i$ along with $\theta^j_i$ are $(m^2 + m)$ differential 1-forms defined on $P$. They can be written as linear combinations of $\d u^i, \d X^k_i$ in the coordinate neighborhood $\pi^{-1}(U)$, and vice versa. Thus $\theta^i$ and $\theta^k_i$ are linearly independent everywhere, that is $\{\theta^i, \theta^k_i\}$ forms a coframe field on the whole of $P$, whose dual is then a global frame field on $P$. 
+
+Under the local coordinate system $(U; u^i)$, we have 
+\begin{align*}
+    \d u^i &= X^i_j \theta^j, \\
+    \d X^j_i &= -X^k_i\omega^j_k + X^j_k\theta^k_i,
+\end{align*}
+after the definition of $\theta^i$ and $\theta^k_i$. Exteriorly differentiating both equations, we obtain
+\begin{align*}
+    0 &= \d X^i_j \wedge \theta^j + X^i_j \d\theta^j \\
+    &= \left(-X^k_j\omega^i_k + X^i_k\theta^k_j\right) \wedge \theta^j + X^i_j \d\theta^j \\
+    &= \left(-X^k_j\Gamma^i_{kl}X^l_h\theta^h + X^i_k\theta^k_j\right) \wedge \theta^j + X^i_j \d\theta^j \\
+    &= X^i_j\left(\d\theta^j - \theta^k \wedge \theta^j_k\right) - X^p_kX^l_h\Gamma^i_{pl}\theta^h \wedge \theta^k,
+\end{align*}
+and 
+\begin{align*}
+    0 &= -\d X^k_i \wedge \omega^j_k - X^k_i \d\omega^j_k + \d X^j_k \wedge \theta^k_i + X^j_k \d\theta^k_i \\
+    &= -\left(-X^l_i\omega^k_l + X^k_l\theta^l_i\right) \wedge \omega^j_k - X^k_i\d\omega^j_k \\
+    & \quad + \left(-X^l_k\omega^j_l + X^j_l\theta^l_k\right) \wedge \theta^k_i + X^j_k\d\theta^k_i \\
+    &= -X^k_i\Omega^j_k + X^j_k\left(\d\theta^k_i - \theta^l_i\wedge \theta^k_l\right).
+\end{align*}
+Hence 
+\begin{align*}
+    \d\theta^j - \theta^k \wedge \theta^j_k &= X^{*j}_rX^p_kX^l_h\Gamma^r_{pl}\theta^h \wedge \theta^k \\
+    &= \frac{1}{2}X^{*j}_rX^p_kX^q_lT^r_{pq}\theta^k \wedge \theta^l,
+\end{align*}
+and 
+\begin{align*}
+    \d\theta^j_i - \theta^k_i\wedge \theta^j_k &= X^{*j}_hX^k_i\Omega^h_k \\
+    &= \frac{1}{2}X^{*j}_qX^p_iX^r_kX^s_lR^q_{prs}\theta^k \wedge \theta^l.
+\end{align*}
+Here $T^r_{pq}$ and $R^q_{prs}$ are, respectively, the torsion tensor and the curvature tensor. Let 
+\begin{align*}
+    P^j_{kl} &= X^{*j}_rX^p_kX^q_lT^r_{pq}, \\
+    S^j_{ikl} &= X^{*j}_qX^p_iX^r_kX^s_lR^q_{prs}.
+\end{align*} Then the above equations become 
+\begin{align*}
+    \d\theta^j - \theta^k \wedge \theta^j_k &= \dfrac{1}{2}P^j_{kl}\theta^k\wedge\theta^l, \\
+    \d\theta^j_i - \theta^k_i\wedge \theta^j_k &= \dfrac{1}{2}S^j_{ikl}\theta^k\wedge\theta^l.
+\end{align*}
+Obviously $P^j_{kl}$ and $S^j_{ikl}$ are independent of the choice of local coordinates. Therefore the above equations are valid on the whole frame bundle $P$, and comprise the so-called \textbf{structure equations} of the connection. 
+
+The differential forms $\theta^i$ are determined by the differentiable structure of $M$. The importance of the structure equations is that collectively they give a sufficient condition for the $m^2$ differential forms $\theta^k_i$ to define an affine connection on $M$. 
+
+\begin{lemma}[Cartan's Lemma]
+    Suppose $\{v_1, \cdots, v_r\}$ and $\{w_1, \cdots, w_r\}$ are two sets of vectors in $V$ such that $$\sum_{i=1}^r v_i \wedge w_i = 0.$$ If $v_1, \cdots, v_r$ are linearly independent, then the $w_i$ can be expressed as linear combinations of the $v_j$: $$w_i = \sum_{j=1}^r a_{ij}v_j, \quad 1 \le i \le r,$$ with $a_{ij} = a_{ji}$. 
+\end{lemma}
+
+\begin{theorem}
+    Suppose $\theta^j_i, 1 \le i, j \le m$ are $m^2$ differential 1-forms on the frame bundle $P$. If they and the $\theta^i$ satisfy the structure equation 
+    \begin{align*}
+        \d\theta^j - \theta^k \wedge \theta^j_k &= \dfrac{1}{2}P^j_{kl}\theta^k\wedge\theta^l, \\
+        \d\theta^j_i - \theta^k_i\wedge \theta^j_k &= \dfrac{1}{2}S^j_{ikl}\theta^k\wedge\theta^l,
+    \end{align*}
+    where $P^j_{kl}$ and $S^j_{ikl}$ are certain functions defined in $P$, then there exists an affine connection $\D$ on $M$ such that $\theta^j_i$ and $D$ are related as $$\theta^j_i = X^{*j}_k\D X^k_i$$ locally. 
+\end{theorem}
+\begin{proof}
+    Choose a coordinate neighborhood $(U; u^i)$ of $M$, then $(u^i, X^k_i)$ is a local coordinate system in $P$. Then $$\theta^i = X^{*i}_k \d u^k,$$ where $(X^{*i}_k)$ is the inverse matrix of $(X^k_i)$. Therefore $$\d\theta^i = \d X^{*i}_k \wedge \d u^k = \left(\d X^{*i}_k \cdot X^k_j\right) \wedge \theta^j = -X^{*i}_k \d X^k_j \wedge \theta^j.$$ Plugging this into the structure equation we have $$\theta^j \wedge \left(\theta^i_j + \frac{1}{2}P^i_{jk}\theta^k - X^{*i}_k\d X^k_j\right) = 0.$$ Since the $\theta^j$ are linearly independent, by Cartan's Lemma, $\theta^i_j - X^{*i}_k \d X^k_j$ are linear combinations of the $\theta^l$. Thus we may assume $$X^k_j\theta^j_i - \d X^k_i = \omega^k_j X^j_i,$$ where $\omega^k_j$ are linear combinations of $\theta^l$, and hence of $\d u^i$. Let $$\omega^k_j = \Gamma^k_{ji} \d u^i,$$ where $\Gamma^k_{ji}$ are functions on $P$. If we can show that the $\Gamma^k_{ji}$ are functions of $u^i$ only and independent of $X^j_i$, then $\Gamma^k_{ji}$ are the coefficients of some connection under the local coordinates $u^i$, and the theorem will be proved. 
+
+    Exteriorly differentiating the equation $$X^k_j\theta^j_i - \d X^k_i = \omega^k_j X^j_i$$ we obtain $$\d X^k_j \wedge \theta^j_i + X^k_j \d\theta^j_i = \d\omega^k_j \cdot X^j_i - \omega^k_j \wedge \d X^j_i.$$ This can be simplified to $$X^j_i\left(\d\omega^k_j - \omega^l_j \wedge \omega^k_l\right) = \frac{1}{2}X^k_jS^j_{ilh}\theta^l \wedge \theta^h$$ by the structure equation. Since the right hand side contains only the differentials $\d u^i$ and so does $\omega^l_j \wedge \omega^k_l$, $\d\omega^k_j$ should also contain only the differentials $\d u^i$. From $$\omega^k_j = \Gamma^k_{ji}\d u^i$$ we have $$\d\omega^k_j = \frac{\p \Gamma^k_{ji}}{\p u^l} \d u^l \wedge \d u^i + \frac{\p \Gamma^k_{ji}}{\p X^h_l} \d X^h_l \wedge \d u^i.$$ Hence $$\frac{\p\Gamma^k_{ji}}{\p X^h_l} = 0.$$ Therefore $\Gamma^k_{ji}$ are only functions of $u^i$. 
+
+    Suppose $(W; w^i)$ is another coordinate neighborhood of $M$. Then $(w^i, Y^k_i)$ is the local coordinate system of $P$ in $\pi^{-1}(W)$. If $U \cap W \neq \varnothing$, then on $U \cap W$ we have $$\theta^j_i = X^{*j}_k\left(\d X^k_i + X^l_i \omega^k_l\right) = Y^{*j}_k\left(\d Y^k_i + Y^l_i \omega'^k_l\right),$$ where $\omega'^k_l = \Gamma'^k_{lj} \d w^j$ and the $\Gamma'^k_{lj}$ are functions of $w^j$ only. Plugging $$Y^k_i = X^j_i \frac{\p w^k}{\p u^j}$$ and $$X^{*j}_i = \frac{\p w^k}{\p u^i}Y^{*j}_k$$ into this equation, we get $$\omega'^j_i = \d\left(\frac{\p u^p}{\p w^i}\right)\frac{\p w^j}{\p u^p} + \frac{\p u^p}{\p w^i}\frac{\p w^j}{\p u^q}\omega^q_p.$$ This implies that $(\omega^j_i)$ indeed defines an affine connection $\D$ on $M$, such that $(\omega^j_i)$ is the connection matrix of $\D$ under the local coordinate system $(U; u^i)$. 
+\end{proof}
+
+\section{Riemannian Geometry}
+
+\subsection{The Fundamental Theorem of Riemannian Geometry}
+
+Suppose $M$ is an $m$-dimensional smooth manifold, and $G$ is a symmetric covariant tensor field of rank 2 on $M$. If $(U; u^i)$ is a local coordinate system on $M$, then the tensor field $G$ can be expressed as $$G = g_{ij}\d u^i \otimes \d u^j$$ on $U$, where $g_{ij} = g_{ji}$ is a smooth function on $U$. $G$ provides a bilinear function on $T_p(M)$ at every point $p \in M$. Suppose $$X = X^i\frac{\p}{\p u^i}, \quad Y = Y^i\frac{\p}{\p u^i},$$ then $$G(X, Y) = g_{ij}X^iY^j.$$ We say that the tensor $G$ is \textbf{nondegenerate} at the point $p$ if, whenever $X \in T_p(M)$ and $G(X, Y) = 0$ for all $Y \in T_p(M)$, it must be true that $X = 0$. This implies that $G$ is nondegenerate at $p$ if and only if $\det(g_{ij}(p)) \neq 0$. If for all $X \in T_p(M)$ we have $G(X, X) \ge 0$ and the equality holds only if $X = 0$, then we say $G$ is \textbf{positive definite} at $p$. A positive definite tensor $G$ is necessarily nondegenerate.
+
+\begin{definition}
+    If an $m$-dimensional smooth manifold $M$ is given a smooth, everywhere nondegenerate symmetric covariant tensor field $G$ of rank 2, then $M$ is called a \textbf{generalized Riemmanian manifold}, and $G$ is called a \textbf{fundamental tensor} of \textbf{metric tensor} of $M$. If $G$ is positive definite, then $M$ is called a \textbf{Riemannian manifold}. 
+\end{definition}
+
+For a generalized Riemannian manifold $M$, $G$ specifies an inner product on the tangent space $T_p(M)$ at every point $p \in M$. For any $X, Y \in T_p(M)$, let $$X \cdot Y = G(X, Y) = g_{ij}(p)X^iY^j.$$ When $G$ is positive definite, it is meaningful to define the length of a tangent vector and the angle between two tangent vectors at the same point, i.e., $$|X| = \sqrt{g_{ij}X^iY^j}, \quad \cos\angle(X, Y) = \frac{X \cdot Y}{|X||Y|}.$$ Thus a Riemannian manifold is a differentiable manifold which has a positive definite inner product on the tangent space at every point. The inner product is required to be smooth in the sense that if $X, Y$ are smooth tangent vector fields, then $X \cdot Y$ is a smooth function on $M$. 
+
+The differential 2-form $$\d s^2 = g_{ij}\d u^i\d u^j$$ is independent of the choice of the local coordinate system $u^i$ and is usually called the \textbf{metric form} or \textbf{Riemannian metric}. $\d s$ is precisely the length of an infinitesimal tangent vector, and is called the \textbf{element of arc length}. Suppose $C : u^i = u^i(t), t_0 \le t \le t_1$ is a continuous and piecewise smooth parametrized curve on $M$. Then the arc length of $C$ is defined to be $$s = \int_{t_0}^{t_1}\sqrt{g_{ij}\frac{\d u^i}{\d t}\frac{\d u^j}{\d t}}\d t.$$
+
+\begin{theorem}
+    There exists a Riemannian metric on any $m$-dimensional smooth manifold $M$.
+\end{theorem}
+\begin{proof}
+    Choose a locally finite coordinate covering $\{(U_\a; u^i_\a)\}$ of $M$. Suppose $\{h_\a\}$ is the corresponding partition of unity such that $\supp h_\a \subset U_\a$. Let $$\d s_\a^2 = \sum_{i=1}^m(\d u_\a^i)^2, \quad \d s^2 = \sum_\a h_\a \d s_\a^2.$$ Then the $\d s_\a^2$ and $\d s^2$ are defined to be smooth differential 2-forms on $M$. If we choose a coordinate neighborhood $(U; u^i)$ such that $\overline{U}$ is compact, then $U$ intersects only finitely many $U_{\a_1}, \cdots, U_{\a_r}$ by the local finiteness of $\{U_\a\}$. Thereforethe restriction of $\d s^2$ to $U$ is $$\d s^2 = \sum_{\l=1}^r h_{\a_\l} \d s_{\a_\l}^2 = g_{ij}\d u^i \d u^j,$$ where $$g_{ij} = \sum_{\l=1}^r\sum_{k=1}^m h_{\a_\l}\frac{\p u_{\a_\l}^k}{\p u^i}\frac{\p u_{\a_\l}^k}{\p u^j}.$$ Since $0 \le h_\a \le 1$ and $\sum_{\a}h_\a = 1$, there exists an index $\b$ such that $h_\b(p) > 0$. Hence $\d s^2(p) \ge h_\b \d s_\b^2(p)$. Thus $\d s^2$ is positive definite everywhere on $M$. 
+\end{proof}
+
+Assume $M$ is a generalized Riemannian manifold. When the local coordinate system is changed, the transformation formula for the components of a fundamental tensor $G$ is given by $$g'_{ij} = g_{kl}\frac{\p u^k}{\p u'^i}\frac{\p u^l}{\p u'^j}.$$ Since the matrix $(g_{ij})$ is nondegenerate, we may denote its inverse by $(g^{ij})$, i.e., $$g^{ik}g_{kj} = g_{jk}g^{ki} = \delta^i_j.$$ The transformation for $g^{ij}$ under a change of coordinates is given by $$g'^{ij} = g^{kl}\frac{\p u'^i}{\p u^k}\frac{\p u'^j}{\p u^l}.$$ Hence $(g^{ij})$ is a symmetric contravariant tensor of rank 2. 
+
+Using the fundamental tensor, we may identify a tangent space with a cotangent space, and hence a contravariant vector and a covariant vector can be viewed as different expressions of the same vector. In fact, if $X \in T_p(M)$, let $$\a_X(Y) = G(X, Y), \quad Y \in T_p(M).$$ Then $\a_X$ is a linear functional on $T_p(M)$, i.e. $\a_X \in T^*_p(M)$. Conversely, since $G$ is nondegenerate, any element of $T^*_p(M)$ can be expressed in the form $\a_X$. Thus $\a$ establishes an isomorphism between $T_p(M)$ and $T^*_p(M)$. Componentwise, if $$X = X^i\frac{\p}{\p u^i}, \quad \a_X = X_i \d u^i,$$ then we obtain from the relation of $X$ and $\a_X$ that $$X_i = g_{ij}X^j, \quad X^j = g^{ij}X_i.$$ In general, if $\left(t^{i_1 \cdots i_r}_{j_1 \cdots j_s}\right)$ is a $(r, s)$-type tensor, then $$t^{i_1 \cdots i_{r-1}}_{kj_1\cdots j_s} = g_{kl}t^{i_1 \cdots i_{r-1}l}_{j_1 \cdots j_s}, \quad t^{i_1 \cdots i_r k}_{j_2 \cdots j_s} = g^{kl}t^{i_1 \cdots i_r}_{l j_2 \cdots j_s}$$ are $(r-1, s+1)$-type and $(r+1, s-1)$-type tensors, respectively. These operations are usually called the \textbf{lowering} and \textbf{raising} of tensorial indices, respectively. 
+
+\begin{definition}
+    Suppose $(M, G)$ is an $m$-dimensional generalized Riemannian manifold, and $\D$ is an affine connection on $M$. If $$\D G = 0,$$ then $\D$ is called a \textbf{metric-compatible connection} on $(M, G)$. 
+\end{definition}
+
+Condition $\D G = 0$ means that the fundamental tensor $G$ is parallel with respect to metric-compatible connections. If the connection matrix of $\D$ under the local coordinates $u^i$ is $\omega = (\omega^j_i)$, then $$\D G = \left(\d g_{ij} - \omega^k_i g_{kj} - \omega^k_j g_{ik}\right) \otimes \d u^i \otimes \d u^j.$$ Thus $\D G = 0$ is equivalent to $$d g_{ij} = \omega^k_i g_{kj} + \omega^k_j g_{ik},$$ or in matrix notation, $$\d G = \omega \cdot G + G \cdot \omega^T,$$ where $G$ represents the matrix $$G = 
+\begin{pmatrix}
+    g_{11} & \cdots & g_{1m} \\
+    \vdots & & \vdots \\
+    g_{m1} & \cdots & g_{mm}
+\end{pmatrix}.$$ The geometric meaning of metric-compatible connections is that parallel translations preserve the metric. In particular, on a Riemannian manifold, the length of a tangent vector and the angle between two tangent vectors are invariant under parallel translations. 
+
+\begin{theorem}[Fundamental Theorem of Riemanninan Geometry]
+    Suppose $M$ is an $m$-dimensional generalized Riemannian manifold. Then there exists a unique torsion-free and metric-compatible connection on $M$, called the \textbf{Levi-Civita connection} of $M$, or the \textbf{Riemannian connection} of $M$. 
+\end{theorem}
+\begin{proof}
+    Suppose $\D$ is a torsion-free and metric-compatible connection on $M$. Denote the connection matrix of $\D$ under the local coordinates $u^i$ by $\omega = (\omega^j_i)$, where $$\omega^j_i = \Gamma^j_{ik}\d u^k.$$ Then we have 
+    \begin{align*}
+        \d g_{ij} &= \omega^k_i g_{kj} + \omega^k_j g_{ki}, \\
+        \Gamma^j_{ik} &= \Gamma^j_{ki}.
+    \end{align*}
+    Denote $$\Gamma_{ijk} = g_{lj}\Gamma^j_{ik}, \quad \omega_{ik} = g_{lk}\omega^l_i.$$ Then 
+    \begin{align*}
+        \frac{\p g_{ij}}{\p u^k} &= \Gamma_{ijk} + \Gamma_{jik}, \\
+        \Gamma_{ijk} &= \Gamma_{kji}.
+    \end{align*}
+    Cycling the indices, we get 
+    \begin{align*}
+        \frac{\p g_{ik}}{\p u^j} &= \Gamma_{ikj} + \Gamma_{kij}, \\
+        \frac{\p g_{jk}}{\p u^i} &= \Gamma_{jki} + \Gamma_{kji}. 
+    \end{align*}
+    Therefore $$\frac{\p g_{ik}}{\p u^j} + \frac{\p g_{jk}}{\p u^i} - \frac{\p g_{ij}}{\p u^k} = \Gamma_{ikj} + \Gamma_{kij} + \Gamma_{jki} + \Gamma_{kji} - \Gamma_{ijk} - \Gamma_{jik} = 2\Gamma_{ikj}.$$ We then obtain $$\Gamma_{ikj} = \frac{1}{2}\left(\frac{\p g_{ik}}{\p u^j} + \frac{\p g_{jk}}{\p u^i} - \frac{\p g_{ij}}{\p u^k}\right),$$ and then $$\Gamma^k_{ij} = \frac{1}{2}g^{kl}\left(\frac{\p g_{il}}{\p u^j} + \frac{\p g_{jl}}{\p u^i} - \frac{\p g_{ij}}{\p u^l}\right).$$ Thus the torsion-free and metric-compatible connection is determined uniquely by the metric tensor.
+
+    Conversely, the $\Gamma^k_{ij}$ defined above indeed satisfy the transformation equation for connection coefficients under a change of local coordinates. Hence they define an affine connection $\D$ on $M$. Computations also verify that $\D$ is a torsion-free and metric-compatible connection on $M$. 
+\end{proof}
+
+The $\Gamma_{ikj}$ and $\Gamma^k_{ij}$ defined above are called \textbf{Christoffel symbols} of the first kind and second kind, respectively. 
+
+It is more convenient to use an arbitrary frame field instead of the natural frame field in a neighborhood of a Riemannian manifold. A local frame field is a local section of the frame bundle. Suppose $(e_1, \cdots, e_m)$ is a local frame field with coframe field $(\theta^1, \cdots, \theta^m)$. Let $$\D e_i = \theta^j_i e_j,$$ where $\theta = (\theta^j_i)$ is the connection matrix of $\D$ with respect to the frame field $(e_1, \cdots, e_m)$. Here the $\theta^i, \theta^j_i$ are exactly the forms obtained by pulling the differential 1-forms $\theta^i$ and $\theta^j_i$ on the frame bundle $P$ back to local sections. Hence by the structure equations, the statement that $\D$ is torsion-free is equivalent to the statement that the $\theta^j_i$ satisfy the equations $$\d\theta^i - \theta^j \wedge \theta^i_j = 0.$$ If we still denote $g_{ij} = G(e_i, e_j)$, then the metric form is $\d s^2 = g_{ij}\theta^i\theta^j$. Since $G = g_{ij}\theta^i\otimes\theta^j$, we have $$\D G = \left(\d g_{ij} - g_{ik}\theta^k_j - g_{kj}\theta^k_i\right)\otimes \theta^i \otimes \theta^j.$$ Therefore the condition for $\D$ to be metric-compatible is still $$\d g_{ij} = g_{ik}\theta^k_j + g_{kj}\theta^k_i.$$ Now the Fundamental Theorem of Riemannian Geometry can be restated as follows.
+
+\begin{theorem}
+    Suppose $(M, G)$ is a generalized Riemannian manifold, and $\{\theta^i, 1 \le i \le m\}$ is a set of differential 1-forms on a neighborhood $U \subset M$ which is linearly independent everywhere. Then there exists a unique set of $m^2$ differential 1-forms $\theta^k_j$ on $U$ such that $$\d\theta^i - \theta^j \wedge \theta^i_j = 0,$$ and $$\d g_{ij} = g_{ik}\theta^k_j + g_{kj}\theta^k_i,$$ where the $g_{ij}$ are the components of $G$ with respect to the local coframe field $\{\theta^i\}$, i.e. $G = g_{ij}\theta^i \otimes \theta^j.$
+\end{theorem}
+
+If $M$ is a Riemannian manifold, and $G$ is positive definite, then we can choose an orthogonal frame field $\{e_i, 1 \le i \le m\}$ in $U$ with $g_{ij} = \delta_{ij}$, or equivalently, $$\d s^2 = \sum_{i=1}^m (\theta^i)^2.$$ The condition for the connection to be metric-compatible then becomes $$\theta^i_j + \theta^j_i = 0,$$ which implies that the connection matrix $\theta = (\theta^j_i)$ is skew-symmetric. 
+
+By definition, the curvature matrix of the Levi-Civita connection $\omega$ is $$\Omega = \d\omega - \omega \wedge \omega.$$ Exterior differentiation of the equation $$\d G = \omega \cdot G + G \cdot \omega^T$$ yields $$\d\omega \cdot G - \omega \wedge \d G + \d G \wedge \omega^T + G \cdot (\d\omega)^T = 0,$$ and then $$(\d\omega - \omega \wedge \omega) \cdot G + G \cdot (\d\omega - \omega \wedge \omega)^T = 0,$$ i.e. $$\Omega \cdot G + (\Omega \cdot G)^T = 0.$$ Let $$\Omega_{ij} = \Omega^k_ig_{kj},$$ then $\Omega \cdot G = (\Omega_{ij})$, and the above equation becomes $$\Omega_{ij} + \Omega_{ji} = 0,$$ that is, $\Omega_{ij}$ is skew-symmetric with respect to the lower indices. By a direct calculation we get $$\Omega_{ij} = \d\omega_{ij} - \omega^k_i \wedge \omega_{jk}.$$ Also, we have $$\Omega^j_i = \frac{1}{2}R^j_{ikl}\d u^k \wedge \d u^l,$$ where $$R^j_{ikl} = \frac{\p\Gamma^j_{il}}{\p u^k} - \frac{\p\Gamma^j_{ik}}{\p u^l} + \Gamma^h_{il}\Gamma^j_{hk} - \Gamma^h_{ik}\Gamma^j_{hl}.$$ If we let $$R_{ijkl} = R^h_{ikl}g_{hj},$$ then $$\Omega_{ij} = \frac{1}{2}R_{ijkl}\d u^k \wedge \d u^l,$$ and $$R_{ijkl} = \frac{\p\Gamma_{ijl}}{\p u^k} - \frac{\p\Gamma_{ijk}}{\p u^l} + \Gamma^h_{ik}\Gamma_{jhl} - \Gamma^h_{il}\Gamma_{jhk}.$$ Here $R_{ijkl}$ is a covariant tensor of rank 4. It is determined completely by a given generalized Riemannian metric on $M$, and is called the \textbf{curvature tensor} of the generalized Riemannian manifold $M$. 
+
+\begin{theorem}\label{thm:curvature}
+    The curvature tensor $R_{ijkl}$ of a generalized Riemannian manifold satisfies the following properties:
+    \begin{enumerate}
+        \item $R_{ijkl} = -R_{jikl} = -R_{ijlk}$;
+        \item $R_{ijkl} + R_{iklj} + R_{iljk} = 0$;
+        \item $R_{ijkl} = R_{klij}$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    The skew-symmetry of $R^j_{ikl}$ in the last two lower indices implies the same property of $R_{ijkl}$, i.e., $$R_{ijkl} = -R_{ijlk}.$$ Since we have $$0 = \Omega_{ij} + \Omega_{ji} = \frac{1}{2}(R_{ijkl} + R_{jikl})\d u^k \wedge \d u^l,$$ it must be true that $$R_{ijkl} + R_{jikl} = 0.$$ From the torsion-free property of the Levi-Civita connection we have $$\d u^i \wedge \omega_{ij} = 0.$$ Exteriorly differentiating this and using the formula $$\Omega_{ij} = \d\omega_{ij} + \omega^k_i \wedge \omega_{jk},$$ we then have $$\d u^i \wedge (\Omega_{ij} - \omega^k_i \wedge \omega_{jk}) = 0,$$ thus $$\d u^i \wedge \Omega_{ij} = 0.$$ Therefore $$R_{jikl} \d u^i \wedge \d u^k \wedge \d u^l = 0,$$ or equivalently, $$(R_{jikl} + R_{jkli} + R_{jlik})\d u^i \wedge \d u^k \wedge \d u^l = 0.$$ Since the coefficients are skew-symmetric in the last three indices, we have $$R_{jikl} + R_{jkli} + R_{jlik} = 0.$$ We can cycle the indices to obtain $$R_{ijkl} + R_{iklj} + R_{iljk} = 0.$$ It follows that
+    \begin{align*}
+        0 &= (R_{ijkl} + R_{iklj} + R_{iljk}) - (R_{jikl} + R_{jkli} + R_{jlik}) \\
+        &= 2R_{ijkl} + R_{iklj} + R_{iljk} + R_{jkil} + R_{ljik}.
+    \end{align*}
+    Similarly we also have $$2R_{klij} + R_{kijl} + R_{kjli} + R_{likj} + R_{jlki} = 0.$$ Due to the skew-symmetry property 1, we finally have $$R_{ijkl} = R_{klij}.$$
+\end{proof}
+
+As a corollary, under the same conditions as in Theorem \ref{thm:curvature}, we have $$R^i_{jkl} + R^i_{klj} + R^i_{ljk} = 0.$$ Further, from $\D G = 0$ we have $$g_{ij, k} = 0,$$ and hence $$R_{ijkl, h} = (g_{jp}R^p_{ikl})_{, h} = g_{jp}R^p_{ikl, h}.$$ Thus it follows from $$R^j_{ikl, h} + R^j_{ilh, k} + R^j_{ihk, l} = 0$$ that $$R_{ijkl, h} + R_{ijlh, k} + R_{ijhk, l} = 0.$$ This is also called the \textbf{Bianchi identity}. 
+
+\subsection{Geodesic Normal Coordinates}
+
+\begin{definition}
+    Suppose $M$ is an $m$-dimensional Riemannian manifold. If a parametrized curve $C$ is a geodesic curve in $M$ with respect to the Levi-Civita connection, then $C$ is called a \textbf{geodesic} of the Riemannian manifold $M$. 
+\end{definition}
+
+Suppose the coefficients of the Levi-Civita connection $\D$ under the local coordinates $u^i$ are $\Gamma^i_{jk}$. Then the curve $C : u^i = u^i(t), 1 \le i \le m$ is a geodesic if it satisfies the system of second order differential equations $$\frac{\d^2 u^i}{\d t^2} + \Gamma^i_{jk}\frac{\d u^j}{\d t}\frac{\d u^k}{\d t} = 0, \quad 1 \le i \le m.$$ By definition, the tangent vector of a geodesic is parallel along the curve with respect to the Levi-Civita connection, which also preserves metric properties under parallel displacement. Therefore the length of the tangent vector $$X = X^i\frac{\p}{\p u^i} = \frac{\d u^i}{\d t}\frac{\p}{\p u^i}$$ of a geodesic is constant, that is, $$\frac{\d s}{\d t} = \text{const}.$$ Hence we see that the parameter for a geodesic curve in a Riemannian manifold must be a linear function of the arc length $s$, i.e. $$t = \l s + \mu,$$ where $\l \neq 0$ and $\mu$ are constants. 
+
+The discussions below only assume that $M$ is an affine connection space. Suppose the equation of a geodesic under the coordinate system $(U; u^i)$ is given by $$\frac{\d^2 u^i}{\d t^2} + \Gamma^i_{jk}\frac{\d u^j}{\d t}\frac{\d u^k}{\d t} = 0, \quad 1 \le i \le m.$$ By the theory of ordinary differential equations, there exist for any point $x_0 \in U$ a neighborhood $W \subset U$ of $x_0$ and positive numbers $r, \delta$ such that for any initial value $x \in W$ and $\a \in \R^m$ satisfying $\|\a\| < r$, the system of equations has a unique solution in $U$ expressed as $$u^i = f^i(t, x^k, \a^k), \quad |t| < \delta,$$ that satisfies the initial conditions 
+\begin{align*}
+    u^i(0) &= f^i(0, x^k, \a^k) = x^i, \\
+    \frac{\d u^i}{\d t}(0) &= \left.\frac{\p f^i(t, x^k, \a^k)}{\p t}\right|_{t=0} = \a^i.
+\end{align*}
+Furthermore, the functions $f^i$ depend smoothly on the independent variable $t$ and the initial values $x^k, \a^k$. 
+
+If we choose a nonzero constant $c$, then the functions $f^i(ct, x^k, \a^k), x \in W, \|\a\| < r, |t| < \delta/|c|$ still satisfy the system of equations with initial values
+\begin{align*}
+    \left.f^i(ct, x^k, \a^k)\right|_{t=0} &= x^i, \\
+    \left.\frac{\p f^i(ct, x^k, \a^k)}{\p t}\right|_{t=0} &= c\a^k.
+\end{align*}
+By the uniqueness property of the solution of the system of differential equations, whenever $\|\a\|, \|c\a\| < r$ and $|t|, |ct| < \delta$, we have $$f^i(ct, x^k, \a^k) = f^i(t, x^k, c\a^k).$$ Since the left hand side of the above equation is always defined when $x \in W, \|\a\| < r, |t| < \delta/|c|$, we can use it to define the right hand side. Thus the function $f^i(t, x^k, \a^k)$ is always defined for $x \in W, |t| < \delta/|c|, \|\a\| < |c|r.$ In particular, we can choose $|c| < \delta$, so that $f^i(t, x^k, \a^k)$ is defined for $x \in W, |t| \le 1$ and $\|\a\| < |c|r$. Let $$u^i = f^i(1, x^k, \a^k),$$ then $$f^i(1, x^k, 0) = f^i(0, x^k, \a^k) = x^k.$$ Thus for a fixed $x \in W$, this provides a smooth map from a neighborhood of the origin in the tangent space $T_x(M)$ to a neighborhood of $x$ in the manifold $M$. Because $$\a^i = \left.\frac{\p f^i(t, x^k, \a^k)}{\p t}\right|_{t=0} = \left.\frac{\p f^i(1, x^k, t\a^k)}{\p t}\right|_{t=0} = \left.\frac{\p f^i(1, x^k, \a^k)}{\p \a^j}\right|_{\a=0} \cdot \a^j,$$ we have $$\left(\frac{\p u^i}{\p \a^j}\right)_{\a = 0} = \delta^i_j.$$ Hence the $\a^i$ can be chosen to be local coordinates of $x$ in $M$, called the \textbf{geodesic normal coordinates} of $x$, or simply \textbf{normal coordinates}. A normal coordinate system of a point in $M$ is determined up to a nondegenerate linear transformation. 
+
+Fix $\a^k = \a_0^k$. As $t$ changes, $t\a_0^k$ describes a straight line in $T_x(M)$ starting from the origin, and traces a geodesic curve on the manifold starting from $x$ and tangent to the tangent vector $(\a_0^k)$. Therefore the equation for this geodesic curve under the normal coordinate system $\a^i$ is $$\a^k = t\a_0^k,$$ where $\a_0^k$ is a constant. 
+
+\begin{theorem}
+    If $M$ is a torsion-free affine connection space, then with respect to a normal coordinate system $\a^i$ at the point $x$, the connection coefficients $\Gamma^i_{jk}$ are zero at $x$.
+\end{theorem}
+\begin{proof}
+    Since the geodesic curve $\a^i = t\a_0^i$ satisfies the system of differential equations for geodesics under the normal coordinate system $\a^i$, we have for any $\a_0^k$, $$\Gamma^i_{jk}\a_0^j\a_0^k = 0.$$ Since $\Gamma^i_{jk}$ is symmetric in the lower indices for torsion-free connections, we have $$\Gamma^i_{jk}(0) = 0, \quad 1 \le i, j, k \le m.$$
+\end{proof}
+
+\begin{theorem}\label{thm:normal}
+    For any point $x_0$ in an affine connection space $M$, there exists a neighborhood $W$ of $x_0$ such that every point in $W$ has a normal coordinate neighborhood that contains $W$. 
+\end{theorem}
+\begin{proof}
+    Suppose $(U; u^i)$ is a normal coordinate system at a point $x_0$. Let $$U(x_0;\rho) = \left\{x \in U \left\vert \sum_{i=1}^m (u^i(x))^2 < \rho^2 \right.\right\}.$$ By the above discussion, there exists a neighborhood $W = U(x_0; r)$ of $x_0$ and a positive number $\delta$ such that for any $x \in W$ and $\a \in \R^m, \|\a\| < \delta$, there is a unique geodesic curve $$u^i = f^i(t, x^k, \a^k), \quad |t| < 2,$$ with initial condition $(x, \a)$. Let $$B(0; \delta) = \{\a \in \R^m \mid \|\a\| < \delta\}.$$ Then we have a map $\vphi : W \times B(0; \delta) \rightarrow W \times U$ such that $$\vphi(x, \a) = (x^k, f^k(1, x^i, \a^i)), \quad x \in W, \a \in B(0; \delta).$$ The map $\vphi$ is smooth since the function $f^k$ depend on $x$ and $\a$ smoothly. Noting that $$\left.\frac{\p(x^k, f^k)}{\p(x^i, \a^i)}\right|_{(x_0, 0)} = 1,$$ the Jacobian matrix of the map $\vphi$ is nondegenerate near the point $(x_0, 0) \in W \times B(0; \delta)$. By the Inverse Function Theorem, there exists a neighborhood $V$ of the point $(x_0, 0)$ and a positive number $a < \delta$ such that $\vphi : V \rightarrow U(x_0; a) \times U(x_0; a)$ is a diffeomorphism. For any $x \in U(x_0; a)$, let $$V_x = \{\a \in B(0; a) \mid (x, \a) \in V\}.$$ Then the map $$u^i = f^i(1, x^k, \a^k), \quad \a \in V_x$$ is a diffeomorphism from $V_x$ to $U(x_0; a)$. Choose $W' = U(x_0; a)$, and then the above formula shows that $W'$ has the desired property. 
+\end{proof}
+
+\begin{corollary}
+    For every point $x_0$ in an affine connection space $M$, there exists a neighborhood $W$ of $x_0$ such that any two points in $W$ can be connected by a geodesic curve. 
+\end{corollary}
+
+\begin{theorem}
+    A torsion-free affine connection is completely determined locally by the curvature tensor. 
+\end{theorem}
+\begin{proof}
+    Consider a normal coordinate system $\a^i$ at a fixed point $O$. Choose a natural frame at $O$, and parallel displace the frame along the geodesic curves starting from $O$. Thus we get a frame field $\{e_i, 1 \le i \le m\}$ in a neighborhood of $O$. Let $\theta^i$ be the dual differential 1-forms of $e_j$, and denote the restriction of the everywhere linearly independent $m^2$ differential 1-forms $\theta^j_i$ of the frame bundle to the above frame field by the same notation. Then $\theta^i, \theta^j_i$ are differential 1-forms of $t, \a^k$. When the $\a^k$ are constants, $\theta^i, \theta^j_i$ are restricted to the geodesic curve $\a^it$. Since the frame field is parallel along the geodesic curve $\a^it$, we have
+    \begin{align*}
+        \theta^i &= \a^i\d t + \bar\theta^i, \\
+        \theta^j_i &= \bar\theta^j_i,
+    \end{align*}
+    where $\bar\theta^i$ and $\bar\theta^j_i$ are the parts of $\theta^i$ and $\theta^j_i$ without $\d t$. Plugging this into the structure equations and comparing the terms with $\d t$, we obtain
+    \begin{align*}
+        \frac{\p\bar\theta^i}{\p t} &= \d\a^i + \a^j\bar\theta^i_j, \\
+        \frac{\p\bar\theta^j_i}{\p t} &= \a^kS^j_{ikl}\bar\theta^l.
+    \end{align*}
+    Differentiating the first formula with respect to $t$ again, we obtain $$\frac{\p^2\bar\theta^i}{\p t^2} = \a^j\frac{\p\bar\theta^i_j}{\p t} = \a^j\a^kS^i_{jkl}\bar\theta^l.$$ Since the frame field $e_i$ is parallel along any direction at the point $O$, we have $$\left.\bar\theta^j_i\right|_{t=0} = 0,$$ and then $$\left.\frac{\p\bar\theta^i}{\p t}\right|_{t=0} = \d\a^i. $$ Moreover, by definition we have $$\left.\theta^i\right|_{t=0} = \a^i\d t,$$ and thus $$\left.\bar\theta^i\right|_{t=0} = 0.$$
+
+    For a given curvature tensor, the system of second-order ordinary differential equations $$\frac{\p^2\bar\theta^i}{\p t^2} = \a^j\a^kS^i_{jkl}\bar\theta^l$$ has a unique solution for $\bar\theta^i$ under the initial conditions, and $\bar\theta^j_i$ is then completely determined. Hence the curvature tensor completely determines the torsion-free affine connection locally. 
+\end{proof}
+
+Now assume $M$ is an $m$-dimensional Riemannian manifold. Suppose $x_0 \in M$, and choose a fixed orthogonal frame $F_0$ in the tangent space $T_{x_0}(M)$. Then the normal coordinate system $u^i$ at $x_0$ can be expressed as $u^i = \a^is$, where $(\a^i)$ is a unit vector in $T_{x_0}(M)$ and $s$ is the arc length of the geodesic curves starting from $x_0$. Displace the frame $F_0$ parallel along the geodesic curves originating from $x_0$ to obatin an orthogonal frame field in a neighborhood of $x_0$. We can write $$\theta^i = \a^i\d s + \bar\theta^i, \quad \theta^j_i = \bar\theta^j_i,$$ where $\bar\theta^i, \bar\theta^j_i$ do not contain the differential $\d s$, and satisfy the equations
+\begin{align*}
+    \frac{\p\bar\theta^i}{\p s} &= \d\a^i + \a^j\bar\theta^i_j, \\
+    \frac{\p\bar\theta^j_i}{\p s} &= \a^kS^j_{ikl}\bar\theta^l, \\
+    \bar\theta^j_i + \bar\theta^i_j &= 0,
+\end{align*}
+with initial conditions $$\left.\bar\theta^i\right|_{s=0} = 0, \quad \left.\bar\theta^j_i\right|_{s=0} = 0, \quad \left.\frac{\p\bar\theta^i}{\p s}\right|_{s=0} = \d\a^i.$$ The arc length element near the point $O$ can be expressed by $$\d\s^2 = \sum_{i=1}^m(\theta^i)^2 = \d s^2 + 2\d s \sum_{i=1}^m\a^i\bar\theta^i + \sum_{i=1}^m(\bar\theta^i)^2.$$ Since $$\sum_{i=1}^m(\a^i)^2 = 1,$$ we have $$\sum_{i=1}^m \a^i\d\a^i = 0.$$ Together with $$\bar\theta^j_i + \bar\theta^i_j = 0,$$ we see that $$\frac{\p}{\p s}\left(\sum_{i=1}^m \a^i\bar\theta^i\right) = \sum_{i=1}^m \a^i\left(\d\a^i + \sum_{j=1}^m \a^j\bar\theta^i_j\right) = 0.$$ Therefore $$\sum_{i=1}^m \a^i\bar\theta^i = \left.\sum_{i=1}^m \a^i\bar\theta^i\right|_{s=0} = 0.$$ Hence the arc length element near $O$ is $$\d\s^2 = \d s^2 + \sum_{i=1}^m(\theta^i)^2.$$
+
+\begin{theorem}\label{thm:normal1}
+    For every point $O$ in a Riemannian manifold $M$, there exists a normal coordinate neighborhood $W$ such that
+    \begin{enumerate}
+        \item Every point in $W$ has a normal coordinate neighborhood that contains $W$.
+        \item The geodesic curve that connects $O$ and $p \in W$ is the unique shortest curve in $W$ connecting these two points. 
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    Applying Theorem \ref{thm:normal} to the Levi-Civita connection of $M$, and condition 1 follows. Now assume that $u^i$ is the normal coordinate system of the point $O$ given by $u^i = \a^is$. A normal coordinate neighborhood $W$ as required in consition 1 is $$W = \left\{p \in M \left\vert \sum_{i=1}^m (u^i(p))^2 < \e^2 \right.\right\},$$ where $\e$ is a sufficiently small positive number. Because $W$ is a normal coordinate neighborhood, for any $p \in W$, there exists a unique geodesic curve $\g$ in $W$ that connects $O$ and $p$. Suppose the length of $\g$ is $s_0$.
+
+    Suppose $C$ is any piecewise smooth curve in $W$ that connects $O$ and $p$. We may assume that the parametrized equation for $C$ is $u^i = u^i(s)$, where $s$ is the arc length parameter of $\g$. Then the arc length of $C$ is $$\int_{0}^{s_0}\d\s =\int_0^{s_0}\sqrt{\d s^2 + \sum_{i=1}^m(\theta^i)^2} \ge \int_0^{s_0}\d s = s_0.$$ If $C$ is the shortest path in $W$ connecting $O$ and $p$, then the equality holds. Hence we must have $$\bar\theta^i = 0$$ along the curve $C$. If we write $$\bar\theta^i = s\d\a^i + A^i_j\d\a^j,$$ then the $A^i_j$ satisfy the initial conditions $$\left.A^i_j\right|_{s=0} = 0, \quad \left.\frac{\p A^i_j}{\p s}\right|_{s=0} = 0.$$ This implies that $A^i_j = o(s)$ when $s \rightarrow 0$. Since $$\d\a^i + \frac{A^i_j}{s}\d\a^j = 0$$ holds on $C$, we can let $s \rightarrow 0$ to obtain $$\d\a^i = 0, \quad \a^i = \text{const}.$$ It follows that $C$ is a geodesic curve connecting $O$ and $p$, i.e. $C = \g$. 
+\end{proof}
+
+\begin{theorem}\label{thm:hypershpere}
+    Suppose $U$ is a normal coordinate neighborhood of the point $O$. Then there exists a positive number $\e$ such that, for any $0 < \delta < \e$, the hypersphere $$\Sigma_\delta = \left\{p \in U \left\vert \sum_{i=1}^m (u^i(p))^2 = \delta^2 \right.\right\}$$ has the following properties:
+    \begin{enumerate}
+        \item Every point on $\Sigma_\delta$ can be connected to $O$ by a unique shortest geodesic curve in $U$.
+        \item Any geodesic curve tangent to $\Sigma_\delta$ is strictly outside $\Sigma_\delta$ in a deleted neighborhood of the tangent point. 
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    Choose $W$ to be a normal coordinate neighborhood as required in Theorem \ref{thm:normal1}. We may assume that $W$ is a spherical neighborhood with radius $\e$. When $0 < \delta < \e$, since $\Sigma_\delta \subset W \subset U$ and $U$ is a normal coordinate neighborhood, property 1 is just a corollary of Theorem \ref{thm:normal1}.
+
+    The equation of $\Sigma_\delta$ can be written as $$F(u^1, \cdots, u^m) = \frac{1}{2}[(u^1)^2 + \cdots + (u^m)^2 - \delta^2] = 0.$$ Suppose $\g$ is a geodesic curve tangent to $\Sigma_\delta$ at $p$, and its equation is $$u^i = u^i(\s),$$ where $\s$ is the arc length of $\g$ measured from the point $p$. Then $$F(u^i(\s))|_{\s=0} = 0.$$ By the discussion before Theorem \ref{thm:normal1}, the hypersphere $\Sigma_\delta$ is orthogonal to geodesic curves starting from the point $O$, thus the geodesic curve $\g$ tangent to $\Sigma_\delta$ at the point $p$ should be orthogonal to the geodesic curve connecting $O$ and $p$. Therefore $$\left.\sum_{i=1}^m u^i(\s)\frac{\d u^i}{\d\s}\right|_{\s=0} = 0.$$ Direct calculation yields $$\left.\frac{\d}{\d\s} F(u^i(\s))\right|_{\s=0} = \left.\sum_{i=1}^m u^i(\s)\frac{\d u^i}{\d\s}\right|_{\s=0} = 0,$$ and $$\left.\frac{\d^2}{\d\s^2} F(u^i(\s))\right|_{\s=0} = \sum_{i,j=1}^m \left[\delta_{ij}-\sum_{k=1}^m u^k(p)\Gamma^k_{ij}(p)\right]\cdot\left.\frac{\d u^i}{\d\s}\right|_{s=0}\cdot\left.\frac{\d u^j}{\d\s}\right|_{s=0}.$$ Since $(U; u^i)$ is a normal coordinate system, we have $$\Gamma^k_{ij}(p) = 0.$$ Hence we can choose a sufficiently small $\e > 0$ such that whenever $0 < \delta < \e$, the second-order derivative of $F(u^i(\s))$ with respect to $\s$ at $\s = 0$ is always positive. Thus $F(u^i(\s))$ is strictly positive near $p$, which means that the geodesic curve lies strictly outside $\Sigma_\delta$ near $p$, and has only one point in common with $\Sigma_\delta$, namely $p$. 
+\end{proof}
+
+\begin{definition}
+    Suppose $M$ is a connected Riemannian manifold, and $p, q$ are two arbitrary points in $M$. Let $$\rho(p, q) = \inf\wideparen{pq},$$ where $\wideparen{pq}$ denotes the arc length of a curve connecting $p$ and $q$ with measurable arc length. Then $\rho(p, q)$ is called the \textbf{distance} between points $p$ and $q$. 
+\end{definition}
+
+\begin{theorem}
+    The function $\rho : M \times M \rightarrow \R$ is a metric on $M$ and makes $M$ a metric space. The topology of $M$ as a metric space and the original topology of $M$ as a manifold are equivalent. 
+\end{theorem}
+
+\begin{theorem}
+    There exists a $\eta$-ball neighborhood $W$ at any point $p$ in a Riemannian manifold $M$, where $\eta$ is a sufficiently small positive number, such that any two points in $W$ can be connected by a geodesic curve inside $W$. Such a neighborhood is called a \textbf{geodesic convex neighborhood}.
+\end{theorem}
+\begin{proof}
+    Suppose $p \in M$. There exists a ball-shaped normal coordinate neighborhood $U$ of $p$ with radius $\e$ such that for any point $q$ in $U$ there is a normal coordinate neighborhood $V_q$ that contains $U$. We may assume that $\e$ also satisfies the requirements of Theorem \ref{thm:hypershpere}. Choose a positive $\eta < \e/4$. We will show that the $\eta$-ball neighborhood $W$ of $p$ is a geodesic convex neighborhood of $p$. 
+
+    Choose any $q_1, q_2 \in W$. Then $$\rho(q_1, q_2) \le \rho(p, q_1) + \rho(p, q_2) < 2\eta \le \frac{\e}{2}.$$ Suppose $U(q_1;\e/2)$ is an $\e/2$-ball neighborhood of $q_1$, then $q_2 \in U(q_1;\e/2) \subset U \subset V_{q_1}$. By Theorem \ref{thm:normal1}, there exists a unique geodesic curve $\g$ in $U(q_1;\e/2)$ connecting $q_1$ and $q_2$, whose length is precisely $\rho(q_1, q_2)$. We prove that the geodesic curve $\g$ lies inside $W$. Since $\g \subset U(q_1;\e/2) \subset U$, the function $\rho(p, q), q \in \g$ is bounded. If $\g$ does not lie inside $W$ completely, then the function $\rho(p, q), q \in \g$ must attain its maximum at an interior point $q_0$ of $\g$. Let $\delta = \rho(p, q_0).$ Then $\delta < \e$, and the hypersphere $\Sigma_\delta$ is tangent to $\g$ at $q_0$. By Theorem \ref{thm:hypershpere}, $\g$ lies completely outside $\Sigma_\delta$ near $q_0$, contradicting the fact that $\rho(p, q), q \in \g$ attains its maximum at $q_0$. Therefore $\g \subset W$. 
+\end{proof}
+
+\subsection{Sectional Curvature}
+
+Suppose $M$ is an $m$-dimensional Riemannian manifold whose curvature tensor $R$ is a covariant tensor of rank 4, and $u^i$ is a local coordinate system in $M$. Then $R$ can be expressed as $$R = R_{ijkl}\d u^i \otimes \d u^j \otimes \d u^k \otimes \d u^l.$$ At every point $p \in M$, we have a multilinear function $R : T_p(M) \times T_p(M) \times T_p(M) \times T_p(M) \rightarrow \R$, defined by $$R(X, Y, Z, W) = \<X \otimes Y \otimes Z \otimes W, R\>.$$ If we let $$X = X^i\frac{\p}{\p u^i}, \quad Y = Y^i\frac{\p}{\p u^i}, \quad Z = Z^i\frac{\p}{\p u^i}, \quad W = W^i\frac{\p}{\p u^i},$$ then $$R(X, Y, Z, W) = R_{ijkl}X^iY^jZ^kW^l.$$ In particular $$R_{ijkl} = R\left(\frac{\p}{\p u^i}, \frac{\p}{\p u^j}, \frac{\p}{\p u^k}, \frac{\p}{\p u^l}\right).$$
+
+We have already interpreted the curvature tensor of a connection $\D$ as a curvature operator: for any given $Z, W \in T_p(M)$, $R(Z, W)$ is a linear map from $T_p(M)$ to $T_p(M)$ defined by $$R(Z, W)X = R^j_{ikl}X^iZ^kW^l\frac{\p}{\p u^j}.$$ If $\D$ is the Levi-Civita connection of a Riemannian manifold $M$, then we have $$R(X, Y, Z, W) = R(Z, W)X \cdot Y,$$ where $\cdot$ on the right hand side is the inner product defined by $$X \cdot Y = G(X, Y).$$ By the properties of $R_{ijkl}$, the 4-linear function $R(X, Y, Z, W)$ has the following properties:
+\begin{enumerate}
+    \item $R(X, Y, Z, W) = -R(X, Y, W, Z) = -R(Y, X, Z, W)$;
+    \item $R(X, Y, Z, W) + R(X, Z, W, Y) + R(X, W, Y, Z) = 0$;
+    \item $R(X, Y, Z, W) = R(Z, W, X, Y).$
+\end{enumerate}
+
+Using the fundamental tensor $G$ of $M$, we can also define a function $$G(X, Y, Z, W) = G(X, Z)G(Y, W) - G(X, W)G(Y, Z).$$ Obviously the function defined above is linear with respect to every variable, and also has the same properties 1-3 as $R(X, Y, Z, W)$. If $X, Y \in T_p(M)$, then $$G(X, Y, X, Y) = |X|^2|Y|^2 - (X \cdot Y)^2 = |X|^2|Y|^2\sin^2\angle(X, Y).$$ Therefore when $X, Y$ are linearly independent, $G(X, Y, X, Y)$ is precisely the square of the area of the parallelogram determined by the tangent vectors $X$ and $Y$. Hence $G(X, Y, X, Y) \neq 0$. 
+
+Suppose $X', Y'$ are another two linearly independent tangent vectors at the point $p$, and that they span the same 2-dimensional tangent subspace $E$ as that spanned by $X$ and $Y$. Then we may assume that $$X' = aX + bY, \quad Y' = cX + dY,$$ where $ad - bc \neq 0$. By properties 1-3 we have
+\begin{align*}
+    R(X', Y', X', Y') &= (ad - bc)^2R(X, Y, X, Y), \\
+    G(X', Y', X', Y') &= (ad - bc)^2G(X, Y, X, Y).
+\end{align*}
+Thus $$\frac{R(X', Y', X', Y')}{G(X', Y', X', Y')} = \frac{R(X, Y, X, Y)}{G(X, Y, X, Y)}.$$ This implies that the above expression is a function of the 2-dimensional subspace $E$ of $T_p(M)$, and is independent of the choice of $X$ and $Y$.
+
+\begin{definition}
+    Suppose $E$ is a 2-dimensional subspace of $T_p(M)$, and $X, Y$ are any two linearly independent vectors in $E$. Then $$K(E) = -\frac{R(X, Y, X, Y)}{G(X, Y, X, Y)}$$ is a function of $E$ independent of the choice of $X$ and $Y$ in $E$. It is called the \textbf{Riemannian curvature}, or \textbf{sectional curvature}, of $M$ at $(p, E)$. 
+\end{definition}
+
+The product of the two principal curvatures at a point on a surface in 3-dimensional Euclidean space is called the \textbf{total curvature}, or \textbf{Gauss curvature}, of the surface at that point. The \textbf{Theorema Egregium} shows that the total curvature $K$ depends only on the first fundamental form of the surface as $$K = -\frac{R_{1212}}{g},$$ where $$g = g_{11}g_{22}-g_{12}^2$$ and $$R_{1212} = \frac{\p\Gamma_{122}}{\p u^1} - \frac{\p\Gamma_{121}}{\p u^2} + \Gamma^h_{11}\Gamma_{2h2} - \Gamma^h_{12}\Gamma_{2h1}.$$
+
+Suppose $m \ge 3$ and $E$ is a 2-dimensional subspace of $T_p(M)$. Choose an orthogonal frame $\{e_i\}$ at $p$ such that $E$ is spanned by $\{e_1, e_2\}$. Suppose $u^i$ is the geodesic normal coordinate system determined by this frame near $p$. Now consider the 2-dimensional submanifold $S$ of all geodesic curves starting from $p$ and tangent to $E$. Then the equation for $S$ is $$u^r = 0, \quad 3 \le r \le m,$$ and $(u^1, u^2)$ are the normal coordinates of $S$ at $p$. $S$ is called the \textbf{geodesic submanifold} at $p$ tangent to $E$. We will prove that the sectional curvature $K(E)$ of $M$ at $(p, E)$ is exactly the total curvature of the surface $S$, with Riemannian metric induced from $M$, at $p$. 
+
+Suppose the Riemannian metric of $M$ near $p$ is $$\d s^2 = g_{ij}\d u^i\d u^j.$$ Then its induced metric on $S$ is $$\d\bar{s}^2 = \bar{g}_{\a\b}\d u^\a\d u^\b, \quad 1 \le \a, \b \le 2,$$ where $$\bar{g}_{\a\b}(u^1, u^2) = g_{\a\b}(u^1, u^2, 0, \cdots, 0).$$ Therefore \begin{align*}
+    \Gamma_{\a\b\g}|_S &= \frac{1}{2}\left.\left(\frac{\p g_{\b\g}}{\p u^\a} + \frac{\p g_{\a\b}}{\p u^\g} - \frac{\p g_{\a\g}}{\p u^\b}\right)\right|_S \\
+    &= \frac{1}{2}\left(\frac{\p\bar{g}_{\b\g}}{\p u^\a} + \frac{\p\bar{g}_{\a\b}}{\p u^\g} - \frac{\p\bar{g}_{\a\g}}{\p u^\b}\right) = \overline{\Gamma}_{\a\b\g}.
+\end{align*}
+Since $(u^i)$ and $(u^\a)$ are normal coordinate systems of $M$ and $S$, respectively, at $p$, we have $$\overline\Gamma_{\a\b\g}(p) = \Gamma_{ijk}(p) = 0.$$ Hence 
+\begin{align*}
+    R_{1212}(p) &= \left(\frac{\p\Gamma_{122}}{\p u^1} - \frac{\p\Gamma_{121}}{\p u^2} + \Gamma^h_{11}\Gamma_{2h2} - \Gamma^h_{12}\Gamma_{2h1}\right)_p
+    \\
+    &= \left(\frac{\p\overline\Gamma_{122}}{\p u^1} - \frac{\p\overline\Gamma_{121}}{\p u^2}\right)_p = \overline{R}_{1212}(p).
+\end{align*}
+The sectional curvature of $M$ at $(p, E)$ is then $$K(E) = -\frac{R(e_1, e_2, e_1, e_2)}{G(e_1, e_2, e_1, e_2)} = -\left.\frac{R_{1212}}{g_{11}g_{22} - g_{12}^2}\right|_p = -\left.\frac{\overline{R}_{1212}}{\bar{g}_{11}\bar{g}_{22} - \bar{g}_{12}^2}\right|_p = \overline{K}(p).$$ The right hand side is precisely the total curvature of the surface $S$ at $p$. 
+
+\begin{theorem}\label{thm:sectional}
+    The curvature tensor of a Riemannian manifold $M$ at a point $p$ is uniquely determined by the sectional curvatures of all the 2-dimensional tangent subspaces at $p$. 
+\end{theorem}
+\begin{proof}
+    Suppose there is a 4-linear function $\overline{R}(X, Y, Z, W)$ satisfying all the properties 1-3 of the curvature tensor $R(X, Y, Z, W)$, and that for any two linearly independent tangent vectors $X, Y$ at $p$, $$\frac{\overline{R}(X, Y, X, Y)}{G(X, Y, X, Y)} = \frac{R(X, Y, X, Y)}{G(X, Y, X, Y)}.$$ We will show that for any $X, Y, Z, W \in T_p(M)$, we have $$\overline{R}(X, Y, Z, W) = R(X, Y, Z, W).$$ If we let $$S(X, Y, Z, W) = \overline{R}(X, Y, Z, W) - R(X, Y, Z, W),$$ Then $S$ is also a 4-linear function satisfying the properties 1-3 and for any $X, Y \in T_p(M)$, it holds that $$S(X, Y, X, Y) = 0.$$ It suffices to show that $S$ is the zero function. 
+
+    First we have $$S(X + Z, Y, X + Z, Y) = 0.$$ Expanding this and using the properties of $S$ we obtain $$S(X, Y, Z, Y) = 0.$$ Thus $$S(X, Y + W, Z, Y + W) = 0,$$ and by expanding we obtain $$S(X, Y, Z, W) + S(X, W, Z, Y) = 0.$$ Therefore $$S(X, Y, Z, W) = -S(X, W, Z, Y) = S(X, W, Y, Z).$$ A similar argument shows that $$S(X, Y, Z, W) = S(X, W, Y, Z) = S(X, Z, W, Y).$$ On the other hand, it holds the identity $$S(X, Y, Z, W) + S(X, Z, W, Y) + S(X, W, Y, Z) = 0.$$ Thus $$S(X, Y, Z, W) = 0$$ and the proof is completed. 
+\end{proof}
+
+\begin{definition}
+    Suppose $M$ is a Riemannian manifold. If the sectional curvature $K(E)$ at the point $p$ is a constant, i.e. independent of $E$, then we say that $M$ is \textbf{wandering} at $p$. 
+\end{definition}
+
+If $M$ is wandering at $p$, then the sectional curvature of $M$ at $p$ can be denoted by $K(p)$. Hence for any $X, Y \in T_p(M)$ we have $$R(X, Y, X, Y) = -K(p)G(X, Y, X, Y).$$ According to the proof of Theorem \ref{thm:sectional}, for any $X, Y, Z, W \in T_p(M)$, we have $$R(X, Y, Z, W) = -K(p)G(X, Y, Z, W).$$ Thus the condition for a Riemannian manifold to be wandering at $p$ is $$R_{ijkl}(p) = -K(p)(g_{ik}g_{jl}-g_{il}g_{jk})(p),$$ or $$\Omega_{ij}(p) = -K(p) \cdot \theta_i\wedge\theta_j(p),$$ where $\theta_i = g_{ij}\d u^j$. 
+
+\begin{definition}
+    If $M$ is a Riemannian manifold which is wandering at every point and the sectional curvature $K(p)$ is a constant function on $M$, then $M$ is called a \textbf{constant curvature space}.
+\end{definition}
+
+\begin{theorem}[F. Schur's Theorem]
+    Suppose $M$ is a connected $m$-dimensional Riemannian manifold that is everywhere wandering. If $m \ge 3$, then $M$ is a constant curvature space. 
+\end{theorem}
+\begin{proof}
+    Since $M$ is wandering everywhere, it holds that $$\Omega_{ij} = -K \theta_i \wedge \theta_j,$$ where $K$ is a smooth function on $M$, and $\theta_i = g_{ij}\d u^j$. Exterior differentiation yields $$\d\Omega_{ij} = -\d K \wedge \theta_i \wedge \theta_j - K\d\theta_i \wedge \theta_j + K\theta_i \wedge \d\theta_j.$$ However, $$\d\theta_i = \d g_{ij} \wedge \d u^j = (g_{ik}\omega^k_j + g_{kj}\omega^k_i)\wedge \d u^j = (\omega_{ij} + \omega_{ji}) \wedge \d u^j,$$ where $$\omega_{ij} = g_{jk}\omega^k_i = \Gamma_{ijk}\d u^k.$$ Since the Levi-Civita connection is torsion-free, we have $$\omega_{ji} \wedge \d u^j = \Gamma_{jik}\d u^k \wedge \d u^j = 0,$$ and hence $$\d\theta_i = \omega_{ij}\wedge \d u^j = \omega^j_i \wedge \theta_j.$$ On the other hand, by the Bianchi identity, 
+    \begin{align*}
+        \d\Omega_{ij} &= \d\left(\Omega^l_ig_{lj}\right) \\
+        &= \d\Omega^l_i \cdot g_{lj} + \Omega^l_i \wedge \d g_{lj} \\
+        &= \left(\omega^k_i \wedge \Omega^l_k - \Omega^k_i \wedge \omega^l_k\right)g_{lj} + \Omega^l_i \wedge (\omega_{lj} + \omega_{jl}) \\
+        &= \omega^k_i \wedge \Omega_{kj} + \Omega^k_i \wedge \omega_{jk} \\
+        &= \omega^k_i \wedge \Omega_{kj} + \Omega_{ik} \wedge \omega^k_j.
+    \end{align*}
+    Thus $$\d\Omega_{ij} = -K \omega^k_i \wedge \theta_k \wedge \theta_j - K\theta_i \wedge \theta_k \wedge \omega^k_j = -K\d\theta_i \wedge \theta_j + K \theta_i \wedge \d\theta_j.$$
+    We then obtain $$\d K \wedge \theta_i \wedge \theta_j = 0.$$ Since $\{\theta_i\}$ and $\{\d u^i\}$ are both local coframes, we may assume that $\d K = a^k \theta_k.$ Since $m \ge 3$, we have $$a^k \theta_1 \wedge \cdots \wedge \theta_m = (-1)^{k-1}\d K \wedge \theta_1 \wedge \cdots \wedge \widehat{\theta_k} \wedge \cdots \wedge \theta_m = 0, \quad 1 \le k \le m.$$ Hence $\d K = 0$. Since $M$ is a connected manifold, $K$ is a constant function on $M$. 
+\end{proof}
+
+\subsection{The Gauss-Bonnet Theorem}
+
+Suppose $M$ is an oriented 2-dimensional Riemannian manifold. If we choose a smooth frame field $\{e_1, e_2\}$ in a coordinate neighborhood $U$ whose orientation is consistent with that of $M$, with coframe $\{\theta^1, \theta^2\}$, then the Riemannian metric is $$\d s^2 = g_{ij}\theta^i\theta^j, \quad 1 \le i, j \le 2,$$ where $g_{ij} = G(e_i, e_j)$. By the Fundamental Theorem of Riemannian Geometry, there exists a unique set of differential 1-forms $\theta^j_i$ such that $$\d\theta^i - \theta^j \wedge \theta^i_j = 0, \quad \d g_{ij} = g_{ik}\theta^k_j + g_{kj}\theta^k_i.$$ The $\theta^j_i$ define the Levi-Civita connection on $M$ by $$\D e_i = \theta^j_i e_j.$$ The curvature form for the connection is $$\Omega^j_i = \d\theta^j_i - \theta^k_i \wedge \theta^j_k.$$ Let $\Omega_{ij} = \Omega^k_ig_{kj}$, then $\Omega_{ij}$ is skew-symmetric. Since the indices $i, j$ only take the values 1 and 2, the only nonzero element in the curvature form $\Omega_{ij}$ is $\Omega_{12}$. 
+
+Let $\Omega$ denote the curvatre matrix $(\Omega^j_i)$ and write $$G = 
+\begin{pmatrix}
+    g_{11} & g_{12} \\
+    g_{21} & g_{22}
+\end{pmatrix}.$$ If $(e'_1, e'_2)$ is another local frame field in a coordinate neighborhood $W \subset M$ with orientation consistent with that of $M$, then in $U \cap W$, when $U \cap W \neq \varnothing$, $$\begin{pmatrix} e'_1 \\ e'_2\end{pmatrix} = A \cdot \begin{pmatrix} e_1 \\ e_2\end{pmatrix},$$ where $$A = 
+\begin{pmatrix}
+    a^1_1 & a^2_1 \\
+    a^1_2 & a^2_2
+\end{pmatrix}, \quad \det A > 0.$$ Let $G'$ and $\Omega'$ denote the corresponding quantities with respect to the frame field $(e'_1, e'_2)$. Then $$G' = A \cdot G \cdot A^T, \quad \Omega' = A \cdot G \cdot A^{-1}.$$ Therefore $$\Omega' \cdot G' = A \cdot (\Omega \cdot G) \cdot A^T,$$ i.e. $$\begin{pmatrix}
+    0 & \Omega'_{12} \\
+    -\Omega'_{12} & 0
+\end{pmatrix} = \begin{pmatrix}
+    a^1_1 & a^2_1 \\
+    a^1_2 & a^2_2
+\end{pmatrix}\begin{pmatrix}
+    0 & \Omega_{12} \\
+    -\Omega_{12} & 0
+\end{pmatrix}\begin{pmatrix}
+    a^1_1 & a^1_2 \\
+    a^2_1 & a^2_2
+\end{pmatrix}.$$
+Thus $$\Omega'_{12} = (a^1_1a^2_2 - a^2_1a^1_2) \Omega_{12} = (\det A) \cdot \Omega_{12}.$$ We also have $$g' = \det G' = (\det A)^2 \cdot \det G = (\det A)^2 \cdot g.$$ Hence $$\frac{\Omega'_{12}}{\sqrt{g'}} = \frac{\Omega_{12}}{\sqrt{g}}.$$ In the other words, $\Omega_{12}/\sqrt{g}$ is independent of the choice of the orientation-consistent local frame field, and is therefore an exterior differential 2-form defined on the whole manifold. If we choose a local coordinate system $u^i$ with the same orientation as $M$, and $\{e_1, e_2\}$ is the natural basis, then $$\Omega_{12} = \frac{1}{2}R_{12kl}\d u^k \wedge \d u^l = R_{1212}\d u^1 \wedge \d u^2.$$ Thus $$\frac{\Omega_{12}}{\sqrt{g}} = \frac{R_{1212}}{g} \cdot \sqrt{g} \d u^1 \wedge \d u^2 = -K\d\s,$$ where $K$ is the Gauss curvature of $M$ and $\d\s = \sqrt{g}\d u^1 \wedge \d u^2$ is the oriented area element of $M$.
+
+If $\{e_1, e_2\}$ is an orthogonal local frame field with an orientation consistent with that of $M$, then $$g = g_{11}g_{22} - g_{12}^2 = 1.$$ Thus $$K\d\s = -\Omega_{12}.$$ On the other hand, $$\Omega_{12} = \d\theta_{12} + \theta^i_1 \wedge \theta_{2i}.$$ The skew-symmetry of $\theta^j_i$ implies that $$\Omega_{12} = \d\theta_{12},$$ where $\theta_{12} = \D e_1 \cdot e_2$. It then follows that $$K\d\s = -\d\theta_{12}.$$ As long as there exists a smooth orthogonal frame field $\{e_1, e_2\}$ with an orientation consistent with $M$ in an open subset $U \subset M$, then there exists a connection form $\theta_{12}$ on $U$, and hence the above formula holds. 
+
+On an oriented 2-dimensional Riemannian manifold, a smooth orthogonal frame field with an orientation consistent with that of $M$ corresponds to a tangent vector field that is never zero. In fact, the tangent vector $e_2$ in the frame $\{e_1, e_2\}$ is obtained by rotating $e_1$ by $\pi/2$ according to the orientation of $M$. Therefore an orthogonal frame field $\{e_1, e_2\}$ with an orientation consistent with that of $M$ is equivalent to the unit tangent vector field $e_1$.
+
+A null point of a tangent vector field is called a \textbf{singular point}. Assume that there is a smooth vector field $X$ on $U$ that has exactly one singular point $p$, i.e. $X_q \neq 0$ whenever $q \in U - \{p\}$. Then there is a smooth unit tangent vector field $$a_1 = \frac{X}{|X|}$$ which determines an orthogonal frame field $\{e_1, e_2\}$ with an orientation consistent with that of $M$ in $U - \{p\}$. Therefore, if $\{e_1, e_2\}$ is a given orthogonal frame field on $U$ that is also orientation-consistent with $M$, then we may assume that 
+\begin{align*}
+    a_1 &= e_1\cos\a + e_2\sin\a, \\
+    a_2 &= -e_1\sin\a + e_2\cos\a,
+\end{align*}
+where $\a = \angle(e_1, a_1)$ is the oriented angle from $e_1$ to $a_1$. Although $\a$ is a multi-valued function, the difference between two values of $\a$ is an integer multiple of $2\pi$ at every point. Thus there always exists a continuous branch of $\a$ in a neighborhood of any point. The single-valued function obtained from this branch is smooth in the neighborhood. Let $$\omega_{12} = \D a_1 \cdot a_2,$$ then direct calculation yields that $$\omega_{12} = \d\a + \theta_{12}.$$
+
+Suppose $D$ is a simply connected domain containing the point $p$ whose boundary is a smooth simple closed curve $C = \p D$. Then $C$ has a induced orientation of $M$. Suppose the arc length parameter of $C$ is $s, 0 \le s \le L$, and the direction along the curve as $s$ increases is the same as the induced direction of $C$. So $C(0) = C(L)$. Since $C$ is compact, it can be covered by finitely many neighborhoods, and there exists a continuous branch of $\a$ in each neighborhood. Therefore, there exists a continuous function $$\a = \a(s), \quad 0 \le s \le L$$ on $C$. By the Fundamental Theorem of Calculus we have $$\a(L) - \a(0) = \int_0^L\d\a.$$ Since $\a(L)$ and $\a(0)$ are the angles between the tangent vectors $a_1$ and $e_1$ at the same point $C(0) = C(L)$, the left hand side is an integer multiple of $2\pi$, and is independent of the choice of the continuous branch of $\a(s)$. It is also independent of the choice of the frame field $\{e_1, e_2\}$. 
+
+The value of $$\a(L) - \a(0) = \int_0^L\d\a$$ given above is also independent of the choice of the simple closed curve $C$ surrounding the point $p$. Suppose there is another simply connected domain $D_1 \subset \mathring{D}$ containing $p$. Let $C_1 = \p D_1$. Then $D - D_1$ is a domain with boundary in $M$, and its boundary with induced orientation is $C - C_1$. By the Stokes' Formula, we have
+\begin{align*}
+    \int_{C - C_1}\d\a &= \int_{C - C_1}\omega_{12} - \int_{C - C_1}\theta_{12} \\
+    &= \int_{C - C_1}\omega_{12} - \int_{D - D_1}\d\theta_{12} \\
+    &= \int_{C - C_1}\omega_{12} + \int_{D - D_1}K\d\s.
+\end{align*}
+The right hand side is independent of the choice of the frame field $\{e_1, e_2\}$ on $D - D_1$. Hence we may assume that $e_i = a_i, i = 1,2$. Then the right hand side vanishes and hence $$\int_{C - C_1}\d\a = 0,$$ or equivalently, $$\int_C\d\a = \int_{C_1}\d\a.$$
+
+\begin{definition}
+    Suppose $X$ is a smooth tangent vector field with an isolated singular point $p$, and $U$ is a coordinate neighborhood of $p$ such that $p$ is the only singular point of $X$ in $U$. Then the integer $$I_p = \frac{1}{2\pi}[\a(L) - \a(0)] = \frac{1}{2\pi}\int_C\d\a,$$ obtained by the above construction is independent of the choice of the simple closed curve $C$ surrounding $p$, and the choice of the frame field $\{e_1, e_2\}$ on $U$. It is called the \textbf{index} of the tangent vector field $X$ at the point $p$. 
+\end{definition}
+
+Integrating $$\omega_{12} = \d\a + \theta_{12}$$ over $C$ we obtain $$\frac{1}{2\pi}\int_{C}\omega_{12} = \frac{1}{2\pi}\int_{C}\d\a - \frac{1}{2\pi}\int_D K\d\s.$$ Since the Gauss curvature is continuous at $p$, when $D$ is shrunk to a point, the integral $$\frac{1}{2\pi}\int_D K\d\s \rightarrow 0.$$ However, the integral $$\frac{1}{2\pi}\int_C\d\a$$ is exactly the constant $I_p$. Hence we have $$I_p = \frac{1}{2\pi}\lim_{C \rightarrow p}\int_C\omega_{12}.$$
+
+\begin{theorem}[Gauss-Bonnet Theorem]
+    Suppose $M$ is a compact oriented 2-dimensional Riemannian manifold. Then $$\frac{1}{2\pi}\int_M K \d\s = \chi(M),$$ where $\chi(M)$ is the \textbf{Euler characteristic} of $M$. 
+\end{theorem}
+\begin{proof}
+    Choose a smooth tangent vector field $X$ on $M$ with only finitely many isolated singular points $p_i, 1 \le i \le r$. For each $p_i$, we choose a $\e$-ball neighborhood $D_i$, where $\e$ is a sufficiently small positive number such that $p_i$ is the only singular point of $X$ in $D_i$. Let $C_i = \p D_i$, then $C_i$ is a simple closed curve with induced orientation from $M$ on $D_i$. Thus the tangent vector field $X$ determines a smooth orthogonal frame field $\{e_1, e_2\}$ on $M - \bigcup_iD_i$ that is orientation consistent, with $e_1 = X/|X|$. Suppose $\theta_{12} = \D e_1 \cdot e_2$. On $M - \bigcup_iD_i$, we have $$\d\theta_{12} = \Omega_{12} = -K\d\s.$$ Also, by the Stokes' Formula, $$\int_{M - \bigcup_iD_i}K\d\s = -\int_{M - \bigcup_iD_i}\d\theta_{12} = \sum_{i=1}^r\int_{C_i}\theta_{12}.$$ Since the frame field $\{e_1, e_2\}$ is actually well-defined on $M - \{p_i, 1 \le i \le r\}$, the equation still holds as $\e \rightarrow 0$. Also, since $K$ is a continuously differentiable function defined on the whole $M$, we have $$\lim_{\e \rightarrow 0}\int_{M - \bigcup_iD_i}K\d\s = \int_MK\d\s.$$ Noting that we also have $$\lim_{\e \rightarrow 0}\sum_{i=1}^r\int_{C_i}\theta_{12} = 2\pi\sum_{i=1}^rI_{p_i},$$ it follows that $$\frac{1}{2\pi}\int_MK\d\s = \sum_{i=1}^rI_{p_i}.$$
+
+    Since the left hand side is independent of the tangent vector field $X$, we may construct a special one as follows. Choose a triangulation of $M$ with $f$ faces, $e$ edges and $v$ vertices. Then we can construct a smooth tangent vector field $X$ such that the center of mass of each face, the midpoint of each edge, and each vertex is a singular point, whose index is +1, -1, and +1, respectively. For this tangent vector we have $$\sum_{i=1}^rI_{p_i} = f - e + v = \chi(M).$$ Hence $$\frac{1}{2\pi}\int_MK\d\s = \chi(M).$$
+\end{proof}
+
+The above proof also implies the \textbf{Hopf's Index Theorem} below.
+
+\begin{theorem}[Hopf's Index Theorem]
+    Suppose there is a smooth tangent vector field on a compact oriented 2-dimensional Riemannian manifold with finitely many singular points. Then the sum of its indices at the various singular points is equal to the Euler characteristic of the manifold. 
+\end{theorem}
+
+Suppose $C$ is a smooth curve on $M$, and $a_1$ is a unit tangent vector to $C$. Choose a unit normal vector $a_2$ to $C$ such that the orientation determined by $\{a_1, a_2\}$ is consistent with that of $M$. Since $\D a_1$ is colinear with $a_2$, we may assume $$\kappa_g = \frac{\D a_1}{\d s} \cdot a_2.$$ $\kappa_g$ is called the \textbf{geodesic curvature} of $C$. A necessary and sufficient condition for $C$ to be a geodesic curve is $$\kappa_g \equiv 0.$$
+
+Suppose $D$ is a compact domain with boundary in an oriented 2-dimensional Riemannian manifold $M$ whose boundary $\p D$ is composed of finitely many piecewise smooth simple closed curves with induced orientation from $D$. Suppose the interior angle of $\p D$ at each vertex $p_i$ is $\a_i, 1 \le i \le l$. By the similar method we can prove the \textbf{Gauss-Bonnet Formula} $$\sum_{i=1}^l(\pi - \a_i) - \int_{\p D}\kappa_g\d s + \int_DK\d\s = 2\pi\cdot\chi(D),$$ where $\kappa_g$ is the geodesic curvature along $\p D$. If $D$ is a geodesic triangle in $M$, and $\p D$ is a closed curve composed of three geodesic segments, then $\chi(D) = 1$ and therefore $$\a_1 + \a_2 + \a_3 - \pi = \int_DK\d\s.$$
+
+\section{Lie Groups}
+
+\def\Ad{\text{Ad}}
+\def\ad{\text{ad}}
+
+\subsection{Lie Groups}
+
+\begin{definition}
+    Let $G$ be a nonempty set. If
+    \begin{enumerate}
+        \item $G$ is a group;
+        \item $G$ is an $r$-dimensional smooth manifold; and
+        \item the inverse map $\tau : G \rightarrow G$ such that $\tau(g) = g^{-1}$ and the multiplication map $\vphi : G \times G \rightarrow G$ such that $\vphi(g_1, g_2) = g_1 \cdot g_2$ are both smooth maps,
+    \end{enumerate}
+    then $G$ is called an $r$-dimensional \textbf{Lie group}.
+\end{definition}
+
+Since $\tau^2 = \text{id} : G \rightarrow G$, $\tau$ is a diffeomorphism from $G$ to itself. For $g in G$, the \textbf{right translation} by $g$ on $G$ is $R_g : G \rightarrow G$ such that $R_g(x) = \vphi(x, g) = x \cdot g,$ and the \textbf{left translation} is $L_g : G \rightarrow G$ such that $$L_g(x) = \vphi(g, x) = g \cdot x.$$ Since the inverse of $L_g$ is $L_{g^{-1}}$ and the inverse of $R_g$ is $R_{g^{-1}}$, $L_g$ and $R_g$ are both diffeomorphisms from $G$ to itself. 
+
+If $G_1, G_2$ are Lie groups, then the product manifold $G_1 \times G_2$ can also be viewed as the product of groups. Therefore $G_1 \times G_2$ is also a Lie group, called the \textbf{direct product} of the Lie groups $G_1$ and $G_2$. 
+
+\begin{example}
+    $\GL(n; \R)$ is the set of nondegenerate $n \times n$ real matrices with matrix multiplication for its group operation. Since $\GL(n; \R)$ is an open subset of $\R^{n^2}$, it has the differentiable structure induced from $\R^{n^2}$. Suppose $$A = (A^j_i), \quad B = (B^j_i) \in \GL(n; \R).$$ Then $$(A \cdot B)^j_i = A^k_iB^j_k.$$ Since the right hand side is a polynomial of the elements of the matrices $A$ and $B$, the map $$\vphi(A, B) = A \cdot B$$ is smooth. Moreover, since the elements of $A^{-1}$ are rational functions of the elements $A^j_i$, the inverse map is also smooth. Hence $\GL(n; \R)$ is an $n^2$-dimensional Lie group, called the \textbf{general linear group}. Similarly the multiplicative group $\GL(n; \C)$ of nondegenerate $n \times n$ complex matrices is a $2n^2$-dimensional Lie group.
+\end{example}
+
+\begin{example}
+    Suppose $G$ is a Lie group and $H$ is a subgroup of $G$. If $H$ is regular submanifold of $G$, then it can be shown that the restrictions of the multiplicaiton map and the inverse map, namely $$\vphi|_{H \times H} : H \times H \rightarrow H, \quad \tau|_H : H \rightarrow H,$$ are both smooth.
+
+    Suppose $$\SL(n; \R) = \{A \in \GL(n; \R) \mid \det A = 1\}$$ and $$\O(n; \R) = \{A \in \GL(n; \R) \mid A \cdot A^T = I\}.$$ Then $\SL(n; \R)$ and $\O(n; \R)$ are both subgroups and regular submanifolds of $\GL(n; \R)$. Therefore they are Lie groups. $\SL(n; \R)$ and $\O(n; \R)$ are called the \textbf{special linear group} and the \textbf{real orthogonal group}, respectively.
+\end{example}
+
+Suppose $G$ is an $r$-dimensional Lie group with identity $e$. Since for every $a \in G$, the map $R_{a^{-1}}$ is a diffeomorphism from $G$ to itself that takes $a$ to $e$, the tangent map $(R_{a^{-1}})_* : G_a \rightarrow G_e$ is a linear isomorphism, where $G_a$ is the tangent space of $G$ at $a$. Suppose $X \in G_a$. Let $$\omega(X) = (R_{a^{-1}})_*X.$$ Then $\omega$ is a differential 1-form defined on $G$ with values in $G_e$, called the \textbf{right fundamental differential form} or \textbf{Maurer-Cartan form} of the Lie group $G$. If we choose a basis $\delta_i, 1 \le i\le r$ for $G_e$, then we may write $$\omega = \omega^i\delta_i,$$ where $\omega^i, 1 \le i \le r$ are $r$ differential 1-forms on $G$ that are linearly independent everywhere.
+
+Choose a local coordinate system $(U; x^i)$ and $(W; y^i)$ at points $e$ and $a$, respectively. When $U$ is sufficiently small, there exists a neighborhood $W_1 \subset W$ of $a$ such that $\vphi(U \times W_1) \subset W$. Choose $$\delta_i = \left.\frac{\p}{\p x^i}\right|_e$$ and let $$\vphi^i(x, y) = y^i \circ \vphi(x, y), \quad (x, y) \in U \times W_1.$$ Then the isomorphism $(R_a)_* : G_e \rightarrow G_a$ is given as $$(R_a)_*\delta_i = \left.\frac{\p\vphi^j(x, a)}{\p x^i}\right|_{x=e} \cdot \left.\frac{\p}{\p y^j}\right|_{a}.$$ Because $$(R_{a^{-1}})_* \circ (R_a)_* = \text{id} : G_e \rightarrow G_e,$$ we have $$(R_{a^{-1}})_*\left.\frac{\p}{\p y^i}\right|_a = \Lambda^j_i(a) \delta_j,$$ Where $(\Lambda^j_i(a))$ is the inverse matrix of $((\p \vphi^i(x, a)/\p y^j)_{x=e})$. Therefore $$\omega^i = \Lambda^i_j(a) \cdot \d y^j,$$ hence $\omega^i$ is a smooth differential 1-form. 
+
+\begin{theorem}
+    Suppose $\s : G \rightarrow G$ is a smooth map. If $\s$ is a right translation of the Lie group $G$, then it preserves the right fundamental differential form, i.e., $$\s^*\omega^i = \omega^i, \quad 1 \le i \le r.$$
+\end{theorem}
+\begin{proof}
+    Suppose $\s$ is the right translation $R_x$ for some $x \in G$. Then for any $X \in G_a$ we have 
+    \begin{align*}
+        ((R_x)^*\omega)(X) &= \omega((R_x)_*X) \\
+        &= (R_{(ax)^{-1}})_* \circ (R_x)_*X \\
+        &= (R_{a^{-1}})_*X \\ 
+        &= \omega(X).
+    \end{align*}
+    Hence $$(R_x)_*\omega = \omega.$$
+\end{proof}
+
+Because $\d \circ \s^* = \s^* \circ \d$ holds for any smooth map $\s : G \rightarrow G$, $\d\omega^i$ is still invariant under right-translation. Let $$\d\omega^i = -\frac{1}{2}c^i_{jk}\omega^j \wedge \omega^k,$$ where $$c^i_{jk} + c^i_{kj} = 0.$$ Because $\omega^i$ and $\d\omega^i$ are both right-invariant, the $c^i_{jk}$ are constants, called the \textbf{structure constants} of the Lie group. The above equation is called the \textbf{structure equation} or the \textbf{Maurer-Cartan equation} of the Lie group $G$. 
+
+\begin{theorem}
+    The structure constants $c^i_{jk}$ satisfy the Jacobi identity $$c^i_{jk}c^j_{hl} + c^i_{jh}c^j_{lk} + c^i_{jl}c^j_{kh} = 0.$$
+\end{theorem}
+\begin{proof}
+    Exteriorly differentiating $$\d\omega^i = -\frac{1}{2}c^i_{jk}\omega^j \wedge \omega^k,$$ we get
+    \begin{align*}
+        0 &= -\frac{1}{2}c^i_{jk}(\d\omega^j \wedge \omega^k - \omega^j \wedge \d\omega^k) \\
+        &= \frac{1}{2}c^i_{jk}c^j_{hl}\omega^h \wedge \omega^l \wedge \omega^k \\
+        &= \frac{1}{6}(c^i_{jk}c^j_{hl} + c^i_{jh}c^j_{lk} + c^i_{jl}c^j_{kh})\omega^h \wedge \omega^l \wedge \omega^k.
+    \end{align*}
+    The terms inside the parentheses are skew-symmetric with respect to $k, h, l$. Hence the Jacobi identity follows.
+\end{proof}
+
+\begin{definition}
+    Suppose $X$ is a smooth tangent vector field on a Lie group $G$. If, for any $a \in G$, we have $$(R_a)_*X = X,$$ then we say that the tangent vector field $X$ is a \textbf{right-invariant vector field} on $G$. 
+\end{definition}
+
+Choose an arbitrary tangent vector $X_e \in G_e$, and let $X_a = (R_a)_*X_e$ for each $a \in G$. Then we obtain a smooth tangent vector field $X$ on $G$. For any $a, x \in G$, we have $$(R_x)_*X_a = (R_x)_* \circ (R_a)_*X_e = (R_{ax})_*X_e = X_{ax},$$ hence $X$ is right-invariant. Let $X_i$ denote the right-invariant vector field obtained by the right translation of $\delta_i \in G_e$. Then the $X_i, 1 \le i \le r$ are tangent vector fields which are linearly independent everywhere on $G$, and any right-invariant vector field on $G$ can be expressed as a linear combination of the $X_i$ with constant coefficients. Hence the set of right-invariant vector fields on $G$ forms an $r$-dimensional vector space, denoted by $\mathcal{G}$, and is isomorphic to $G_e$. 
+
+By the construction of $X_i$ we have $$\omega(X_i) = \delta_i,$$ that is, $$\omega^j(X_i) = \<X_i, \omega^j\> = \delta^j_i.$$ Thus the fundamental differential forms $\omega^i, 1 \le i \le r$ and the right-invariant vector fields $X_j, 1 \le j \le r$ constitute sets of mutually dual coframe fields and frame fields, respectively, on the Lie group $G$. Therefore a tangent vector field $X$ on $G$ is right-invariant if and only if the value of the right fundamental form on $X$ is constant. 
+
+\begin{theorem}\label{thm:poisson}
+    If $X, Y$ are right-invariant vector fields on $G$, then $[X, Y]$ is also a right-invariant vector field on $G$.
+\end{theorem}
+\begin{proof}
+    First we have $$\<X \wedge Y, \d\omega^i\> = X\<Y, \omega^i\> - Y\<X, \omega^i\> - \<[X, Y], \omega^i\>$$ from Lemma \ref{lem:wedge}. From the structure equation we obtain $$\<X \wedge Y, \d\omega^i\> = -\frac{1}{2}c^i_{jk}\<X \wedge Y, \omega^j \wedge \omega^k\> = -c^i_{jk}\omega^j(X)\omega^k(Y).$$ Since $X, Y$ are both right-invariant vector fields, we have $\omega^j(X), \omega^k(Y)$ are both constant. Therefore $$\omega^i([X, Y]) = c^i_{jk}\omega^j(X)\omega^k(Y)$$ is also constant. This implies that $[X, Y]$ is right-invariant.  
+\end{proof}
+
+The Poisson bracket is then closed in $\mathcal{G}$ and defines a multiplication operation on $\mathcal{G}$, which satisfies the following conditions:
+\begin{enumerate}
+    \item Distributive Law: $[a_1X_1 + a_2X_2, Y] = a_1[X_1, Y] + a_2[X_2, Y]$;
+    \item Skew-symmetric Law: $[X, Y] = -[Y, X]$;
+    \item Jacobi Identity: $[X, [Y, Z]] + [Y, [Z, X]] + [Z, [X, Y]] = 0$.
+\end{enumerate}
+If an $n$-dimensional real vector space has a multiplication operation satisfying the distributive law, the skew-symmetric law and the Jacobi identity, then we call it an $n$-dimensional \textbf{Lie algebra}. Then vector space $\mathcal{G}$ of all right-invariant vector fields on a Lie group $G$ is an $r$-dimensional Lie algebra, called the \textbf{Lie algebra} of the Lie group $G$.
+
+The structure constants of a Lie group provide the multiplication table for its Lie algebra $\mathcal{G}$. In fact, by the proof of the Theorem \ref{thm:poisson}, we have $$\omega^i([X_j, X_k]) = c^i_{jk},$$ and then $$[X_j, X_k] = c^i_{jk}X_i.$$ The skew-symmetry of the structure constants $c^i_{jk}$ with respect to the lower indices and the Jacobi identity satisfied by these constants correspond to the skew-symmetry of the Poisson bracket and its Jacobi identity. Thus if we let $$[\delta_j, \delta_k] = c^i_{jk}\delta_i,$$ then $G_e$ also becomes an $r$-dimensional Lie algebra, and $G_e$ and $\mathcal{G}$ are isomorphic as Lie algebras. Usually the Lie algebra $G_e$ is also called the \textbf{Lie algebra} of the Lie group $G$. 
+
+\begin{example}
+    Suppose $A = (A^j_i) \in \GL(n; \R)$. Then $A^j_i, 1 \le i, j \le n$ is a coordinate system on the manifold $\GL(n; \R)$, and then $\d A^j_i, 1 \le i, j \le n$ gives a coframe field on $\GL(n; \R)$. The right fundamental differential form of $\GL(n; \R)$ can be written as $$\omega = \d A \cdot A^{-1}.$$ Exterior differentiation then yields \begin{align*}
+        \d\omega = -\d A \wedge \d A^{-1} &= -(\d A \cdot A^{-1}) \wedge (A \cdot \d A^{-1}) \\
+        &= (\d A \cdot A^{-1}) \wedge (\d A \cdot A^{-1}) = \omega \wedge \omega.
+    \end{align*}
+
+    Let $\gl(n; \R)$ denote the tangent space at the identity element $I$ in the Lie group $\GL(n; \R)$. It is the $n^2$-dimensional vector space with $n \times n$ real matrices as its elements. In this representation, $\gl(n; \R)$ has a basis $E^j_i, 1 \le i, j \le n$, where $E^j_i$ denote the $n \times n$ matrix with the value 1 for the element at the intersection of the $j$-th row and the $i$-th column, and 0 for other entries. Hence we may write $$\omega = \omega^j_iE^i_j = (\omega^j_i).$$ From $$\d\omega = \omega \wedge \omega$$ we have $$\d\omega^j_i = \omega^k_i \wedge \omega^j_k = \frac{1}{2}(\delta^p_i\delta^j_q\delta^r_s - \delta^r_i\delta^j_s\delta^p_q) \omega^s_p \wedge \omega^q_r.$$ Hence the structure constants of the Lie group $\GL(n; \R)$ are $$c^{(i, j)}_{(p, s)(r, q)} = -\delta^p_i\delta^j_q\delta^r_s + \delta^r_i\delta^j_s\delta^p_q.$$ The multiplication table for the Lie algebra $\gl(n; \R)$ is then $$[E^p_s, E^r_q] = \delta^p_qE^r_s - \delta^r_sE^p_q = E^r_q \cdot E^p_s - E^p_s \cdot E^r_q.$$ Suppose $A, B \in \gl(n; \R)$, then the above formula implies that $$[A, B] = B \cdot A - A \cdot B.$$
+\end{example}
+
+\begin{definition}
+    Suppose $G, H$ are two Lie groups. If there is a smooth map $f : H \rightarrow G$ which is also a homomorphism between the groups, then $f$ is called a \textbf{homomorphism} of Lie groups from $H$ to $G$. If $f$ is also a diffeomorphism, then it is called an \textbf{isomorphism} of Lie groups from $H$ to $G$. 
+\end{definition}
+
+\begin{theorem}
+    Suppose $f : H \rightarrow G$ is a Lie group homomorphism, then $f$ induces a homomorphism $f_* : \mathcal{H} \rightarrow \mathcal{G}$ between the Lie algebras. If $f$ is a Lie group isomorphism, then $f_*$ is an isomorphism betweeen the Lie algebras. 
+\end{theorem}
+\begin{proof}
+    Let $f_*$ denote the tangent map of the smooth map $f$. First we show that $f_*$ maps the right-invariant vector fields of the Lie group $H$ to the right-invariant vector fields of the Lie group $G$. Choose any $X_e \in H_e$, and let $Y_{e'} = f_*X_e \in G_{e'}$, where $e$ is the identity element of $H$ and $e' = f(e)$ is the identity element of $G$. Let $X, Y$ be the right-invariant vector fields generated by $X_e, Y_{e'}$ on their respective Lie groups. Then for any $a \in H$, we have $$f_*X_a = f_* \circ (R_a)_*X_e = (R_{a'})_* \circ f_*X_e = (R_{a'})_*Y_{e'} = Y_{a'},$$ where $a' = f(a) \in G$. Thus the image of a right-invariant vector fields on $H$ under $f_*$ can be extended to a right-invariant vector field on $G$. Use the notation $f_* : \mathcal{H} \rightarrow \mathcal{G}$ for this correspondence. Since the tangent map $f_*$ commutes with the Poisson bracket product of vector fields. Hence $f_* : \mathcal{H} \rightarrow \mathcal{G}$ defined above is a homomorphism between Lie algebras. 
+
+    When $f$ is an isomorphism between Lie groups, $f_*$ is also invertible and hence is an isomorphism between Lie algebras. 
+\end{proof}
+
+Suppose $G$ is an $r$-dimensional Lie group. A homomorphism from the Lie group $G$ to $\GL(n; \R)$ is called a \textbf{representation} of order $n$ of the Lie group $G$. A natural representation of order $r$ for each $r$-dimensional Lie group can be defined as follows. 
+
+Suppose $x \in G$, and let $$\a_x(g) = x \cdot g \cdot x^{-1} = L_x \circ R_{x^{-1}}(g).$$ Then $\a_x$ is an automorphism of the Lie group $G$, called the \textbf{inner automorphism} of $G$. The tangent map $(\a_x)_*$ of $\a_x$ determines an automorphism of the Lie algebra $G_e$. Let $\Ad(x) = (\a_x)_* : G_e \rightarrow G_e$, then $\Ad(x)$ is a nondegenerate linear transformation on the linear space $G_e$, and is therefore an element of $\GL(r; \R)$. Hence we obtain a map $\Ad : G \rightarrow \GL(r; \R)$. It can be verified that $\Ad$ is a homomorphism between groups. If we use local coordinates, $\Ad$ is given by smooth functions of the local coordinates, hence $\Ad$ is a homomorphism between Lie groups. 
+
+\begin{definition}
+    The Lie group homomorphism $\Ad : G \rightarrow \GL(r; \R)$ given above is called the \textbf{adjoint representation} of the Lie group $G$. 
+\end{definition}
+
+The tangent map of the adjoint representation $\Ad : G \rightarrow \GL(r; \R)$ induces a homomorphism $\ad$ from the Lie algebra $G_e$ to $\gl(r; \R)$, called the \textbf{adjoint representation} of the Lie algebra $G_e$ of the Lie group $G$. Since $\gl(r; \R)$ can be viewed as a set of linear transformations on $G_e$, the adjoint representation $\ad$ actually assigns to each $X \in G_e$ a linear transformation $\ad(X)$ on $G_e$. 
+
+\bibliographystyle{plain} 
+\bibliography{refs}
+
+\end{document}

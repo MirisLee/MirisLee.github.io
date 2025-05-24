@@ -1,0 +1,620 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usetikzlibrary{cd}
+\usepackage{quiver}
+\usepackage{fontsetup}
+\usepackage{geometry}
+\usepackage[colorlinks,allcolors=blue]{hyperref}
+
+\geometry{a4paper, scale=0.75}
+
+\newtheoremstyle{theorem}{6pt}{6pt}{}{}{\bfseries}{}{8pt}{}
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+
+\newtheoremstyle{remark}{3pt}{3pt}{}{}{\bfseries}{}{8pt}{}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\def\calC{{\symcal{C}}}
+\def\calD{{\symcal{D}}}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\op}{op}
+\DeclareMathOperator*{\colim}{colim}
+
+\title{Category Theory}
+\author{Miris Li}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{1-Categories and Functors}
+
+\begin{definition}
+    A \textbf{1-category} $\calC$ consists of the followings:
+    \begin{itemize}
+        \item a class of \textbf{objects} $X, Y, \cdots$, for which we write $X \in \calC$ if $X$ is an object in $\calC$;
+        \item for each $X, Y \in \calC$ a class $\Hom_\calC(X, Y)$ of \textbf{morphisms}, in which an element $f \in \Hom_\calC(X, Y)$ is also denoted by $f : X \to Y$, or 
+        $$\begin{tikzcd}
+            X & Y
+            \arrow["f", from=1-1, to=1-2]
+        \end{tikzcd};$$
+        \item for each $X \in \calC$ an element $\id_X \in \Hom_\calC(X, X)$;
+        \item for each $X, Y, Z \in \calC$, a function, namely \textbf{composition}, $\circ : \Hom_\calC(X, Y) \times \Hom_\calC(Y, Z) \to \Hom_\calC(X, Z)$ such that 
+        \begin{itemize}
+            \item $(h \circ g) \circ f = h \circ (g \circ f)$ for any $f : X \to Y$, $g : Y \to Z$, and $h : Z \to W$, and
+            \item $\id_Y \circ f = f = f \circ \id_X$ for any $f : X \to Y$, i.e., the following diagrams commute:
+            $$\begin{tikzcd}
+	            X & Y \\
+	            & Y
+	            \arrow["f", from=1-1, to=1-2]
+	            \arrow["f"', from=1-1, to=2-2]
+	            \arrow["{\id_Y}", from=1-2, to=2-2]
+            \end{tikzcd} 
+            \quad 
+            \begin{tikzcd}
+                X & Y \\
+                X
+                \arrow["f", from=1-1, to=1-2]
+                \arrow["{\id_X}", from=1-1, to=2-1]
+                \arrow["f"', from=2-1, to=1-2]
+            \end{tikzcd}$$
+        \end{itemize}
+    \end{itemize}
+\end{definition}
+
+\begin{example}
+    There are many examples of categories:
+    \begin{enumerate}
+        \item The category $\symsf{Set}$, whose objects are sets and morphisms are maps.
+        \item The category $\symsf{Grp}$, whose objects are groups and morphisms are group homomorphisms.
+        \item The category $\symsf{Top}$, whose objects are topological spaces and morphisms are continuous maps.
+    \end{enumerate}
+\end{example}
+
+The above categories are very large, in the sense that their objects form a proper class. If the class of objects in a category is a set, then we call the category a \textbf{small category}. 
+
+\begin{example}
+    There are also examples of small categories. 
+    \begin{enumerate}
+        \item A set $S$ can be viewed as a category, with its elements as objects, and the morphisms are given by $$\Hom_S(x, y) = \begin{cases} \{\id_x\}, & x = y, \\ \varnothing, & x \neq y. \end{cases}$$
+        \item Suppose $G$ is a group. We can define a category $\symsf{B}G$ with a single element $\ast$ as its only object, and the elements of $G$ as its morphisms. The composition of two morphism $g, h : \ast \to \ast$ is given by $$g \circ h := gh : \ast \to \ast,$$ where $gh$ is the product of $g$ and $h$ in the group $G$. The identity morphism $\id_\ast$ is exactly the identity element $e$ of $G$. 
+        \item Suppose $(P, \leq)$ be a poset. Then $P$ can also be viewed as a category whose objects are its elements, and morphisms are given by $$\Hom_P(x, y) = \begin{cases} \{(x, y)\}, & x \leq y, \\ \varnothing, & \text{otherwise}. \end{cases}$$ The composition of morphisms are well-defined from the transitivity of $\leq$. 
+        \item Suppose $G = (V, E)$ is a directed graph. We define the path category of $G$, with vertices as objects and paths from $v$ to $v'$ as morphisms from $v$ to $v'$. The composition are just the connection of paths. 
+    \end{enumerate}
+\end{example}
+
+\begin{definition}
+    A morphism $f : X \to Y$ in a category $\calC$ is called an \textbf{isomorphism} if there is a morphism $g : Y \to X$ such that $g \circ f = \id_X$ and $f \circ g = \id_Y$. An isomorphism from an object $X \in \calC$ to itself is called an \textbf{automorphism}. 
+\end{definition}
+
+\begin{example}
+    A group homomorphism is an isomorphism in $\symsf{Grp}$ if and only if it is a group isomorphism, and a continuous map is an isomorphism in $\symsf{Top}$ if and only if it is a homeomorphism. 
+\end{example}
+
+Note that he set of all automorphisms of an object $X$ in $\calC$, denoted by $\Aut_\calC(X)$, is actually a group under composition. 
+
+\begin{example}
+    \begin{enumerate}
+        \item In $\symsf{Set}$, the automophism group of the set $\{1, \cdots, n\}$ is isomorphic to $S_n$, the symmetric group of $n$ elements. 
+        \item By the definition of $\symsf{B}G$, we can easily see that $$\Aut_{\symsf{B}G}(\ast) \cong G.$$
+    \end{enumerate}
+\end{example}
+
+\begin{example}
+    Suppose $X$ is a topological space. We define the \textbf{fundamental groupoid} $\Pi_1(X)$ to be a category whose objects are points in $X$, and morphisms from $x_0$ to $x_1$ are homotopic classes of paths from $x_0$ to $x_1$. It can be seen that $$\Aut_{\Pi_1(X)}(x) = \pi_1(X, x), \quad x \in X.$$ The fundamental groupoids can be used to give a proof of Seifert-van Kampen theorem. 
+\end{example}
+
+\begin{definition}
+    A morphism $f : X \to Y$ in a category $\calC$ is called a \textbf{monomorphism} if for each $U \in \calC$, the map $$(f \circ -) : \Hom_\calC(U, X) \to \Hom_\calC(U, Y)$$ is a monomorphism of sets. A morphism $f : X \to Y$ in a category $\calC$ is called a \textbf{epimorphism} if for each $U \in \calC$, the map $$(- \circ f) : \Hom_\calC(Y, U) \to \Hom_\calC(X, U)$$ is a monomorphism of sets. 
+\end{definition}
+
+\begin{definition}
+    Suppose $\calC$ is a category. We define the \textbf{dual category} $\calC^{\op}$ of $\calC$ to be the category whose objects are just the objects of $\calC$, and the morphisms are given by $$\Hom_{\calC^{\op}}(X, Y) = \Hom_\calC(Y, X)$$ for each $X, Y \in \calC$. 
+\end{definition}
+
+It is not hard to see that a morphism $f : X \to Y$ is a monomorphism in $\calC$ if and only if the corresponding $f^{\op}: Y \to X$ is an epimorphism in in $\calC^{\op}$. 
+
+For a group $G$, we can always define another group $G^{\op}$ with the same elements as $G$, and the multiplication on $G^{\op}$ is given by $(g, h) \mapsto hg$ for each $g, h \in G$, where the right hand side is the product in $G$. Clearly we have $$\symsf{B}(G^{\op}) = \symsf{B}G^{\op}.$$
+
+\begin{definition}
+    A \textbf{functor} $F : \calC \to \calD$ between two categories $\calC$ and $\calD$ assigns to each object $X \in \calC$ an object $F(x) \in \calD$, and to each morphism $f : X \to Y$ in $\calC$ a morphism $F(f) : F(X) \to F(Y)$ in $\calD$, such that 
+    \begin{itemize}
+        \item $F(\id_X) = \id_{F(X)}$ for each $X \in \calC$, and 
+        \item $F(g \circ f) = F(g) \circ F(f)$ for each $f : X \to Y$ and $g : Y \to Z$.
+    \end{itemize}
+\end{definition}
+
+There are many things can be identified with functors between categories. 
+
+\begin{example}
+    \begin{enumerate}
+        \item Let $\symsf{1} := \{\ast\}$ be the category with a single object and a single morphism, which is the identity morphism. A functor $\symsf{1} \to \calC$ is then identified with an object in $\calC$.
+        \item Let $\{ 0 \to 1 \}$ be the category defined from the poset $\{0 \leq 1\}$. A functor $\{0 \to 1\} \to \calC$ is then identified with a morphism in $\calC$. 
+        \item Suppose $G$ is a group. A functor $\symsf{B}G$ to a category $\calC$ is a kind of action of $G$ on an object in $\calC$. In particalr, a functor $\symsf{B}G \to \symsf{Set}$ is identified with a group action of $G$ on a set, and a functor $\symsf{B}G \to \symsf{Vect}_F$ is identified with a group representation of $G$ over a field $F$. 
+    \end{enumerate}
+\end{example}
+
+\begin{example}
+    We can define two different power set functors $P : \symsf{Set} \to \symsf{Set}$ and $P' : \symsf{Set}^{\op} \to \symsf{Set}$. Both functors assigns to each set $X$ the power set $P(X)$. However, $P$ assigns to each map $f : X \to Y$ the map $P(f) : P(X) \to P(Y)$ that sends $A \subset X$ to its image $f(A)$ under $f$, while $P'$ assigns to each map $f : X \to Y$ the map $P'(f) : P(Y) \to P(X)$ that sends $B \subset Y$ to its preimage $f^{-1}(B)$ under $f$.
+
+    If we consider the functor $\Hom_{\symsf{Set}}(-, \{0, 1\}) : \symsf{Set}^{\op} \to \symsf{Set}$, then it does the same thing as $P'$. Such a functor $\calC^{\op} \to \symsf{Set}$ that can be expressed as $\Hom_\calC(-, X)$ for some $X \in \calC$ is called a \textbf{representable functor}.
+\end{example}
+
+\begin{example}
+    Consider the category $\symsf{Top}$. We can define the open set functor $\symsf{Open} : \symsf{Top}^{\op} \to \symsf{Set}$ that assigns to each topological space $X$ the set of open subsets of $X$, and to each continuous map $f : X \to Y$ the map $\symsf{Open}(f) : \symsf{Open}(Y) \to \symsf{Open}(X)$ that sends an open subset $U \subset Y$ to its preimage $f^{-1}(U) \subset X$. It can be shown that $\symsf{Open}$ is also a representable functor. Consider the topology on $\{0, 1\}$ given by $\{\varnothing, \{1\}, \{0, 1\}\}$. Then $\symsf{Open}$ can be identified with the functor $\Hom_{\symsf{Top}}(-, \{0, 1\}) : \symsf{Top}^{\op} \to \symsf{Set}$ in a natural way. 
+\end{example}
+
+There are many functors in the category theory that are called \textit{forgetful functors}. We can consider the following sequence of forgetful functors: 
+$$\begin{tikzcd}
+	{_{\symbb{Q}}\symsf{Alg}} & {\symsf{Rng}} & {\symsf{Ab}} & {\symsf{Grp}} & {\symsf{Set}} & {\symsf{1}}
+	\arrow[from=1-1, to=1-2]
+	\arrow[from=1-2, to=1-3]
+	\arrow[from=1-3, to=1-4]
+	\arrow[from=1-4, to=1-5]
+	\arrow[from=1-5, to=1-6]
+\end{tikzcd}.$$ 
+However, the extent of forgetfulness of functors are not always the same. 
+
+\begin{definition}
+    Suppose $F : \calC \to \calD$ is a functor. We say $F$ is \textbf{faithful} if for each $X, Y \in \calC$, the map $$F : \Hom_\calC(X, Y) \to \Hom_\calD(F(X), F(Y))$$ is injective. We say $F$ is \textbf{full} if for each $X, Y \in \calC$, the map $$F : \Hom_\calC(X, Y) \to \Hom_\calD(F(X), F(Y))$$ is surjective. We say $F$ is \textbf{fully faithful} if it is both faithful and full.
+\end{definition}
+
+In the sequence of forgetful functors above, the functors $_{\symbb{Q}}\symsf{Alg} \to \symsf{Rng}$ and $\symsf{Ab} \to \symsf{Grp}$ are both fully faithful, so they only forget some \textit{properties} of objects; the functors $\symsf{Rng} \to \symsf{Ab}$ and $\symsf{Grp} \to \symsf{Set}$ are faithful but not full, so they forget some \textit{structure} of objects; the functor $\symsf{Set} \to \symsf{1}$ is neither full nor faithful, and it just forgets everything.
+
+\begin{definition}
+    Suppose $F, G : \calC \to \calD$ are two functors. A \textbf{natural transformation} $\alpha : F \to G$, expressed in a diagram as follows:
+    $$\begin{tikzcd}
+        {\calC} && {\calD}
+        \arrow[""{name=0, anchor=center, inner sep=0}, "G"', curve={height=12pt}, from=1-1, to=1-3]
+        \arrow[""{name=1, anchor=center, inner sep=0}, "F", curve={height=-12pt}, from=1-1, to=1-3]
+        \arrow["\alpha", shorten <=3pt, shorten >=3pt, Rightarrow, from=1, to=0]
+    \end{tikzcd}$$ 
+    assigns to each object $X \in \calC$ a morphism $\alpha_X : F(X) \to G(X)$ in $\calD$, such that for each morphism $f : X \to Y$ in $\calC$, the following diagram commutes:
+    $$\begin{tikzcd}
+        {F(X)} & {G(X)} \\
+        {F(Y)} & {G(Y)}
+        \arrow["{\alpha_X}", from=1-1, to=1-2]
+        \arrow["{F(f)}"', from=1-1, to=2-1]
+        \arrow["{G(f)}", from=1-2, to=2-2]
+        \arrow["{\alpha_Y}"', from=2-1, to=2-2]
+    \end{tikzcd}$$
+    If $\alpha_X$ is an isomorphism for each $X \in \calC$, then we say $\alpha$ is a \textbf{natural isomorphism} and write $F \overset{\alpha}{\cong} G$. 
+\end{definition}
+
+Inspired by the definition of homotopy in topology, we can view a natural transformation as a kind of \textit{homotopy} between functors. Precisely, a natural transformation $\alpha : F \to G$, where $F, G$ are functors from $\calC$ to $\calD$, is equivalent to a functor $h : \calC \times \{0 \to 1\} \to \calD$ such that $h|_{\calC \times 0} = F$ and $h|_{\calC \times 1} = G$.
+
+Note that for two categories $\calC$ and $\calD$, the functors between them form a category $\symsf{Fct}(\calC, \calD)$, where the morphisms are given by natural transformations between them.
+
+\begin{example}
+    Suppose $G$ is a group. We have seen that each functor $\symsf{B}G \to \symsf{Vect}_F$ is identified with a group representation of $G$ over a field $F$. Suppose $\rho_1, \rho_2 : \symsf{B}G \to \symsf{Vect}_F$ are two representations of $G$. A natural transformation $\varphi : \rho_1 \to \rho_2$ then makes the following diagram commute for each $g \in G$:
+    $$\begin{tikzcd}
+        {\rho_1(\ast)} & {\rho_2(\ast)} \\
+        {\rho_1(\ast)} & {\rho_2(\ast)}
+        \arrow["{\varphi_\ast}", from=1-1, to=1-2]
+        \arrow["{\rho_1(g)}"', from=1-1, to=2-1]
+        \arrow["{\rho_2(g)}", from=1-2, to=2-2]
+        \arrow["{\varphi_\ast}"', from=2-1, to=2-2]
+    \end{tikzcd}$$
+    which is exactly the definition of a morphism between representations of $G$ over $F$. This shows that $\symsf{Fct}(\symsf{B}G, \symsf{Vect}_F)$ can be identified with the category $_G\symsf{Rep}$ of representations of $G$ over $F$, or equivalently, the category $_{F[G]}\symsf{Mod}$ of modules over the group ring $F[G]$. 
+\end{example}
+
+\begin{definition}
+    Suppose $\calC, \calD$ are categories and $F : \calC \to \calD$, $G : \calD \to \calC$ are functors. If $G \circ F \cong \id_\calC$ and $F \circ G \cong \id_\calD$, then we say that $F$ is a \textbf{equivalence of categories} and that $\calC$ and $\calD$ are equivalent, denoted by $\calC \simeq \calD$.
+\end{definition}
+
+\begin{example}
+    Suppose $\calC$ is the category that consists of three objects and a pair of isomorphisms between each pair of objects. Then it is not hard to see that $\calC$ is equivalent to $\symsf{1}$.
+\end{example}
+
+\begin{example}
+    We may guess that a category $\calC$ whose morphisms are all isomorphisms is equivalent to $\symsf{1}$. However, this is not true. In fact, by the axiom of choice, we can show that $$\calC \simeq \symsf{B}\Aut_\calC(X)$$ if there is an object $X \in \calC$ such that $\Hom_\calC(X, Y) \neq \varnothing$ for each $Y \in \calC$.
+
+    To see this, take an isomorphism $f_Y : X \to Y$ for each $Y \in \calC$. Then we can define a functor $F : \calC \to \symsf{B}\Aut_\calC(X)$ that assigns to each object $Y$ in $\calC$ the only object $\ast \in \symsf{B}\Aut_\calC(X)$, and to each morphism $g : Y \to Z$ the automorphism $f_Z^{-1} \circ g \circ f_Y$. If we define $G : \symsf{B}\Aut_\calC(X) \to \calC$ in the natural way so that it sends $\ast$ to $X$ and each automorphism $h : \ast \to \ast$ to $h \in \Aut_\calC(X)$, then we can see that $F \circ G \cong \id_{\symsf{B}\Aut_\calC(X)}$ and $G \circ F \cong \id_\calC$, implying that $\calC \simeq \symsf{B}\Aut_\calC(X)$.
+
+    In this case, $\calC \cong \symsf{1}$ if and only if $\Aut_\calC(X)$ is trivial. 
+\end{example}
+
+\section{Universal Constructions and Yoneda Embedding}
+
+\begin{definition}
+    Let $\calC$ be a category. If there is an object $\symbb{1} \in \calC$ such that for each object $X$ in $\calC$, the set $\Hom_\calC(X, \symbb{1})$ has exactly $1$ element, then we call $\symbb{1}$ an \textbf{final} object in $\calC$. If there is an object $\symbb{0} \in \calC$ scuh that for each object $X$ in $\calC$, the set $\Hom_\calC(\symbb{0}, X)$ has exactly $1$ element, then we call $\symbb{0}$ an \textbf{initial} object in $\calC$.
+\end{definition}
+
+It can be seen that if a final or an initial object exists, then it is unique up to isomorphism. 
+
+\begin{example}
+    \begin{enumerate}
+        \item For the category $\symsf{Top}$ of topological spaces, the final object is the topological space $\{\ast\}$ of a single point, and the initial object is the empty set $\varnothing$. 
+        \item For the category $\symsf{Set}$ of sets, the final object and the initial object are both the trivial group $\{e\}$. 
+        \item Consider the category given by a poset $(P, \leq)$. Its final element is the maximum $\max P$ of $P$ if it exists, and its initial element is the minimum $\min P$ of $P$ if it exists. 
+    \end{enumerate}
+\end{example}
+
+Before introducing the concept of limits and colimits, we conduct a principle that an object can always be described by how it interacts with other objects, i.e., the morphisms to it or from it are all we are concern with an object. 
+
+\begin{definition}
+    Consider a graph $F : I \to \calC$, i.e., a functor from an index category to a category $\calC$. A \textbf{cone} on $F$ consists of a \textbf{vertex} $c \in \calC$, and for ecah $i \in I$ a morphism $f(i) : c \to F(i)$ such that for each morphism $\varphi : i \to j$ in $I$, the following diagram commutes:
+    $$\begin{tikzcd}
+        && {F(i)} \\
+        c \\
+        && {F(j)}
+        \arrow["{F(\varphi)}", from=1-3, to=3-3]
+        \arrow["{f(i)}", from=2-1, to=1-3]
+        \arrow["{f(j)}"', from=2-1, to=3-3]
+    \end{tikzcd}$$
+    When the morphisms from the vertex $c$ is clear, we may just represent the cone by its vertex $c$. Equivalently, we can define a cone on $F$ to be a natural transformation from the constant functor $c$ to $F$, where $c(i) = c$ for all $i \in I$ and $c(\varphi) = \id_c$ for all $\varphi : i \to j$ in $I$. Denote the category of cones on $F$ by $\symsf{Cone}(F)$, where a morphism $\alpha : c \to c'$ is a natural transformation $\alpha$ such that the following diagram commutes:
+    $$\begin{tikzcd}
+        c && {c'} \\
+        & F
+        \arrow["\alpha", from=1-1, to=1-3]
+        \arrow[from=1-1, to=2-2]
+        \arrow[from=1-3, to=2-2]
+    \end{tikzcd}$$
+    The \textbf{limit} of $F$ is defined to be the final object in $\symsf{Cone}(F)$ if it exists, and is denoted by $\lim F$. 
+
+    Dually, we can define a \textbf{cocone} on $F : I \to \calC$ to be a natural transformation from $F$ to the constant $c$. The category of concones on $F$, denoted by $\symsf{CoCone}(F)$, is defined in a similar way. The \textbf{colimit} of $F$ is then defined to be the initial object in $\symsf{CoCone}(F)$ if it exists, and is denoted by $\colim F$. 
+\end{definition}
+
+In the spirit of the principle we conducted, we can actually defined the limit and the colimit by the following isomorphism of sets that is natural in $X \in \calC$: $$\Hom_\calC(\colim F, X) \cong \Hom_{\symsf{Fct}(I, \calC)}(F, X), \quad \Hom_\calC(X, \lim F) \cong \Hom_{\symsf{Fct}(I, \calC)}(X, F),$$ where $X$ represents the constant functor to $X \in \calC$. 
+
+\begin{example}
+    The product and coproduct of objects in a category $\calC$ can be defined to be the limit and the colimit of a graph with the index category to be the discrete category given by a set $I$, respectively. Specifically, consider an index set $I$, which can also be viewed as a discrete category. Then a functor $F : I \to \calC$ is always identified with a family $\{X_i\}_{i \in I}$ of objects in $\calC$. The \textbf{product} of the family $\{X_i\}_{i \in I}$ is defined to be the limit $\lim F$ of $F$, while the \textbf{coproduct} of the family $\{X_i\}_{i \in I}$ is defined to be the colimit $\colim F$. We denote the product and the coproduct, respectively, by $$\prod_{i \in I} X_i \quad \text{and} \quad \coprod_{i \in I} X_i.$$ The product and coproduct of two objects $X$ and $Y$ can be expressed by the following diagrams:
+    $$\begin{tikzcd}
+        & Z \\
+        X & {X  \times Y} & Y
+        \arrow[from=1-2, to=2-1]
+        \arrow["{\exists !}"', dashed, from=1-2, to=2-2]
+        \arrow[from=1-2, to=2-3]
+        \arrow[from=2-2, to=2-1]
+        \arrow[from=2-2, to=2-3]
+    \end{tikzcd}
+    \quad
+    \begin{tikzcd}
+        X & {X \sqcup Y} & Y \\
+        & Z
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-1, to=2-2]
+        \arrow["{\exists !}"', dashed, from=1-2, to=2-2]
+        \arrow[from=1-3, to=1-2]
+        \arrow[from=1-3, to=2-2]
+    \end{tikzcd}$$
+    \begin{enumerate}
+        \item For $\symsf{Grp}$, the product is the direct product of groups and the coproduct is the free product of groups. 
+        \item For $\symsf{Ab}$, the product is the direct product as well, while the coproduct is the direcu sum of abelian groups. 
+        \item For $\symsf{Rng}$, the product is still the direct product, and the product is the tensor product (over $\symbb{Z}$). 
+    \end{enumerate}
+\end{example}
+
+\begin{example}
+    We can define the \textbf{sequential (co)limit} for a sequence of objects in a category. To define the sequential limit, we take the index category to be the poset $(\symbb{Z}_{\leq 0}, \leq)$, and then a functor $F : \{\cdots \to -2 \to -1 \to 0\} \to \calC$ is identified with the following sequence:
+    $$\begin{tikzcd}
+        \cdots & {F(-2)} & {F(-1)} & {F(0)}
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=1-3]
+        \arrow[from=1-3, to=1-4]
+    \end{tikzcd}$$
+    The colimit $\colim F$ of such sequence is clearly just $F(0)$, and the limit $\lim F$ is called the limit of the sequence. 
+    \begin{enumerate}
+        \item Consider the following sequence in $\symsf{Rng}$, where the morphisms are given by quotient map:
+        $$\begin{tikzcd}
+            \cdots & {\symbb{Z}/{p^3}} & {\symbb{Z}/{p^2}} & {\symbb{Z}/p}
+            \arrow[from=1-1, to=1-2]
+            \arrow[from=1-2, to=1-3]
+            \arrow[from=1-3, to=1-4]
+        \end{tikzcd}$$
+        The limit of this sequence is called the ring of $p$-adic integers, denoted by $\symbb{Z}_p$.
+        \item Consider another sequence in $\symsf{Rng}$ given below, where $k[x]$ is the polynomial ring over a field $k$:
+        $$\begin{tikzcd}
+            \cdots & {k[x]/(x^3)} & {k[x]/(x^2)} & {k[x]/(x)}
+            \arrow[from=1-1, to=1-2]
+            \arrow[from=1-2, to=1-3]
+            \arrow[from=1-3, to=1-4]
+        \end{tikzcd}$$
+        The limit of the sequence is the formal power series ring $k[[x]]$ over $k$. 
+    \end{enumerate}
+    For the sequential colimit, we take the poset $(\symbb{Z}_{\geq 0}, \leq)$ as the index category, and then a functor $F : \{0 \to 1 \to 2 \to \cdots\} \to \calC$ is identified with a sequence of the following form:
+    $$\begin{tikzcd}
+        {F(0)} & {F(1)} & {F(2)} & \cdots
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=1-3]
+        \arrow[from=1-3, to=1-4]
+    \end{tikzcd}$$
+    It can be seen the limit $\lim F$ is just $F(0)$. The colimit of the sequence is defined to be the colimit $\colim F$. 
+    \begin{enumerate}
+        \item The sequence in $\symsf{Ab}$, 
+        $$\begin{tikzcd}
+            {\symbb{Z}} & {\frac{1}{p}\symbb{Z}} & {\frac{1}{p^2}\symbb{Z}} & \cdots
+            \arrow[hook, from=1-1, to=1-2]
+            \arrow[hook, from=1-2, to=1-3]
+            \arrow[hook, from=1-3, to=1-4]
+        \end{tikzcd}$$
+        where each morphism is the canonical embedding, has the colimit $$\colim = \symbb{Z}\left[\frac{1}{p}\right] = \left\{\frac{n}{p^r} \mid n \in \symbb{Z}, r \in \symbb{Z}_{\geq 0}\right\} \subset \symbb{Q}.$$
+        \item Consider the following sequence in $\symsf{Top}$, where each morphism embeds $S^n$ to the equator of $S^{n+1}$:
+        $$\begin{tikzcd}
+            {S^1} & {S^2} & {S^3} & \cdots
+            \arrow[hook, from=1-1, to=1-2]
+            \arrow[hook, from=1-2, to=1-3]
+            \arrow[hook, from=1-3, to=1-4]
+        \end{tikzcd}$$
+        The colimit of the this sequence is called the infinite sphere $S^\infty$, which is also the unit sphere in $\symbb{R}^\infty = \oplus_{i=1}^\infty \symbb{R}$. 
+    \end{enumerate}
+\end{example}
+
+\begin{example}
+    For a diagram of the following form:
+    $$\begin{tikzcd}
+        X & Y & Z
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-3, to=1-2]
+    \end{tikzcd}$$
+    we usaully call its limit $W$ a \textbf{pullback} or a \textbf{fiber product}, and demonstrate it by the following diagram called a \textbf{pullback diagram}:
+    $$\begin{tikzcd}
+        W & Z \\
+        X & Y
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=2-1, to=2-2]
+    \end{tikzcd}$$
+    Dually, for a diagram of the follwing form:
+    $$\begin{tikzcd}
+        B & A & C
+        \arrow[from=1-2, to=1-1]
+        \arrow[from=1-2, to=1-3]
+    \end{tikzcd}$$
+    its colimit $D$ is often called a \textbf{pushout} or a \textbf{fiber coproduct}, and is showed by the following diagram called a \textbf{pushout diagram}:
+    $$\begin{tikzcd}
+        A & C \\
+        B & D
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=2-1, to=2-2]
+    \end{tikzcd}$$
+    \begin{enumerate}
+        \item In $\symsf{Set}$, the pullback of $X$ and $Z$ to $Y$ is given by $$W = \{(x, z) \in X \times Z \mid f(x) = g(z)\},$$ and the pushout of $B$ and $C$ from $A$ is given by $$D = (B \sqcup C) / \sim, \quad f(a) \sim g(a), a \in A.$$
+        \item Consider a continuous map $f : X \to Y$ and a vector bundle $p : E \to Y$ in $\symsf{Top}$. We can define the pullback bundle $p' : f^*E \to X$ of $E$ by the pullback diagram:
+        $$\begin{tikzcd}
+            f^*E & E \\
+            X & Y
+            \arrow[from=1-1, to=1-2]
+            \arrow["p'"', from=1-1, to=2-1]
+            \arrow["p"', from=1-2, to=2-2]
+            \arrow["f"', from=2-1, to=2-2]
+        \end{tikzcd}$$
+        \item Suppose $X$ is a topological space in $\symsf{Top}$. We have the embedding $X \to \symup{C}X$, where $\symup{C}X$ is the cone on $X$. Together with the suspension $\symup{S}X$ of $X$, we have the pushout diagram:
+        $$\begin{tikzcd}
+            X & \symup{C}X \\
+            \symup{C}X & \symup{S}X
+            \arrow[hook, from=1-1, to=1-2]
+            \arrow[hook, from=1-1, to=2-1]
+            \arrow[hook, from=1-2, to=2-2]
+            \arrow[hook, from=2-1, to=2-2]
+        \end{tikzcd}$$
+    \end{enumerate}
+\end{example}
+
+\begin{example}
+    Consider the functor $F : \symsf{B}G \to \symsf{Set}$ which is usually identified with a group action of $G$ on a set $F(\ast)$. We can see that the limit of $F$ is $$\lim F = \{x \in F(\ast) \mid gx = x, \forall g \in G\},$$ and the colimit of $F$ is $$\colim F = \{Gx \mid x \in F(\ast)\} = F(\ast)/G,$$ which is exactly the orbit space of the action. 
+\end{example}
+
+Recalling our principle of description of objects, we see that for an object
+$X \in \calC$, the following functors are of great significance: $$\Hom_\calC(-, X) : \calC^{\op} \to \symsf{Set}, \quad \text{and} \quad \Hom_\calC(X, -) : \calC \to \symsf{Set}.$$ Such point of view introduce us to a functor called \textbf{Yoneda embedding} $\calC \to \symsf{Fct}(\calC^{\op}, \symsf{Set})$ that assigns to each object $X$ the functor $\Hom_\calC(-, X)$ and to each morphism $f : X \to Y$ the natural transformation $\Hom_\calC(-, X) \to \Hom_\calC(-, Y)$ given by the following diagram:
+$$\begin{tikzcd}
+	{\Hom_\calC(Z, X)} &&& {\Hom_\calC(Z, Y)} \\
+	& {(h \circ g : Z \to X)} & {(f \circ h \circ g:Z \to Y)} \\
+	& {(h:W \to X)} & {(f \circ h:W \to Y)} \\
+	{\Hom_\calC(W, X)} &&& {\Hom_\calC(W, Y)}
+	\arrow[from=1-1, to=1-4]
+	\arrow[maps to, from=2-2, to=2-3]
+	\arrow[maps to, from=3-2, to=2-2]
+	\arrow[maps to, from=3-2, to=3-3]
+	\arrow[maps to, from=3-3, to=2-3]
+	\arrow[from=4-1, to=1-1]
+	\arrow[from=4-1, to=4-4]
+	\arrow[from=4-4, to=1-4]
+\end{tikzcd}$$
+Yoneda embedding maps $\calC$ into a somehow larger category $\symsf{Fct}(\calC^{\op}, \symsf{Set})$. To see that it is reasonable to call this an embedding, we need Yoneda Lemma:
+
+\begin{theorem}[Yoneda Lemma]
+    There is a bijection $$F(X) \cong \Hom_{\symsf{Fct}(\calC^{\op}, \symsf{Set})}(\Hom_\calC(-, X), F)$$ that is natural in both $X \in \calC$ and $F \in \symsf{Fct}(\calC^{\op}, \symsf{Set})$. 
+\end{theorem}
+\begin{proof}
+    The natural bijection is given as followings:
+
+    \begin{figure}[htbp]
+        \centering
+        \begin{tabular}{r c l}
+            $F(X)$ & $\to$ & $\Hom_{\symsf{Fct}(\calC^{\op}, \symsf{Set})}(\Hom_\calC(-, X), F)$, \\
+            $x$ & $\mapsto$ & $(\hat{x} : \Hom_\calC(-, X) \to F)$; \\
+            $(\alpha(X))(\id_X)$ & $\mapsto$ & $\alpha$,
+        \end{tabular}
+    \end{figure}
+
+    where the natural transformation $\hat{x}$ is defined by $$\hat{x}(Y) : \Hom_\calC(Y, X) \to F(Y), \quad f \mapsto (F(f))(x).$$
+\end{proof}
+
+\begin{corollary}
+    Yoneda embedding is a fully faithful functor, i.e., the induced map of sets $$\Hom_\calC(X, Y) \to \Hom_{\symsf{Fct}(\calC^{\op}, \symsf{Set})}(\Hom_\calC(-, X), \Hom_\calC(-, Y))$$ is bijective for each objects $X, Y \in \calC$. 
+\end{corollary}
+
+There is not always a limit or colimit of a functor $F : I \to \calC$ for a general category $\calC$. However, it can be shown that limits and colimits in $\calC$ always exists, and so as those in $\symsf{Fct}(\calC^{\op}, \symsf{Set})$ and $\symsf{Fct}(\calC, \symsf{Set})$. We can also show that for a functor $F : I \to \calC$ such that $\lim_i F(i) = \lim F$ and $\colim_i F(i) = \colim F$ both exist, it is true that $$\Hom_\calC(-, \lim_i F(i)) \cong \lim_i \Hom_\calC(-, F(i)) \quad \text{and} \quad \Hom_\calC(\colim_i F(i), -) \cong \lim_i \Hom_\calC(F(i), -)$$ in a natural way. Thus Yoneda embedding is a kind of completion of $\calC$. 
+
+\begin{definition}
+    Suppose $F : \calC \to \calD$ and $G : \calD \to \calC$ are functors between categories $\calC$ and $\calD$. If there is a natural isomorphism $\Hom_\calD(F(X), Y) \cong \Hom_\calC(X, G(Y))$ for all $X \in \calC$ and $Y \in \calD$, then we say that $F$ is a \textbf{left adjoint} of $G$ and $G$ is a \textbf{right adjoint} of $F$. 
+\end{definition}
+
+\begin{theorem}
+    Suppose $F : \calC \to \calD$ is a left adjoint of $G : \calD \to \calC$ and $G$ is a right adjoint of $F$. Then for a graph $X : I \to \calC$ we have $$F(\colim_i X(i)) \cong \colim_i F(X(i))$$ if $\colim_i X(i)$ exists, and for a graph $Y : I \to \calD$ we have $$G(\lim_i Y(i)) \cong \lim_i G(Y(i))$$ if $\lim_i Y(i)$ exists. 
+\end{theorem}
+\begin{proof}
+    It suffices to show that $$\Hom_\calD(F(\colim_i X(i)), Z) \cong \Hom_\calD(\colim_i F(X(i)), Z)$$ naturally in $Z \in \calD$. This can be seen from the following sequence of natural isomorphisms:
+    \begin{align*}
+        \Hom_\calD(F(\colim_i X(i)), Z) &\cong \Hom_\calC(\colim_i X(i), G(Z)) \\ 
+        &\cong \lim_i \Hom_\calC(X(i), G(Z)) \\
+        &\cong \lim_i \Hom_\calD(F(X(i)), Z) \\
+        &\cong \Hom_\calD(\colim_i F(X(i)), Z).
+    \end{align*}
+    The case is similar for $G(\lim_i Y(i))$ and $\lim_i G(Y(i))$. 
+\end{proof}
+
+\section{2-categories}
+
+For two categories $\calC$ and $\calD$, we see that $\symsf{Fct}(\calC, \calD)$ is not only a set but also a category, with functors being natural transformations. In such case, we barely consider if two functors $F, G : \calC \to \calD$ are equal. Instead, whether a natural transformation $\alpha : F \to G$ is an isomorphism is what we are concerned with. This induces the opinion that in a category with $n$-morphisms (although we have not defined, this can be interpreted in an intuitive way), we are not supposed to discuss the equality of $k$-morphisms $(k < n)$, yet a $(k+1)$-morphism is whether an equivalence is more worth considering. 
+
+\begin{definition}
+    A \textbf{strict 2-category} consists of the folowings:
+    \begin{itemize}
+        \item a class of objects $X, Y, \cdots$;
+        \item a class of 1-morphisms $f : X \to Y$ and an identity 1-morphism $\id_X$ for each object $X$, such that the composition of 1-morphisms satisfies the associativity;
+        \item a class of 2-morphisms $\alpha : f \to g$ where $f, g : X \to Y$ are 1-morphisms and an identity 2-morphism $\id_f$ for each 1-morphism $f$, such that the composition of 2-morphisms satisfies the associativity.
+    \end{itemize}
+    In other words, we have a category $\Hom(X, Y)$ for each pair of objects $(X, Y)$. 
+\end{definition}
+
+This is the direct generalization of the concept of 1-categories. It is worth noting that by this definition, we need to talk about whether two objects in the category $\Hom(X, Y)$ are equal instead of equivalent. This violates the opinion we have stated! So we need to modify our definition for 2-categories. 
+
+\begin{definition}
+    A \textbf{(weak) 2-category} $\calC$ consists of the followings:
+    \begin{itemize}
+        \item a class of objects;
+        \item for each objects $X, Y \in \calC$, a category $\Hom_\calC(X, Y)$, whose objects are called \textbf{1-morphisms} of $\calC$ and whose morphisms are called \textbf{2-morphisms} of $\calC$;
+        \item for each object $X \in \calC$, a 1-morphism $\id_X \in \Hom_\calC(X, X)$.
+        \item for each $X, Y, Z \in \calC$, a functor $$\circ : \Hom_\calC(Y, Z) \times \Hom_\calC(X, Y) \to \Hom_\calC(X, Z),$$ called the \textbf{composition} of morphisms;
+        \item for each $X, Y \in \calC$, two natural isomorphisms:
+        $$\begin{tikzcd}
+            {\Hom_\calC(X, Y)} && {\Hom_\calC(X, Y)}
+            \arrow[""{name=0, anchor=center, inner sep=0}, "{\id_Y \circ -}", curve={height=-18pt}, from=1-1, to=1-3]
+            \arrow[""{name=1, anchor=center, inner sep=0}, "\id"', curve={height=18pt}, from=1-1, to=1-3]
+            \arrow["{\lambda_{X,Y}}", shorten <=3pt, shorten >=3pt, Rightarrow, from=0, to=1]
+        \end{tikzcd} \quad \begin{tikzcd}
+            {\Hom_\calC(X, Y)} && {\Hom_\calC(X, Y)}
+            \arrow[""{name=0, anchor=center, inner sep=0}, "{- \circ \id_X}", curve={height=-18pt}, from=1-1, to=1-3]
+            \arrow[""{name=1, anchor=center, inner sep=0}, "\id"', curve={height=18pt}, from=1-1, to=1-3]
+            \arrow["{\rho_{X,Y}}", shorten <=3pt, shorten >=3pt, Rightarrow, from=0, to=1]
+        \end{tikzcd}$$
+        \item for each $X, Y, Z, W \in \calC$, a natural isomorphism:
+        $$\begin{tikzcd}
+            {\Hom_\calC(X, Y) \times \Hom_\calC(Y, Z) \times \Hom_\calC(Z,W)} & {\Hom_\calC(X,Y) \times \Hom_\calC(Y,W)} \\
+	        {\Hom_\calC(X, Z)\times \Hom_\calC(Z,W)} & {\Hom_\calC(X,W)}
+	        \arrow["{\id \times \circ}", from=1-1, to=1-2]
+	        \arrow["{\circ \times \id}"', from=1-1, to=2-1]
+	        \arrow["\circ", from=1-2, to=2-2]
+	        \arrow["\circ"', from=2-1, to=2-2]
+            \arrow["{\alpha_{X,Y,Z,W}}"{description}, shorten <=5pt, shorten >=5pt, Rightarrow, from=2-1, to=1-2]
+        \end{tikzcd}$$
+    \end{itemize}
+    such that the following identities are satisfied:
+    \begin{itemize}
+        \item the \textbf{pentagonal identity}: for each objects $X, Y, Z, W, V \in \calC$, and morphisms 
+        $$\begin{tikzcd}
+            V & W & X & Y & Z
+            \arrow["k", from=1-1, to=1-2]
+            \arrow["h", from=1-2, to=1-3]
+            \arrow["g", from=1-3, to=1-4]
+            \arrow["f", from=1-4, to=1-5]
+        \end{tikzcd},$$ 
+        we have the commuting diagram
+        $$\begin{tikzcd}[column sep=tiny]
+            & {(f \circ (g \circ h)) \circ k} && {f \circ ((g \circ h) \circ k)} \\
+            {((f \circ g) \circ h) \circ k} &&&& {f \circ (g \circ (h \circ k))} \\
+            && {(f \circ g) \circ (h \circ k)}
+            \arrow["{\alpha_{f,g \circ h,k}}", from=1-2, to=1-4]
+            \arrow["{f \circ \alpha_{g,h,k}}", from=1-4, to=2-5]
+            \arrow["{\alpha_{f,g,h}\circ k}", from=2-1, to=1-2]
+            \arrow["{\alpha_{f \circ g,h,k}}"', from=2-1, to=3-3]
+            \arrow["{\alpha_{f,g,h \circ k}}"', from=3-3, to=2-5]
+        \end{tikzcd}$$
+        \item the \textbf{triangular identity}: for each objects $X, Y, Z \in \calC$, and morphisms
+        $$\begin{tikzcd}
+            X & Y & Z
+            \arrow["g", from=1-1, to=1-2]
+            \arrow["f", from=1-2, to=1-3]
+        \end{tikzcd},$$
+        we have the commuting diagram
+        $$\begin{tikzcd}
+            {(f \circ \id_Y) \circ g} && {f \circ (\id_Y \circ g)} \\
+            & {f \circ g}
+            \arrow["{\alpha_{f,\id_Y,g}}", from=1-1, to=1-3]
+            \arrow["{\rho_f \circ g}"', from=1-1, to=2-2]
+            \arrow["{f \circ \lambda_g}", from=1-3, to=2-2]
+        \end{tikzcd}$$
+    \end{itemize}
+\end{definition}
+
+The concept of 2-category we introduce here is actually \textbf{(2,2)-category}, which is a specific example of \textbf{$(n,r)$-category}. A general $(n,r)$-category is a category with morphisms from 0-morphisms (objects) to $n$-morphisms, whose $k$-morphisms are all invertible for $k > n$. Thus a general 1-category is a (1,1)-category, and a groupoid is a (1,0)-category. A (2,0)-category is also called a \textbf{2-groupoid}.
+
+\begin{example}
+    The category $\symsf{Cat}$ of categories is a 2-category, with 1-morphisms being functors and 2-morphisms being natural transformations. 
+\end{example}
+
+\begin{example}
+    We consider a special kind of category with extra structure called \textbf{monoidal category}. A monodial category contains the following informations:
+    \begin{itemize}
+        \item a category $\calC$;
+        \item a binary operation $\otimes$ on $\calC$, i.e., a functor $\otimes : \calC \times \calC \to \calC$;
+        \item an object $\symbb{1} \in \calC$;
+        \item natural isomorphisms $$\alpha_{X,Y,Z} : (X \otimes Y) \otimes Z \to X \otimes (Y \otimes Z), \quad \lambda_X : \symbb{1} \otimes X \to X, \quad \rho_X : X \otimes \symbb{1} \to X,$$
+    \end{itemize}
+    such that the following conditions are satisfied:
+    \begin{itemize}
+        \item for objects $X, Y, Z, W \in \calC$, we have the commuting diagram
+        \footnotesize$$\begin{tikzcd}[column sep=tiny]
+            & {(X \otimes (Y \otimes Z)) \otimes W} && {X \otimes ((Y \otimes Z) \otimes W)} \\
+            {((X \otimes Y) \otimes Z) \otimes W} &&&& {X \otimes (Y \otimes (Z \otimes W))} \\
+            && {(X \otimes Y) \otimes (Z \otimes W)}
+            \arrow["{\alpha_{X,Y \otimes Z,W}}", from=1-2, to=1-4]
+            \arrow["{X \otimes \alpha_{Y,Z,W}}", from=1-4, to=2-5]
+            \arrow["{\alpha_{X,Y,Z}\otimes W}", from=2-1, to=1-2]
+            \arrow["{\alpha_{X \otimes Y,Z,W}}"', from=2-1, to=3-3]
+            \arrow["{\alpha_{X,Y,Z \otimes W}}"', from=3-3, to=2-5]
+        \end{tikzcd}$$\normalsize
+        \item for objects $X, Y \in \calC$, we have the commuting diagram
+        $$\begin{tikzcd}
+            {(X \otimes \symbb{1}) \otimes Y} && {X \otimes (\symbb{1} \otimes Y)} \\
+            & {X \otimes Y}
+            \arrow["{\alpha_{X,\symbb{1},Y}}", from=1-1, to=1-3]
+            \arrow["{\rho_X \otimes Y}"', from=1-1, to=2-2]
+            \arrow["{X \otimes \lambda_Y}", from=1-3, to=2-2]
+        \end{tikzcd}$$
+    \end{itemize}
+    We see that the axiom a monodial category satisfies is quite similar to that satisified by a 2-category. In fact, we can construct a 2-category $\symsf{B}\calC$ from a monodial category $\calC$. The 2-category $\symsf{B}\calC$ has a unique object $\ast$, and the category $\Hom_{\symsf{B}\calC}(\ast, \ast)$ is actually by $\calC$ itself, with composition given by $$\otimes : \Hom_{\symsf{B}\calC}(\ast, \ast) \times \Hom_{\symsf{B}\calC}(\ast, \ast) \to \Hom_{\symsf{B}\calC}(\ast, \ast).$$
+
+    Some examples of monodial categories are $(\symsf{Vect}_F, \otimes), (\symsf{Vect}_F, \oplus), (\symsf{Set}, \times), (\symsf{Set}, \sqcup)$. Each of them induces a 2-category. 
+\end{example}
+
+\begin{example}
+    Since every group can be viewed as a category, the category $\symsf{Grp}$ has a structure of 2-category. Its objects and 1-morphisms are just groups and group homomorphisms as we have seen before. To see what the 2-morphisms are, we consider a natural transformation $\alpha : \varphi \to \psi$, where $\varphi, \psi : \symsf{B}G \to \symsf{B}H$ are functors induced by homomorphisms $\varphi, \psi : G \to H$. Then we have the commuting diagram 
+    $$\begin{tikzcd}
+        \ast & \ast \\
+        \ast & \ast
+        \arrow["{\alpha(\ast)}", from=1-1, to=1-2]
+        \arrow["{\varphi(g)}"', from=1-1, to=2-1]
+        \arrow["{\psi(g)}", from=1-2, to=2-2]
+        \arrow["{\alpha(\ast)}"', from=2-1, to=2-2]
+    \end{tikzcd}$$ for each $g \in G$, hence $h := \alpha(\ast) \in H$ gives a conjugation $$\psi(g) = h \cdot \varphi(g) \cdot h^{-1}, \quad \forall g \in G.$$ Thus the 2-morphisms in $\symsf{Grp}$ are given by conjugation of homomorphisms. 
+\end{example}
+
+\begin{example}
+    The category $\symsf{Rng}$ can also be viewed as a 2-category. The objects in $\symsf{Rng}$ are rings with identity. For two rings $R, S \in \symsf{Rng}$, we let the morphisms category $\Hom_{\symsf{Rng}}(R, S)$ to be the bimodule category $_R\symsf{Mod}_S$. The composiiton is given by the tensor product of modules $$\otimes_S : \,_R\symsf{Mod}_S \,\times\, _S\symsf{Mod}_T \,\to\, _R\symsf{Mod}_T.$$ With this 2-category structure, there is a functor $\symsf{Rng} \to \symsf{Cat}$ given by $R \mapsto \symsf{Mod}_R$ on objects and $$(M : R \to S) \mapsto (- \otimes_R M : \symsf{Mod}_R \to \symsf{Mod}_S), \quad (f : M \to N) \mapsto (\id \otimes f : - \otimes_R M \to - \otimes_R N)$$ on morphisms. If a 1-morphism $M : R \to S$ is invertible, that is there is a 1-morphism $N : S \to R$ and 2-morphisms $$M \otimes_S N \to R, \quad N \otimes_R M \to S$$ which are both isomorphisms, then we call $M : R \to S$ a \textbf{Morita equivalence}. In this case, $$- \otimes_R M : \symsf{Mod}_R \to \symsf{Mod}_S$$ is an equivalence of categories. 
+\end{example}
+
+\begin{example}
+    We have seen the fundamental groupoid $\Pi_1(X)$ of a topological space $X$. In fact, the \textbf{fundamental 2-groupoid} $\Pi_2(X)$ up to the \textbf{fundamental $\infty$-groupoid} $\Pi_\infty(X)$ can also be defined. The objects in $\Pi_2(X)$ are points in $X$, as same as the objects in $\Pi_1(X)$. The 1-morphisms from $x$ to $y$ in $\Pi_2(X)$ are given by a path from $x$ to $y$. Recalling that we need to quotient out the homotopy of paths in $\Pi_1(X)$, however, the quotient process is not adopted here, instead we let the homotopy of paths become 2-morphisms in $\Pi_2(X)$. Somehow, the homotopy of 2-morphisms, which are continuous maps from $[0,1] \times [0,1]$ to $X$ subject to some conditions, are indeed supposed to be quotiented out, in order to make the axioms of 2-category satisfied. Similarly to the relation of $\Pi_1(X)$ and $\pi_1(X, x)$, we can see that $$\pi_2(X, x) = \Aut_{\Aut_{\Pi_2(X)}(x)}(\id_x), \quad x \in X,$$ where $\id_x$ is the constant loop at $x$. 
+    
+    This is generalized to the idea of fundamental $\infty$-groupoid, where $n$-morphisms are given by homotopies between $(n-1)$-morphisms for each positive integer $n$. An interesting problem is whether we can recover the information of the original space by its fundamental $\infty$-groupoids. A topological space $X$ is called a \textbf{$n$-truncated space} if $\pi_k(X)$ is trivial for each $k > n$. People have shown that a $n$-truncated space can be recovered from its fundamental $n$-groupoid, or equivalently the $n$-truncation of its fundamental $\infty$-groupoid, up to a weak homotopy equivalence, for a positive integer $n$. Whether this holds for the infinite case is called the \textbf{homotopy hypothesis}. This idea continues to the \textbf{homotopy type theory}, or ``HoTT''. 
+\end{example}
+
+\end{document}
