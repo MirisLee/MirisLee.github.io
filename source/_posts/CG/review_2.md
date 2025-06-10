@@ -15,7 +15,7 @@ In this post, we are going to prove the *Riemann mapping theorem*, which charact
 
 First let us consider the uniqueness statement.
 
-**Theorem (Schwarz lemma).** Suppose $f : D(0, 1) \to D(0, 1)$ is holomorphic and satisfies $f(0) = 0$. Then $|f(z)| \leq |z|$ for each $z \in D(0, 1)$ and $|f'(0)| leq 1$. If either there is a nonzero $z_0 \in D(0, 1)$ such that $|f(z_0)| = |z_0|$, or $|f'(0)| = 1$, then $f(z) = e^{it}z$ for some $t \in \mathbb{R}$. 
+**Theorem (Schwarz lemma).** Suppose $f : D(0, 1) \to D(0, 1)$ is holomorphic and satisfies $f(0) = 0$. Then $|f(z)| \leq |z|$ for each $z \in D(0, 1)$ and $|f'(0)| \leq 1$. If either there is a nonzero $z_0 \in D(0, 1)$ such that $|f(z_0)| = |z_0|$, or $|f'(0)| = 1$, then $f(z) = e^{it}z$ for some $t \in \mathbb{R}$. 
 
 > *Proof:* Since $f(0) = 0$, there is a holomorphic function $g : D(0, 1) \to \mathbb{C}$ such that $f(z) = zg(z)$ for each $z \in D(0, 1)$. For each $0 < r' \leq r < 1$, the maximal value of $|g(z)|$ on $\overline{D(0, r)}$ can only be attained on $\partial D(0, r)$, implying that $$|g(z)| \leq \max_{|z| = r}\frac{|f(z)|}{|z|} \leq \frac{1}{r}, \quad |z| \leq r'.$$ It follows that $|g(z)| \leq 1$ on $D(0, 1)$. Therefore $|f(z)| \leq |z|$ for any $z$ and $|f'(0)| = |g(0)| \leq 1$. If either of the equality holds, then $g$ must be constant on $D(0, 1)$ by the maximal module principle. Thus $g(z) = e^{it}$ for some $t \in \mathbb{R}$ and $f(z) = e^{it}z$. 
 
