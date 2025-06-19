@@ -11,16 +11,14 @@ In this post, we explore some properties of the ring $O_{\mathbb{C}^n,0}$ and an
 
 <!-- UFD & notherian -->
 
-Using Weierstrass theorems, we can show that the local ring $O_{\mathbb{C}^n,0}$ is a noetherian UFD.
-
-Note that we have the results in algebra that 
+First we can show that the local ring $O_{\mathbb{C}^n,0}$ is a noetherian UFD. Note that we have the results in algebra that 
 
 1. if $R$ is a UFD, then $R[x]$ is a UFD;
 2. if $R$ is a UFD and $f, g \in R[x]$ are relatively prime, then there exist $u, v \in R[x]$ and nonzero $r \in R$ such that $fu + gv = r$.
 
 **Theorem.** The local ring $O_{\mathbb{C}^n,0}$ is a UFD.
 
-> *Proof.* Prove by induction on $n$. When $n = 0$, $O_{\mathbb{C}^n,0} = \mathbb{C}$ is a field and clearly a $UFD$. Suppose $O_{\mathbb{C}^{n-1},0}$ is a UFD. Then $O_{\mathbb{C}^{n-1},0}[z^n]$ is a UFD. By Weierstrass preparation theorem, it remains to show that any irreducible factor of a Weierstrass polynomial in $O_{\mathbb{C}^{n-1},0}[z^n]$ is also irreducible in $O_{\mathbb{C}^n,0}$. However, this follows from the facts that any Weierstrass polynomial can be written as a product of irreducible Weierstrass polynomials, and that any irreducible Weierstrass polynomial is irreducible in $O_{\mathbb{C}^n,0}$. These facts can be proved by direct applications of Weierstrass preparation theorem.  
+> *Proof.* Prove by induction on $n$. When $n = 0$, $O_{\mathbb{C}^n,0} = \mathbb{C}$ is a field and clearly a UFD. Suppose $O_{\mathbb{C}^{n-1},0}$ is a UFD. Then $O_{\mathbb{C}^{n-1},0}[z^n]$ is a UFD. By Weierstrass preparation theorem, it remains to show that any irreducible factor of a Weierstrass polynomial in $O_{\mathbb{C}^{n-1},0}[z^n]$ is also irreducible in $O_{\mathbb{C}^n,0}$. However, this follows from the facts that any Weierstrass polynomial can be written as a product of irreducible Weierstrass polynomials, and that any irreducible Weierstrass polynomial is irreducible in $O_{\mathbb{C}^n,0}$. These facts can be proved by direct applications of Weierstrass preparation theorem.  
 
 Recall that a commutative ring $R$ is called **noetherian** if every ideal in $R$ is finitely generated. *Hilbert's basis theorem* tells us that if $R$ is noetherian then $R[x]$ is also noetherian. 
 
@@ -30,11 +28,11 @@ Recall that a commutative ring $R$ is called **noetherian** if every ideal in $R
 
 <!-- weak Nullstellensatz & local invariance -->
 
-We can consider the zero set $Z(f)$ of a germ $f \in O_{\mathbb{C}^n,0}$. In fact, what we consider is a *germ of sets*. Define an equivalence relation $\sim$ on the collection $P(\mathbb{C}^n)$ of subsets of $\mathbb{C}^n$ by that $X \sim Y$ if and only if there exists an open neighborhood $U$ of $0 \in \mathbb{C}^n$ such that $U \cap X = U \cap Y$. An equivalence class of $P(\mathbb{C}^n)$ with respect to this equivalence relation is called a **germ of sets in $0$**. Now we can define $Z(f)$ to be the germ given by the zero set of $f \in O_{\mathbb{C}^n,0}$. Moreover, we can define for a subset $A \subset O_{\mathbb{C}^n,0}$ its zero set $Z(A)$ to be te germ given by the common zero set of functions in $A$. Note that the inclusion, union and intersection of germs are all well-defined. We can see that $$Z(A) = \bigcap_{f \in A} Z(f).$$ 
+We can consider the zero set $Z(f)$ of a germ $f \in O_{\mathbb{C}^n,0}$. In fact, what we consider is a *germ of sets*. Define an equivalence relation $\sim$ on the collection $P(\mathbb{C}^n)$ of subsets of $\mathbb{C}^n$ by that $X \sim Y$ if and only if there exists an open neighborhood $U$ of $0 \in \mathbb{C}^n$ such that $U \cap X = U \cap Y$. An equivalence class of $P(\mathbb{C}^n)$ with respect to this equivalence relation is called a **germ of sets in $0$**. Now we can define $Z(f)$ to be the germ given by the zero set of $f \in O_{\mathbb{C}^n,0}$. Moreover, we can define for a subset $A \subset O_{\mathbb{C}^n,0}$ its zero set $Z(A)$ to be the germ given by the common zero set of functions in $A$. Note that the inclusion, union and intersection of germs are all well-defined. We can see that $$Z(A) = \bigcap_{f \in A} Z(f).$$ 
 
 **Proposition.** Suppose $g \in O_{\mathbb{C}^n,0}$ is irreducible. If $f \in O_{\mathbb{C}^n,0}$ vanishes on $Z(g)$, i.e., $Z(g) \subset Z(f)$, then $g$ divides $f$. 
 
-> *Proof:* We may assume $g \in O_{\mathbb{C}^{n-1},0}[z^n]$ is a Weierstrass polynomial with degree $k$. Since $g$ is irreducible, $g$ and $\partial g / \partial z^n$ are relatively prime in $O_{\mathbb{C}^{n-1},0}[z^n]$, and hence there exists a nonzero $r_0 \in O_{\mathbb{C}^{n-1},0}$ such that $$u \cdot g + v \cdot \frac{\partial g}{\partial z^n} = r_0, \quad u, v \in O_{\mathbb{C}^{n-1},0}[z^n]$. It follows that if $g(\tilde{z},-)$ has a multiple root in $z^n$, then $\tilde{z}$ is a zero of $r_0$. Meanwhile, from the identity theorem we see that $Z(r_0)$ has an empty interior. 
+> *Proof:* We may assume $g \in O_{\mathbb{C}^{n-1},0}[z^n]$ is a Weierstrass polynomial with degree $k$. Since $g$ is irreducible, $g$ and $\partial g / \partial z^n$ are relatively prime in $O_{\mathbb{C}^{n-1},0}[z^n]$, and hence there exists a nonzero $r_0 \in O_{\mathbb{C}^{n-1},0}$ such that $$u \cdot g + v \cdot \frac{\partial g}{\partial z^n} = r_0, \quad u, v \in O_{\mathbb{C}^{n-1},0}[z^n].$$ It follows that if $g(\tilde{z},-)$ has a multiple root in $z^n$, then $\tilde{z}$ is a zero of $r_0$. Meanwhile, from the identity theorem we see that $Z(r_0)$ has an empty interior. 
 > 
 > Weierstrass division theorem yields $f = g \cdot q + r$ with $r \in O_{\mathbb{C}^{n-1},0}[z^n]$ a Weierstrass polynomial of degree less than $k$. We must have $Z(g) \subset Z(r)$ as $Z(g) \subset Z(f)$. Therefore for any $\tilde{z}$ outside $Z(r_0)$, $r(\tilde{z},-)$ has at least $k$ distinct roots, implying that $r(\tilde{z},-) = 0$ for the degree reason. It follows that $r$ is identically zero and $g$ divides $f$.
 
