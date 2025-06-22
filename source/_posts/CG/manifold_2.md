@@ -13,11 +13,11 @@ In this post we first study some properties of a holomorphic map from its Jacobi
 
 In analogy to the real case, we have the following two standard results. 
 
-**Theorem (Inverse function theorem).** Suppose $U \subset \mathbb{C}^n$ is an open subset and $f : U \to mathbb{C}^n$ is holomorphic. If $J(f)$ is nonsingular at $z_0 \in U$, then there exists a neighborhood $U'$ containing $z_0$ and a neighborhood $V'$ containing $f(z_0)$ such that $f : U' \to V'$ is a holomorphic homeomorphism. 
+**Theorem (Inverse function theorem).** Suppose $U \subset \mathbb{C}^n$ is an open subset and $f : U \to \mathbb{C}^n$ is holomorphic. If $J(f)$ is nonsingular at $z_0 \in U$, then there exists a neighborhood $U'$ containing $z_0$ and a neighborhood $V'$ containing $f(z_0)$ such that $f : U' \to V'$ is a holomorphic homeomorphism. 
 
 > *Proof:* Since $\det J_\mathbb{R}(f) = |\det J(f)|^2 \neq 0$ at $z_0$, the real inverse function theorem yields a smooth inverse $g$ of $f$ near $f(z_0)$. It remains to show the holomorphic property of $g$. As $z = g(f(z))$, we have $$0 = \frac{\partial (g \circ f)^\alpha}{\partial \bar{z}^j} = \sum_{k=1}^n \left(\frac{\partial g^\alpha}{\partial w^k}\frac{\partial f^k}{\partial \bar{z}^j} + \frac{\partial g^\alpha}{\partial \bar{w}^k}\frac{\partial \bar{f}^k}{\partial \bar{z}^j}\right) = \sum_{k=1}^n \frac{\partial g^\alpha}{\partial \bar{w}^k}\overline{\frac{\partial f^k}{\partial z^j}},$$ for any $1 \leq \alpha, k \leq n$. It follows from the nonsingularity of $J(f)$ that $\partial g^\alpha / \partial \bar{w}^k = 0$ for each $\alpha$ and $k$, implying that $g$ is holomorphic.  
 
-**Theorem (Implicit function theorem).** Suppose $U \subset mathbb{C}^m$ is an open subset, $n \leq m$ and $f : U \to \mathbb{C}^n$ is holomorphic. If $z_0 \in U$ satisfies that $$\det\left(\frac{\partial f^\alpha}{\partial z^j}(z_0)\right)_{1 leq \alpha, j \leq n} \neq 0,$$ then there exist open subset $U_1 \subset \mathbb{C}^{m-n}, U_2 \subset \mathbb{C}^n$ and a holomorphic map $g : U_1 \to U_2$ such that $U_1 \times U_2 \subset U$ and $$f(z) = f(z_0) \iff (z^1, \cdots, z^n) = g(z^{n+1}, \cdots, z^m).$$
+**Theorem (Implicit function theorem).** Suppose $U \subset \mathbb{C}^m$ is an open subset, $n \leq m$ and $f : U \to \mathbb{C}^n$ is holomorphic. If $z_0 \in U$ satisfies that $$\det\left(\frac{\partial f^\alpha}{\partial z^j}(z_0)\right)_{1 \leq \alpha, j \leq n} \neq 0,$$ then there exist open subset $U_1 \subset \mathbb{C}^{m-n}, U_2 \subset \mathbb{C}^n$ and a holomorphic map $g : U_1 \to U_2$ such that $U_1 \times U_2 \subset U$ and $$f(z) = f(z_0) \iff (z^1, \cdots, z^n) = g(z^{n+1}, \cdots, z^m).$$
 
 > *Proof:* Again the real implicit function theorem yields a smooth function $g : U_1 \to U_2$ satisfying the required property. To show the holomorphic property, note that $$0 = \frac{\partial f^\alpha(g(w), w)}{\partial \bar{w}^j} = \sum_{k=1}^n \left(\frac{\partial f^\alpha}{\partial z^k}\frac{\partial g^k}{\partial \bar{w}^j} + \frac{\partial f^\alpha}{\partial \bar{z}^k}\frac{\partial \bar{g}^k}{\partial \bar{w}^j}\right) + \frac{\partial f^\alpha}{\partial \bar{z}^j} = \sum_{k=1}^n \frac{\partial f^\alpha}{\partial z^k}\frac{\partial g^k}{\partial \bar{w}^j}$$ for $1 \leq \alpha \leq n, n + 1 \leq j \leq m$, which implies $\partial g^k / \partial \bar{w}^j = 0$ for any $k$ and $j$. 
 
@@ -31,11 +31,11 @@ However, we also have some special features of the complex case.
 
 ## Submanifolds and subvarieties
 
-Like the real case, we can consider submanifolds of a compplex manifold. Suppose $M$ is a complex manifold of dimenional $n$. Then a $k$-dimensional **complex submanifold** $N$ is a subset of $M$ satisfying that there is a collection of holomorphic coordinate charts $(U_\alpha, \varphi_\alpha)$ of $M$ covering $N$ such that for each $\alpha$, $$\varphi_\alpha(N \cap U_\alpha) = \varphi_\alpha \cap (\mathbb{C}^k \times 0).$$
+Like the real case, we can consider submanifolds of a compplex manifold. Suppose $M$ is a complex manifold of dimenional $n$. Then a $k$-dimensional **complex submanifold** $N$ is a subset of $M$ satisfying that there is a collection of holomorphic coordinate charts $(U_\alpha, \varphi_\alpha)$ of $M$ covering $N$ such that for each $\alpha$, $$\varphi_\alpha(N \cap U_\alpha) = \varphi_\alpha(U_\alpha) \cap (\mathbb{C}^k \times 0).$$
 
 By the inverse function theorem, we can see that this is equivalent to that $N$ is given by the zero sets of holomorphic functions $f^1, \cdots, f^{n-k}$ such that $\mathrm{rank} J(f^1, \cdots, f^{n-k}) = n - k$. 
 
-The idea of express a subset as the zero set of some holomorphic functions gives us the concept of *subvarieties*. An **analytic subvariety** $V$ of a complex manifold $M$ is a subset given locally as the zero set of a finite collection of holomorphic functions. A point $p \in V$ is called a **smooth point** or a **regular point** if $V$ is given in a neighborhood of $p$ by holomorphic functions $f^1, \cdots, f^k$ with $\rank J(f^1, \cdots, f^k) = k$. Denote the set of regular points on $V$ by $V_\mathrm{reg}$, and let $V_\mathrm{sing} = V \setminus V_\mathrm{reg}$. The points in $V_\mathrm{sing}$ are called **sigular points** of $V$. An analytic variety $V$ is **irreducible** if it cannot be written as the union of two proper analytic subvarieties. 
+The idea of express a subset as the zero set of some holomorphic functions gives us the concept of *subvarieties*. An **analytic subvariety** $V$ of a complex manifold $M$ is a subset given locally as the zero set of a finite collection of holomorphic functions. A point $p \in V$ is called a **smooth point** or a **regular point** if $V$ is given in a neighborhood of $p$ by holomorphic functions $f^1, \cdots, f^k$ with $\mathrm{rank} J(f^1, \cdots, f^k) = k$. Denote the set of regular points on $V$ by $V_\mathrm{reg}$, and let $V_\mathrm{sing} = V \setminus V_\mathrm{reg}$. The points in $V_\mathrm{sing}$ are called **sigular points** of $V$. An analytic variety $V$ is **irreducible** if it cannot be written as the union of two proper analytic subvarieties. 
 
 We can see that each connected component of $V_\mathrm{reg}$ is a complex submanifold $M$. There is a theorem saying that *an analytic variety $V$ is irreducible if and only if $V_\mathrm{reg}$ is connected*. Thus we can define the dimension of an irreducible variety $V$ to be the dimensional of $V_\mathrm{reg}$. 
 
@@ -43,5 +43,22 @@ We can see that each connected component of $V_\mathrm{reg}$ is a complex subman
 
 The last part of this post devotes to some discussion of $(p,q)$-forms on a complex manifold $M$. Viewing $M$ as a smooth manifold, we can consider the space $A_\mathbb{R}^n(M)$ of $n$-forms on $M$. Let $$A_\mathbb{C}^n(M) = A_\mathbb{R}^n(M) \otimes_\mathbb{R} \mathbb{C}.$$ Then the exterior differentiation gives a linear map $$\mathrm{d} : A_\mathbb{C}^n(M) \to A_\mathbb{C}^{n+1}(M).$$ 
 
-For each point $z \in M$, the decomposition $$T^*_{\mathbb{C},z}(M) = T^{*1,0}_z(M) \oplus T^{*0,1}_z(M)$$ gives a decomposition $$\wedge^n T^*{\mathbb{C},z}(M) = \bigoplus_{p+q=n} T^{*p,q}_z(M),$$ where $$T^{*p,q}_z(M) = (\wedge^p T^{*1,0}_z(M)) \wedge (\wedge^q T^{*0,1}_z(M)).$$ Correspondigly, we obtain the decomposition $$A_\mathbb{C}^n(M) = \bigoplus_{p+q=n} A^{p,q}(M),$$ where $A^{p,q}(M)$ consists of $n$-forms $\omega$ satisfying $\omega_z \in T^{*p,q}_z(M)$ for each $z \in M$. A form $\omega \in A^{p,q}(M)$ is said be of **type $(p,q)$**, and is also called a **$(p,q)$-form** on $M$. 
+For each point $z \in M$, the decomposition 
 
+$$T^*_{\mathbb{C},z}(M) = T^{*1,0}_z(M) \oplus T^{*0,1}_z(M)$$ 
+
+induces a decomposition 
+
+$$\wedge^n T^*_{\mathbb{C},z}(M) = \bigoplus_{p+q=n} T^{*p,q}_z(M),\quad T^{*p,q}_z(M) = (\wedge^p T^{*1,0}_z(M)) \wedge (\wedge^q T^{*0,1}_z(M)).$$ 
+
+Correspondigly, we obtain the decomposition $$A_\mathbb{C}^n(M) = \bigoplus_{p+q=n} A^{p,q}(M),$$ where $A^{p,q}(M)$ consists of $n$-forms $\omega$ satisfying $\omega_z \in T^{*p,q}_z(M)$ for each $z \in M$. A form $\omega \in A^{p,q}(M)$ is said to be of **type $(p,q)$**, and is also called a **$(p,q)$-form** on $M$. 
+
+Let $\pi^{p,q}$ be the projection of $A_{\mathbb{C}}^{p+q}(M)$ onto $A^{p,q}(M)$. Define $$\partial = \pi^{p+1,q} \circ \mathrm{d} : A^{p,q}(M) \to A^{p+1,q}(M), \quad \bar{\partial} = \pi^{p,q+1} \circ \mathrm{d} : A^{p,q}(M) \to A^{p,q+1}(M).$$ Using local coordinates, we may consider a $(p,q)$-form $$\omega = f \cdot \mathrm{d}z^{i_1} \wedge \cdots \wedge \mathrm{d}z^{i_p} \wedge \mathrm{d}\bar{z}^{j_1} \wedge \cdots \mathrm{d}\bar{z}^{j_q},$$ and direct computation yields that $$\partial \omega = \sum_k \frac{\partial f}{\partial z^k} \mathrm{d}z^k \wedge \mathrm{d}z^{i_1} \wedge \cdots \wedge \mathrm{d}z^{i_p} \wedge \mathrm{d}\bar{z}^{j_1} \wedge \cdots \mathrm{d}\bar{z}^{j_q},$$ and $$\bar{\partial} \omega = \sum_k \frac{\partial f}{\partial \bar{z}^k} \mathrm{d}\bar{z}^k \wedge \mathrm{d}z^{i_1} \wedge \cdots \wedge \mathrm{d}z^{i_p} \wedge \mathrm{d}\bar{z}^{j_1} \wedge \cdots \mathrm{d}\bar{z}^{j_q}.$$ 
+
+We can verify that the operators $\partial$ and $\bar{\partial}$ have the following properties:
+
++ $\mathrm{d} = \partial + \bar{\partial}$;
++ $\partial^2 = \bar{\partial}^2 = 0$ and $\partial\bar{\partial} = -\bar{\partial}\partial$;
++ for $\alpha \in A^{p,q}(M)$ and $\beta \in A^{r,s}(M)$, we have $$\partial(\alpha \wedge \beta) = \partial\alpha \wedge \beta + (-1)^{p+q}\alpha \wedge \partial\beta, \quad \bar{\partial}(\alpha \wedge \beta) = \bar{\partial}\alpha \wedge \beta + (-1)^{p+q}\alpha \wedge \bar{\partial}\beta.$$
+
+We see that $\partial$ and $\bar{\partial}$ have the similar properties to the exterior differentiation $\mathbb{d}$. In next post, they will be used to build a holomorphic analogy to the *de Rham cohomology theory*. 
