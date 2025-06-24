@@ -52,7 +52,7 @@ Now we can prove the complete $\bar{\partial}$-Poincare lemma.
 
 ## Sheaf theory on complex manifolds
 
-The definitons and basic results in sheaf theory can be found in this PDF file.
+The definitons and basic results in sheaf theory can be found in this [PDF file](/file/sheaf.pdf).
 
 There are many examples of sheaves on a complex manifold $M$:
 
@@ -74,7 +74,7 @@ The exact sequences of sheaves on $M$ are widely used in the study of complex ma
 + Suppose $N \subset M$ is a submanifold. The sheaf $\mathcal{O}_N$ can be viewed as a sheaf on $M$. Then the sequence $$0 \to \mathcal{I}_N \to \mathcal{O}_M \to \mathcal{O}_N \to 0$$ is exact, where the morphisms are given by inclusion and restriction.
 + By the $\bar{\partial}$-Poincare lemma, the sequence $$0 \to \Omega^p_M \to \mathcal{A}^{p,0}_M \to \mathcal{A}^{p,1}_M \to \mathcal{A}^{p,2}_M \to \cdots$$ is exact. 
 
-For a sheaf $\mathcal{F}$ on a topological space $X$ we can consider its cohomology groups $H^n(X; \mathcal{F})$. Basic results concerning the sheaf cohomology can also be found in this PDF file. 
+For a sheaf $\mathcal{F}$ on a topological space $X$ we can consider its cohomology groups $H^n(X; \mathcal{F})$. Basic results concerning the sheaf cohomology can also be found in this [PDF file](/file/sheaf.pdf). 
 
 Applying the results of sheaf theory to a complex manifold $M$, we obtain the following theorem.
 
