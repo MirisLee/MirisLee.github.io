@@ -20,9 +20,9 @@ Noting that $f^*$ commutes with $\bar{\partial}$, we obtain the induced homomorp
 
 $$f^* : H^{p,q}(N) \to H^{p,q}(M).$$ 
 
-The Poincare lemma for $\mathbb{R}^n$ impies that the de Rham cohomology groups are locally trivial. In analogy, we have the following $\bar{\partial}$-Poincare lemma which suggets that the positive-order Dolbeault cohomology groups of a polydisc are trivial.
+The Poincar&#233; lemma for $\mathbb{R}^n$ impies that the de Rham cohomology groups are locally trivial. In analogy, we have the following $\bar{\partial}$-Poincar&#233; lemma which suggets that the positive-order Dolbeault cohomology groups of a polydisc are trivial.
 
-**Theorem ($\bar{\partial}$-Poincare lemma).** Suppose $D = D(0, r) \subset \mathbb{C}^n$ is a polydisc which can be unbounded and $q > 0$. If $\alpha \in A^{p,q}(D)$ is $\bar{\partial}$-closed, then there exists $\beta \in A^{p,q-1}(D)$ such that $\alpha = \bar{\partial}\beta$. 
+**Theorem ($\bar{\partial}$-Poincar&#233; lemma).** Suppose $D = D(0, r) \subset \mathbb{C}^n$ is a polydisc which can be unbounded and $q > 0$. If $\alpha \in A^{p,q}(D)$ is $\bar{\partial}$-closed, then there exists $\beta \in A^{p,q-1}(D)$ such that $\alpha = \bar{\partial}\beta$. 
 
 We begin with the one-dimenional case.
 
@@ -40,9 +40,9 @@ We begin with the one-dimenional case.
 >
 > Consider the functions $$g_I(z) = \frac{1}{2 \pi i}\int_{|z^k| < r_k}\frac{f_I(z^1, \cdots, z^{k-1}, \zeta, z^{k+1}, \cdots, z^n)}{\zeta - z^k} \mathrm{d}\zeta \wedge \mathrm{d}\bar{\zeta}, \quad z \in D(0,r).$$ Let $$\gamma = \sum_{I:k \in I} g_I \mathrm{d}z^{I \setminus k}.$$ Then the preceding lemma implies that this is the desired $\gamma$ up to a sign. 
 
-Now we can prove the complete $\bar{\partial}$-Poincare lemma.
+Now we can prove the complete $\bar{\partial}$-Poincar&#233; lemma.
 
-> *Proof of $\bar{\partial}$-Poincare lemma:* Consider a monotone increasing sequence $r_k$ tending to $r$ and let $D_k = D(0,r_k)$. The previous lemma yields for each $k$ some $\beta_k \in A^{p,q-1}(D)$ such that $\bar{\partial}\beta_k = \alpha$ on $D_k.$ It remains to show that these $\beta_k$ can be chosen such that they converge uniformly on each compact subset of $D$. 
+> *Proof of $\bar{\partial}$-Poincar&#233; lemma:* Consider a monotone increasing sequence $r_k$ tending to $r$ and let $D_k = D(0,r_k)$. The previous lemma yields for each $k$ some $\beta_k \in A^{p,q-1}(D)$ such that $\bar{\partial}\beta_k = \alpha$ on $D_k.$ It remains to show that these $\beta_k$ can be chosen such that they converge uniformly on each compact subset of $D$. 
 >
 > We procedure by induction on $k$. Suppose $\beta_k$ has been constructed. Take any $\tilde{\beta} \in A^{0,q-1}(D)$ such that $\bar{\partial}\tilde{\beta} = \alpha$ holds on $D_{k+1}$. Then $\bar{\partial}(\tilde{\beta} - \beta_k) = 0$ holds on $D_k$. When $q \geq 2$, there is some $\gamma \in A^{0,q-2}(D)$ such that $\bar{\partial}\gamma = \tilde{\beta} - \beta_k$ on $D_k$. The $\beta_{k+1}$ can then be given by $$\beta_{k+1} = \tilde{\beta} - \bar{\partial}\gamma.$$ 
 >
@@ -72,7 +72,7 @@ The exact sequences of sheaves on $M$ are widely used in the study of complex ma
   
   $$0 \to \underline{\mathbb{Z}} \to \mathcal{O}_M \to \mathcal{O}^*_M \to 0.$$ This is called the *exponential sheaf sequence*.
 + Suppose $N \subset M$ is a submanifold. The sheaf $\mathcal{O}_N$ can be viewed as a sheaf on $M$. Then the sequence $$0 \to \mathcal{I}_N \to \mathcal{O}_M \to \mathcal{O}_N \to 0$$ is exact, where the morphisms are given by inclusion and restriction.
-+ By the $\bar{\partial}$-Poincare lemma, the sequence $$0 \to \Omega^p_M \to \mathcal{A}^{p,0}_M \to \mathcal{A}^{p,1}_M \to \mathcal{A}^{p,2}_M \to \cdots$$ is exact. 
++ By the $\bar{\partial}$-Poincar&#233; lemma, the sequence $$0 \to \Omega^p_M \to \mathcal{A}^{p,0}_M \to \mathcal{A}^{p,1}_M \to \mathcal{A}^{p,2}_M \to \cdots$$ is exact. 
 
 For a sheaf $\mathcal{F}$ on a topological space $X$ we can consider its cohomology groups $H^n(X; \mathcal{F})$. Basic results concerning the sheaf cohomology can also be found in this [PDF file](/file/sheaf.pdf). 
 
@@ -83,7 +83,7 @@ Applying the results of sheaf theory to a complex manifold $M$, we obtain the fo
 
 Another application of the sheaf theory is the answer to the *Cousin problem*.
 
-By $\bar{\partial}$-Poincare lemma, we have $$H^q(\mathbb{C}^n; \mathcal{O}) = H^q(\mathbb{C}^n; \Omega^0) = 0, \quad q > 0.$$ Meanwhile, by the singular cohomology, $$H^q(\mathbb{C}^n; \underline{\mathbb{Z}}) = H_\mathrm{sing}^q(\mathbb{C}^n; \mathbb{Z}) = 0, \quad q > 0.$$ Then the exponential exact sequence yields a long exact sequence of cohomoogy groups which implies that $$H^q(\mathbb{C}^n; \mathcal{O}^*) = 0, \quad q > 0.$$
+By $\bar{\partial}$-Poincar&#233; lemma, we have $$H^q(\mathbb{C}^n; \mathcal{O}) = H^q(\mathbb{C}^n; \Omega^0) = 0, \quad q > 0.$$ Meanwhile, by the singular cohomology, $$H^q(\mathbb{C}^n; \underline{\mathbb{Z}}) = H_\mathrm{sing}^q(\mathbb{C}^n; \mathbb{Z}) = 0, \quad q > 0.$$ Then the exponential exact sequence yields a long exact sequence of cohomoogy groups which implies that $$H^q(\mathbb{C}^n; \mathcal{O}^*) = 0, \quad q > 0.$$
 
 **Proposition.** Any analytic hypersurface in $\mathbb{C}^n$ is the zero set of an entire function.
 
