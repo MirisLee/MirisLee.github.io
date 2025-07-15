@@ -1,6 +1,6 @@
 ---
 title: Hodge theory on compact hermitian manifolds - 3
-date: 2025-07-4 14:12:00
+date: 2025-07-14 14:12:00
 tags:
 	- complex geometry
 	- math
